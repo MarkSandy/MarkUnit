@@ -4,10 +4,11 @@ using System.Linq;
 
 namespace MarkUnit
 {
-    internal class TestResultLogger<T> : ITestResultLogger<T> where T : INamedComponent
+    internal class TestResultLogger<T> : ITestResultLogger<T>
+        where T : INamedComponent
     {
         public void LogTestsPassed()
-        {  
+        {
             Console.WriteLine("Passed: " + PredicateString.Text);
         }
 
@@ -18,7 +19,6 @@ namespace MarkUnit
             Console.WriteLine(string.Join(", ", errorItems.Select(e => e.Name)));
 
             Console.WriteLine();
-
         }
     }
 }

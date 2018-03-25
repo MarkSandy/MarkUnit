@@ -1,6 +1,4 @@
 ﻿namespace MarkUnit.Classes
 {
-    public interface IClassBinaryOperator :IReducedClassCollection
-    {
-    }
+    public interface IClassBinaryOperator : IReducedClassCollection { }
 }

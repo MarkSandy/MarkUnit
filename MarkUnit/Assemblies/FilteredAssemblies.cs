@@ -2,7 +2,9 @@
 
 namespace MarkUnit.Assemblies
 {
-    internal class FilteredAssemblies : Filter<IAssembly>,IFilteredAssemblies
+    internal class FilteredAssemblies
+        : Filter<IAssembly>,
+          IFilteredAssemblies
     {
         public FilteredAssemblies(IEnumerable<IAssembly> assemblies)
             : base(assemblies) { }

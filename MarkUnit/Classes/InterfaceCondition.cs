@@ -1,6 +1,5 @@
 ﻿namespace MarkUnit.Classes
 {
-
     //internal class InterfaceLogicalLink : LogicalLink<IInterfaceTestCondition>, IInterfaceRule 
     //{
     //    private readonly IInternalInterfaceTestCondition _followUp;

@@ -36,10 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
+      <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
+      <HintPath>..\packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
@@ -55,40 +55,58 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assemblies\ArchUnitAssembly.cs" />
-    <Compile Include="Assemblies\AssemblyCondition.cs" />
+    <Compile Include="Assemblies\AssemblyCollection.cs" />
     <Compile Include="Assemblies\AssemblyLogicalLink.cs" />
     <Compile Include="Assemblies\AssemblyRule.cs" />
-    <Compile Include="Assemblies\AssemblyConditionFilter.cs" />
+    <Compile Include="Assemblies\AssemblyFilterCondition.cs" />
     <Compile Include="Assemblies\AssemblyCollector.cs" />
     <Compile Include="Assemblies\FilteredAssemblies.cs" />
     <Compile Include="Assemblies\AssemblyReader.cs" />
     <Compile Include="Assemblies\AssemblyPredicate.cs" />
-    <Compile Include="Assemblies\IAssemblyBinaryOperator.cs" />
-    <Compile Include="Assemblies\IAssemblyCondition.cs" />
-    <Compile Include="Assemblies\IAssemblyFilter.cs" />
-    <Compile Include="AssertionBase.cs" />
+    <Compile Include="Assemblies\IAssemblyFilterCondition.cs" />
+    <Compile Include="Assemblies\IAssemblyCollection.cs" />
+    <Compile Include="Assemblies\IFilteredAssemblies.cs" />
+    <Compile Include="Assemblies\IAssemblyRule.cs" />
+    <Compile Include="Assemblies\IInternalAssemblyTestCondition.cs" />
+    <Compile Include="Assemblies\IReducedAssemblyCollection.cs" />
+    <Compile Include="RuleBase.cs" />
     <Compile Include="BinaryAssertionOperator.cs" />
     <Compile Include="Classes\ClassFilterCondition.cs" />
     <Compile Include="Classes\ClassCondition.cs" />
     <Compile Include="Classes\ClassInfoCollector.cs" />
+    <Compile Include="Classes\ClassLogicalLink.cs" />
+    <Compile Include="Classes\ClassMatchingInterfaceCondition.cs" />
+    <Compile Include="Classes\ClassToInterfaceFilterMapper.cs" />
+    <Compile Include="Classes\ICheckableInterfaceCondition.cs" />
     <Compile Include="Classes\IClassBinaryOperator.cs" />
     <Compile Include="Classes\IClassInfoCollector.cs" />
     <Compile Include="Classes\IClassMatchingInterfaceCondition.cs" />
+    <Compile Include="Classes\IClassRule.cs" />
     <Compile Include="Classes\ICondition.cs" />
+    <Compile Include="Classes\IInterface.cs" />
     <Compile Include="Classes\IInterfacePredicate.cs" />
+    <Compile Include="Classes\IInterfaceTestCondition.cs" />
+    <Compile Include="Classes\IInternalClassTestCondition.cs" />
+    <Compile Include="Classes\IInternalInterfaceTestCondition.cs" />
     <Compile Include="Classes\InterfaceCondition.cs" />
+    <Compile Include="Classes\InterfaceLogicalLink.cs" />
+    <Compile Include="Classes\InterfaceRule.cs" />
+    <Compile Include="Classes\IReducedClassCollection.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="IAssertionVerifier.cs" />
+    <Compile Include="ICheckable.cs" />
+    <Compile Include="IInternalCheckable.cs" />
+    <Compile Include="IInternalFilterConditionChain.cs" />
     <Compile Include="ILogicalLink.cs" />
-    <Compile Include="ConditionBase.cs" />
-    <Compile Include="ConditionChainBase.cs" />
+    <Compile Include="LogicalLink.cs" />
+    <Compile Include="TestCollectionBase.cs" />
     <Compile Include="FilterConditionBase.cs" />
     <Compile Include="AssertionVerifier.cs" />
     <Compile Include="Classes\ArchNetClass.cs" />
     <Compile Include="Classes\ClassRule.cs" />
     <Compile Include="Classes\ClassCollector.cs" />
     <Compile Include="Classes\ClassPredicate.cs" />
-    <Compile Include="Classes\ClassFilter.cs" />
+    <Compile Include="Classes\FilteredClasses.cs" />
     <Compile Include="Classes\ClassReader.cs" />
     <Compile Include="Classes\IClass.cs" />
     <Compile Include="Classes\IClassCollector.cs" />
@@ -99,21 +117,24 @@
     <Compile Include="ICollector.cs" />
     <Compile Include="IFilter.cs" />
     <Compile Include="Assemblies\IAssemblyPredicate.cs" />
-    <Compile Include="Assemblies\IAssemblyAssertion.cs" />
-    <Compile Include="Classes\IClassAssertion.cs" />
-    <Compile Include="Classes\IClassCondition.cs" />
+    <Compile Include="Assemblies\IAssemblyTestCondition.cs" />
+    <Compile Include="Classes\IClassTestCondition.cs" />
+    <Compile Include="Classes\IClassCollection.cs" />
     <Compile Include="Classes\IClassPredicate.cs" />
     <Compile Include="Classes\IInterfaceRule.cs" />
     <Compile Include="Classes\IInterfaceCondition.cs" />
     <Compile Include="Classes\InterfacePredicate.cs" />
+    <Compile Include="INamedComponent.cs" />
     <Compile Include="IPredicate.cs" />
     <Compile Include="Contracts\IService.cs" />
     <Compile Include="Assemblies\DirectoryAssemblyCollector.cs" />
     <Compile Include="Assemblies\IAssembly.cs" />
     <Compile Include="Assemblies\IAssemblyCollector.cs" />
     <Compile Include="Assemblies\IAssemblyReader.cs" />
+    <Compile Include="ISolutionCondition.cs" />
     <Compile Include="ITestResultLogger.cs" />
     <Compile Include="NinjectSetup.cs" />
+    <Compile Include="PredicateString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solution.cs" />
     <Compile Include="StringHelper.cs" />
@@ -123,6 +144,5 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

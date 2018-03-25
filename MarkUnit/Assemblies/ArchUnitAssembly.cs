@@ -8,9 +8,7 @@ namespace MarkUnit.Assemblies
 {
     internal class ArchUnitAssembly : IAssembly
     {
-        private readonly List<IClass> _classes=new List<IClass>();
-        public IAssembly[] ReferencedAssemblies { get; set; }
-        public Assembly Assembly { get; }
+        private readonly List<IClass> _classes = new List<IClass>();
 
         public ArchUnitAssembly(Assembly assembly)
         {
@@ -18,6 +16,9 @@ namespace MarkUnit.Assemblies
             Name = a.FirstOrDefault();
             Assembly = assembly;
         }
+
+        public IAssembly[] ReferencedAssemblies { get; set; }
+        public Assembly Assembly { get; }
 
         public void AddClass(IClass classType)
         {

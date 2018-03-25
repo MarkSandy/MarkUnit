@@ -1,4 +1,4 @@
-﻿namespace MarkUnit.Classes {
-    internal interface IFilteredClasses : IFilter<IClass>
-    { }
+﻿namespace MarkUnit.Classes
+{
+    internal interface IFilteredClasses : IFilter<IClass> { }
 }

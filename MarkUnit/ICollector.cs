@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace MarkUnit {
+namespace MarkUnit
+{
     public interface ICollector<out T>
     {
         IEnumerable<T> Get();

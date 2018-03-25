@@ -2,7 +2,8 @@
 using System.Linq;
 using MarkUnit.Assemblies;
 
-namespace MarkUnit.Classes {
+namespace MarkUnit.Classes
+{
     internal class ClassReader : IClassReader
     {
         private readonly Dictionary<IAssembly, IClass[]> _classes = new Dictionary<IAssembly, IClass[]>();
@@ -16,9 +17,10 @@ namespace MarkUnit.Classes {
         {
             if (!_classes.TryGetValue(assembly, out IClass[] classes))
             {
-                classes = assembly.Assembly.GetTypes().Where(c=>c.IsClass).Select(t => new ArchNetClass(assembly,t)).ToArray();
+                classes = assembly.Assembly.GetTypes().Where(c => c.IsClass).Select(t => new ArchNetClass(assembly, t)).ToArray();
                 _classes.Add(assembly, classes);
             }
+
             return classes;
         }
     }

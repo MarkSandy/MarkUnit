@@ -1,8 +1,8 @@
 ﻿using MarkUnit.Assemblies;
 
-namespace MarkUnit.Classes 
+namespace MarkUnit.Classes
 {
-    internal interface IClassCollector  : ICollector<IClass> 
+    internal interface IClassCollector : ICollector<IClass>
     {
         IFilteredAssemblies Assemblies { get; set; }
     }

@@ -1,6 +1,5 @@
 ﻿namespace MarkUnit.Classes
 {
-
     //public interface IInterfaceTestCondition 
     //{
     //    IInterfaceTestCondition Not();
@@ -9,6 +8,6 @@
     //    IInterfaceCondition ImplementInterface();
     //}
     //public interface IInterfaceRule :  ILogicalLink<IInterfaceTestCondition>, ICheckable{} 
-   
+
     //internal interface IInternalInterfaceTestCondition : IInterfaceTestCondition,IInternalCheckable{}
 }

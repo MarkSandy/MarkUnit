@@ -1,6 +1,4 @@
 ﻿namespace MarkUnit.Assemblies
 {
-    public interface IAssemblyPredicate : IPredicate<IAssemblyCollection>
-    {
-    }
+    public interface IAssemblyPredicate : IPredicate<IAssemblyCollection> { }
 }

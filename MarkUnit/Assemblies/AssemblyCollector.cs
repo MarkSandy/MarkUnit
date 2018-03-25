@@ -9,17 +9,20 @@ namespace MarkUnit.Assemblies
         private readonly IAssemblyReader _assemblyReader;
         private IEnumerable<IAssembly> _solutionAssemblies;
 
-        public Assembly MainAssembly { get; set; }
-
         public AssemblyCollector(IAssemblyReader assemblyReader)
         {
             _assemblyReader = assemblyReader;
         }
 
+        public Assembly MainAssembly { get; set; }
+
         public IEnumerable<IAssembly> Get()
         {
             return ReadAllAssemblies(MainAssembly);
         }
+
+        public IEnumerable<IAssembly> SolutionAssemblies => null;
+        public string Pattern { get; set; }
 
         private IEnumerable<IAssembly> ReadAllAssemblies(Assembly mainAssembly)
         {
@@ -27,8 +30,5 @@ namespace MarkUnit.Assemblies
             _solutionAssemblies = _assemblyReader.AllAssemblies.Where(a => a.Name.Matches(Pattern)).ToArray();
             return _assemblyReader.AllAssemblies;
         }
-
-        public IEnumerable<IAssembly> SolutionAssemblies => null;
-        public string Pattern { get; set; }
     }
 }

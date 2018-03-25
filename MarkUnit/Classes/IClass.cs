@@ -12,6 +12,4 @@ namespace MarkUnit.Classes
         IEnumerable<IClass> ReferencedClasses { get; }
         void AddReferencedClass(IClass referencedClass);
     }
-
-    public interface IInterface : IClass{}
 }

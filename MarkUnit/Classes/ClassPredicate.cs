@@ -1,4 +1,5 @@
-﻿namespace MarkUnit.Classes {
+﻿namespace MarkUnit.Classes
+{
     internal class ClassPredicate : IClassPredicate
     {
         private readonly IClassCollector _classCollector;

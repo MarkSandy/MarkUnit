@@ -4,7 +4,7 @@ namespace MarkUnit.Assemblies
 {
     public interface IAssemblyCollector : ICollector<IAssembly>
     {
-        IEnumerable<IAssembly> SolutionAssemblies { get; }
         string Pattern { get; set; }
+        IEnumerable<IAssembly> SolutionAssemblies { get; }
     }
 }

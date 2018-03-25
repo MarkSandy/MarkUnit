@@ -1,11 +1,13 @@
 ﻿namespace MarkUnit.Classes
 {
-    internal class ClassFilterCondition : FilterConditionBase<IClassCollection, IClassTestCondition, IClass>
-        , IClassBinaryOperator
+    internal class ClassFilterCondition
+        : FilterConditionBase<IClassCollection, IClassTestCondition, IClass>,
+          IClassBinaryOperator
     {
-        public ClassFilterCondition(IClassCollection condition, IFilter<IClass> filter, bool negate) : base(condition, filter, negate)
+        public ClassFilterCondition(IClassCollection condition, IFilter<IClass> filter, bool negate)
+            : base(condition, filter, negate)
         {
-            CeateAssertionFunc=(f,b)=>new ClassRule(f,b); 
+            CeateAssertionFunc = (f, b) => new ClassRule(f, b);
         }
     }
 }

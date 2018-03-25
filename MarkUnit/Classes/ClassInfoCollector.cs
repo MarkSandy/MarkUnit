@@ -9,57 +9,33 @@ namespace MarkUnit.Classes
     internal class ClassInfoCollector
         : IClassInfoCollector
     {
-        private readonly Dictionary<Type, IClass> _classes = new Dictionary<Type, IClass>();
         private readonly IAssemblyReader _assemblyReader;
+        private readonly Dictionary<Type, IClass> _classes = new Dictionary<Type, IClass>();
+
         public ClassInfoCollector(IAssemblyReader assemblyReader)
         {
             _assemblyReader = assemblyReader;
         }
 
         public void Examine(IClass classInfo)
-        {    if (_classes.ContainsKey(classInfo.ClassType)) return;
+        {
+            if (_classes.ContainsKey(classInfo.ClassType)) return;
             CollectInfoFromConstructors(classInfo);
             CollectInfoFromFields(classInfo);
             CollectInfoFromMethods(classInfo);
-            Add(classInfo,classInfo.ClassType);
+            Add(classInfo, classInfo.ClassType);
         }
 
         private void Add(IClass classInfo, Type type)
         {
-            if (!_classes.ContainsKey(type)) _classes.Add(type,classInfo);
+            if (!_classes.ContainsKey(type)) _classes.Add(type, classInfo);
         }
 
-        private IClass Get(Type type)
+        private void Collect(IClass classType, Type type)
         {
-            if (!_classes.TryGetValue(type, out IClass result))
-            {
-                result = new ArchNetClass(_assemblyReader.LoadAssembly(type.Assembly),type);
-            }
-
-            return result;
-        }
-
-        private  void CollectInfoFromConstructors(IClass classInfo)
-        {
-            CollectInfoFromConstructors(classInfo,BindingFlags.Static | BindingFlags.NonPublic);
-            CollectInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
-        }
-
-        private  void CollectInfoFromConstructors(IClass classInfo, BindingFlags bindingFlags)
-        {
-            foreach (ConstructorInfo constructorInfo in classInfo.ClassType.GetConstructors(bindingFlags))
-            {
-                CollectFromParameters(classInfo, constructorInfo.GetParameters());
-                CollectFromMethodBody(classInfo,constructorInfo.GetMethodBody());
-            }
-        }
-
-        private  void CollectFromParameters(IClass classInfo,ParameterInfo[] parameters)
-        {
-            foreach (ParameterInfo parameterInfo in parameters)
-            {
-                Collect(classInfo, parameterInfo.ParameterType);
-            }
+            if (type.IsGenericParameter || type == typeof(void)) return;
+            var referencedClass = Get(type);
+            classType.AddReferencedClass(referencedClass);
         }
 
         private void CollectFromMethodBody(IClass classInfo, MethodBody methodBody)
@@ -73,27 +49,30 @@ namespace MarkUnit.Classes
             }
         }
 
-
-        private  void CollectInfoFromMethods(IClass classInfo)
+        private void CollectFromParameters(IClass classInfo, ParameterInfo[] parameters)
         {
-            CollectInfoFromMethods(classInfo, BindingFlags.Instance|BindingFlags.Public);
-            CollectInfoFromMethods(classInfo, BindingFlags.Static|BindingFlags.Public);
-            CollectInfoFromMethods(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
-            CollectInfoFromMethods(classInfo, BindingFlags.Static | BindingFlags.NonPublic);
-        }
-
-        private  void CollectInfoFromMethods(IClass classInfo, BindingFlags bindingFlags)
-        {
-            var x = classInfo.ClassType.GetMethods(BindingFlags.Instance|BindingFlags.Public).Select(n=>n.Name).ToArray();
-            foreach (MethodInfo methodInfo in classInfo.ClassType.GetMethods(bindingFlags))
+            foreach (ParameterInfo parameterInfo in parameters)
             {
-                Collect(classInfo, methodInfo.ReturnType);
-                CollectFromParameters(classInfo, methodInfo.GetParameters());
-                CollectFromMethodBody(classInfo,methodInfo.GetMethodBody());
+                Collect(classInfo, parameterInfo.ParameterType);
             }
         }
 
-        private  void CollectInfoFromFields(IClass classInfo)
+        private void CollectInfoFromConstructors(IClass classInfo)
+        {
+            CollectInfoFromConstructors(classInfo, BindingFlags.Static | BindingFlags.NonPublic);
+            CollectInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+
+        private void CollectInfoFromConstructors(IClass classInfo, BindingFlags bindingFlags)
+        {
+            foreach (ConstructorInfo constructorInfo in classInfo.ClassType.GetConstructors(bindingFlags))
+            {
+                CollectFromParameters(classInfo, constructorInfo.GetParameters());
+                CollectFromMethodBody(classInfo, constructorInfo.GetMethodBody());
+            }
+        }
+
+        private void CollectInfoFromFields(IClass classInfo)
         {
             CollectInfoFromFields(classInfo, BindingFlags.Static | BindingFlags.NonPublic);
             CollectInfoFromFields(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
@@ -107,11 +86,33 @@ namespace MarkUnit.Classes
             }
         }
 
-        private void Collect(IClass classType,Type type)
+        private void CollectInfoFromMethods(IClass classInfo)
         {
-            if (type.IsGenericParameter  || type==typeof(void)) return;
-            var referencedClass = Get(type);
-            classType.AddReferencedClass(referencedClass);
+            CollectInfoFromMethods(classInfo, BindingFlags.Instance | BindingFlags.Public);
+            CollectInfoFromMethods(classInfo, BindingFlags.Static | BindingFlags.Public);
+            CollectInfoFromMethods(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
+            CollectInfoFromMethods(classInfo, BindingFlags.Static | BindingFlags.NonPublic);
+        }
+
+        private void CollectInfoFromMethods(IClass classInfo, BindingFlags bindingFlags)
+        {
+            var x = classInfo.ClassType.GetMethods(BindingFlags.Instance | BindingFlags.Public).Select(n => n.Name).ToArray();
+            foreach (MethodInfo methodInfo in classInfo.ClassType.GetMethods(bindingFlags))
+            {
+                Collect(classInfo, methodInfo.ReturnType);
+                CollectFromParameters(classInfo, methodInfo.GetParameters());
+                CollectFromMethodBody(classInfo, methodInfo.GetMethodBody());
+            }
+        }
+
+        private IClass Get(Type type)
+        {
+            if (!_classes.TryGetValue(type, out IClass result))
+            {
+                result = new ArchNetClass(_assemblyReader.LoadAssembly(type.Assembly), type);
+            }
+
+            return result;
         }
     }
 }

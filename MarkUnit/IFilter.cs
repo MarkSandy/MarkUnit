@@ -10,9 +10,4 @@ namespace MarkUnit
         void Materialize();
         void Negate();
     }
-
-    public interface INamedComponent
-    {
-        string Name { get; }
-    }
 }

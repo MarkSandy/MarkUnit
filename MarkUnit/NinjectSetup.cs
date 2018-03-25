@@ -12,7 +12,7 @@ namespace MarkUnit
             Bind<AssemblyCollector>().ToSelf();
             Bind<DirectoryAssemblyCollector>().ToSelf();
             Bind<IClassInfoCollector>().To<ClassInfoCollector>();
-                 
+
             Bind<IClassReader>().To<ClassReader>().InSingletonScope();
             Bind<IClassCollector>().To<ClassCollector>();
         }

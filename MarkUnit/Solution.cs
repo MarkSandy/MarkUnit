@@ -95,26 +95,4 @@ namespace MarkUnit
             return CreateClass(true);
         }
     }
-
-    public interface ISolutionCondition
-    {
-        
-    }
-
-    public static class PredicateString
-    {
-        public static string Text { get; private set; }
-        public static bool Failed { get; set; }
-
-        public static void Start(string prefix)
-        {
-            Text = prefix;
-            Failed = false;
-        }
-
-        public static void Add(string word)
-        {
-            Text += " " + word;
-        }
-    }
 }

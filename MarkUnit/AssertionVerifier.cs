@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace MarkUnit
 {
-    internal class AssertionVerifier<T> : IAssertionVerifier<T> where T : INamedComponent
+    internal class AssertionVerifier<T> : IAssertionVerifier<T> 
     {
         private readonly IFilter<T> _assertions;
         private readonly bool _negateAssertion;

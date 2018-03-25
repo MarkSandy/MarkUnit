@@ -4,22 +4,8 @@ using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 
 namespace MarkUnit.Classes
-{  
-    internal class ClassLogicalLink : LogicalLink<IClassTestCondition>, IClassRule 
-    {
-        private readonly IInternalClassTestCondition _followUp;
-
-        public ClassLogicalLink(IInternalClassTestCondition followUp) : base(followUp)
-        {
-            _followUp = followUp;
-        }
-
-        public void Check()
-        {
-            _followUp.Check(); 
-        }
-    }
-     internal class ClassRule : RuleBase<IClass, IClassTestCondition,IClassRule>, IInternalClassTestCondition
+{
+    internal class ClassRule : RuleBase<IClass, IClassTestCondition,IClassRule>, IInternalClassTestCondition
     {
         public ClassRule(IFilter<IClass> items, bool negateAssertion) : base(items, negateAssertion)
         {

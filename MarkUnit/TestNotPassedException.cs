@@ -2,7 +2,5 @@
 
 namespace MarkUnit
 {
-    public class TestNotPassedException : Exception
-    {
-    }
+    public class TestNotPassedException : Exception { }
 }
