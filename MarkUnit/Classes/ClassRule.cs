@@ -1,0 +1,78 @@
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text.RegularExpressions;
+
+namespace MarkUnit.Classes
+{  
+    internal class ClassLogicalLink : LogicalLink<IClassTestCondition>, IClassRule 
+    {
+        private readonly IInternalClassTestCondition _followUp;
+
+        public ClassLogicalLink(IInternalClassTestCondition followUp) : base(followUp)
+        {
+            _followUp = followUp;
+        }
+
+        public void Check()
+        {
+            _followUp.Check(); 
+        }
+    }
+     internal class ClassRule : RuleBase<IClass, IClassTestCondition,IClassRule>, IInternalClassTestCondition
+    {
+        public ClassRule(IFilter<IClass> items, bool negateAssertion) : base(items, negateAssertion)
+        {
+            LogicalLink = new ClassLogicalLink(this);
+        }
+         
+        public IClassRule HaveNameMatching(string pattern)
+        {
+            PredicateString.Add($"have a name matching '{pattern}'");
+            return AppendCondition(s => s.Name.Matches(pattern));
+        }
+
+        public IClassRule HaveName(Expression<Predicate<string>> nameFilterExpression)
+        {
+            PredicateString.Add($"have a name matching '{nameFilterExpression}'");
+            var nameFilter = nameFilterExpression.Compile();
+            return AppendCondition(c => nameFilter(c.Name));
+        }
+
+        public IClassRule ReferenceNamespacesMatching(string pattern)
+        {
+            PredicateString.Add($"reference a namespace matching '{pattern}'");
+            return AppendCondition(c => c.ReferencedNameSpaces.Any(n => n.Matches(pattern)));
+        }
+
+        public IClassRule ImplementInterfaceMatching(string pattern)
+        {
+            PredicateString.Add($"implement an interface matching '{pattern}'");
+            return AppendCondition(c => c.ClassType.GetInterfaces().Any(i => i.Name.Matches(pattern)));
+        }
+
+        public IClassRule ImplementInterface<T>()
+        {
+            PredicateString.Add($"implement interface {typeof(T).Name}");
+            return AppendCondition(c => typeof(T).IsAssignableFrom(c.ClassType));
+        }
+
+        public IInterfacePredicate ImplementInterface()
+        {
+            PredicateString.Add($"implement interface");
+            return new InterfacePredicate(Verifier);
+        }
+
+        public IClassRule UsesClassMatching(string regExOnClassName, string regExOnMatchingClass)
+        {
+            PredicateString.Add($"uses a class matching the regex expressions('{regExOnClassName}','{regExOnMatchingClass}'");
+            return AppendCondition(c => c.ReferencedClasses.Any(x => MatchesName(x.Name, regExOnClassName, regExOnMatchingClass)));
+        }
+
+        bool MatchesName(string name, string regExOnClassName, string regExOnMatchingClass)
+        {
+            string repl = Regex.Replace(name, regExOnClassName, regExOnMatchingClass);
+            return name.Matches(repl);
+        }
+    }
+}

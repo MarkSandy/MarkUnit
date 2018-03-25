@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{87E5030B-D364-499C-BE3C-3A389B7C4E28}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MarkUnit</RootNamespace>
+    <AssemblyName>MarkUnit</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisIgnoreGeneratedCode>false</CodeAnalysisIgnoreGeneratedCode>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\MSTest.TestFramework.1.2.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assemblies\ArchUnitAssembly.cs" />
+    <Compile Include="Assemblies\AssemblyCondition.cs" />
+    <Compile Include="Assemblies\AssemblyLogicalLink.cs" />
+    <Compile Include="Assemblies\AssemblyRule.cs" />
+    <Compile Include="Assemblies\AssemblyConditionFilter.cs" />
+    <Compile Include="Assemblies\AssemblyCollector.cs" />
+    <Compile Include="Assemblies\FilteredAssemblies.cs" />
+    <Compile Include="Assemblies\AssemblyReader.cs" />
+    <Compile Include="Assemblies\AssemblyPredicate.cs" />
+    <Compile Include="Assemblies\IAssemblyBinaryOperator.cs" />
+    <Compile Include="Assemblies\IAssemblyCondition.cs" />
+    <Compile Include="Assemblies\IAssemblyFilter.cs" />
+    <Compile Include="AssertionBase.cs" />
+    <Compile Include="BinaryAssertionOperator.cs" />
+    <Compile Include="Classes\ClassFilterCondition.cs" />
+    <Compile Include="Classes\ClassCondition.cs" />
+    <Compile Include="Classes\ClassInfoCollector.cs" />
+    <Compile Include="Classes\IClassBinaryOperator.cs" />
+    <Compile Include="Classes\IClassInfoCollector.cs" />
+    <Compile Include="Classes\IClassMatchingInterfaceCondition.cs" />
+    <Compile Include="Classes\ICondition.cs" />
+    <Compile Include="Classes\IInterfacePredicate.cs" />
+    <Compile Include="Classes\InterfaceCondition.cs" />
+    <Compile Include="Filter.cs" />
+    <Compile Include="IAssertionVerifier.cs" />
+    <Compile Include="ILogicalLink.cs" />
+    <Compile Include="ConditionBase.cs" />
+    <Compile Include="ConditionChainBase.cs" />
+    <Compile Include="FilterConditionBase.cs" />
+    <Compile Include="AssertionVerifier.cs" />
+    <Compile Include="Classes\ArchNetClass.cs" />
+    <Compile Include="Classes\ClassRule.cs" />
+    <Compile Include="Classes\ClassCollector.cs" />
+    <Compile Include="Classes\ClassPredicate.cs" />
+    <Compile Include="Classes\ClassFilter.cs" />
+    <Compile Include="Classes\ClassReader.cs" />
+    <Compile Include="Classes\IClass.cs" />
+    <Compile Include="Classes\IClassCollector.cs" />
+    <Compile Include="Classes\IFilteredClasses.cs" />
+    <Compile Include="Classes\IClassReader.cs" />
+    <Compile Include="ICheckableCondition.cs" />
+    <Compile Include="IFilterConditionChain.cs" />
+    <Compile Include="ICollector.cs" />
+    <Compile Include="IFilter.cs" />
+    <Compile Include="Assemblies\IAssemblyPredicate.cs" />
+    <Compile Include="Assemblies\IAssemblyAssertion.cs" />
+    <Compile Include="Classes\IClassAssertion.cs" />
+    <Compile Include="Classes\IClassCondition.cs" />
+    <Compile Include="Classes\IClassPredicate.cs" />
+    <Compile Include="Classes\IInterfaceRule.cs" />
+    <Compile Include="Classes\IInterfaceCondition.cs" />
+    <Compile Include="Classes\InterfacePredicate.cs" />
+    <Compile Include="IPredicate.cs" />
+    <Compile Include="Contracts\IService.cs" />
+    <Compile Include="Assemblies\DirectoryAssemblyCollector.cs" />
+    <Compile Include="Assemblies\IAssembly.cs" />
+    <Compile Include="Assemblies\IAssemblyCollector.cs" />
+    <Compile Include="Assemblies\IAssemblyReader.cs" />
+    <Compile Include="ITestResultLogger.cs" />
+    <Compile Include="NinjectSetup.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Solution.cs" />
+    <Compile Include="StringHelper.cs" />
+    <Compile Include="TestNotPassedException.cs" />
+    <Compile Include="TestResultLogger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
