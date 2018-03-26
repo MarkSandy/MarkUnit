@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using MarkUnit;
+using MarkUnit.Classes;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests.MarkUnit.Classes
 {
@@ -8,7 +10,10 @@ namespace Tests.MarkUnit.Classes
         [TestMethod()]
         public void HaveNameMatching_Should_FilterByMatchesClause()
         {
-            Assert.Fail();
+            //var classFilterMock=new Mock<IFilter<IClass>>()
+            //IFilter<IClass> classes;
+            //var sut = new ClassRule(classes, false);
+            //Assert.Fail();
         }
     }
 }

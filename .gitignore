@@ -1,3 +1,7 @@
 MarkUnit/obj/
 MarkUnit/bin/
 .vs/
+packages/
+Tests.MarkUnit.NET/bin/
+*.cache
+Tests.MarkUnit.NET/obj/
