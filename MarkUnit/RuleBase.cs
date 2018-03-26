@@ -2,12 +2,12 @@
 
 namespace MarkUnit
 {
-    internal class RuleBase<T, TAssertion, TRule>
-        : ILogicalLink<TAssertion>, ICheckable
+    internal class RuleBase<T, TAssertion, TLogicalLink>
+        : IRule<TAssertion>, ICheckable
         where T : INamedComponent
-        where TRule : ILogicalLink<TAssertion>
+        where TLogicalLink : IRule<TAssertion>
     {
-        protected AssertionVerifier<T> Verifier;
+        internal IAssertionVerifier<T> Verifier { get; }
 
         public RuleBase(IFilter<T> items, bool negateAssertion)
         {
@@ -15,9 +15,9 @@ namespace MarkUnit
             Verifier = new AssertionVerifier<T>(items, assertions, negateAssertion, new TestResultLogger<T>());
         }
 
-        protected TRule LogicalLink { get; set; }
+        protected TLogicalLink LogicalLink { get; set; }
 
-        protected TRule AppendCondition(Predicate<T> predicate)
+        protected TLogicalLink AppendCondition(Predicate<T> predicate)
         {
             Verifier.AppendCondition(predicate);
             return LogicalLink;

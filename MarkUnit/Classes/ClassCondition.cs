@@ -37,8 +37,13 @@ namespace MarkUnit.Classes
         public IReducedClassCollection IsDerivedFrom<TClass>()
             where TClass : class
         {
-            PredicateString.Add($"is derived from {typeof(TClass)}");
-            var predicate = CreateClassPredicate<TClass>();
+            return IsDerivedFrom(typeof(TClass));
+        }
+
+        public IReducedClassCollection IsDerivedFrom(Type type)
+        {
+            PredicateString.Add($"is derived from {type}");
+            var predicate = CreateClassPredicate(type);
             return AppendCondition(c => predicate(c.ClassType));
         }
 
@@ -87,11 +92,9 @@ namespace MarkUnit.Classes
             return result;
         }
 
-        private static Predicate<Type> CreateClassPredicate<TClass>()
-            where TClass : class
-        {
-            var classType = typeof(TClass);
-            Predicate<Type> predicate;
+        private static Predicate<Type> CreateClassPredicate(Type classType)
+         {
+             Predicate<Type> predicate;
             if (classType.IsGenericType)
             {
                 predicate = t => IsSubclassOfRawGeneric(classType, t);

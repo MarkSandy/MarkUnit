@@ -42,7 +42,7 @@ namespace MarkUnit.Assemblies
             if (assembly == null) return null;
             if (!_assemblies.TryGetValue(assembly.FullName, out var result))
             {
-                result = new ArchUnitAssembly(assembly);
+                result = new MarkUnitAssembly(assembly);
                 _assemblies.Add(assembly.FullName, result);
                 result.ReferencedAssemblies = assembly.GetReferencedAssemblies().Select(LoadAssembly).Where(a => a != null).ToArray();
             }

@@ -1,6 +1,6 @@
 ﻿namespace MarkUnit.Assemblies
 {
     public interface IAssemblyRule
-        : ILogicalLink<IAssemblyTestCondition>,
+        : IRule<IAssemblyTestCondition>,
           ICheckable { }
 }

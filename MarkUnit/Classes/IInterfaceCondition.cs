@@ -1,5 +1,5 @@
 ﻿namespace MarkUnit.Classes
 {
     
-    public interface IInterfaceRule :  ILogicalLink<IInterfaceTestCondition>, ICheckable{}
+    public interface IInterfaceRule :  IRule<IInterfaceTestCondition>, ICheckable{}
 }

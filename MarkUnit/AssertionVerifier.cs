@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace MarkUnit
 {
+    
     internal class AssertionVerifier<T> : IAssertionVerifier<T> 
     {
         private readonly IFilter<T> _assertions;
@@ -36,7 +37,7 @@ namespace MarkUnit
             return true;
         }
 
-        internal void Verify()
+        void IAssertionVerifier<T>.Verify()
         {
             _assertions.Materialize();
             if (TestsPassed())

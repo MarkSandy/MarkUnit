@@ -80,7 +80,7 @@ namespace Tests.MarkUnit
             sut.Verify();
         }
 
-        AssertionVerifier<int> CreateSystemUnderTest(bool negate)
+        private IAssertionVerifier<int> CreateSystemUnderTest(bool negate)
         {
             var filterMock = new Mock<IFilter<int>>(MockBehavior.Strict);
             filterMock.Setup(f => f.FilteredItems).Returns(new[] {1, 2, 3, 4, 5});

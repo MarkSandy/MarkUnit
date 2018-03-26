@@ -6,5 +6,7 @@ namespace MarkUnit
     {
         void Negate();
         void AppendCondition(Predicate<T> func);
+        void Verify();
+        IFilter<T> Items { get; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace MarkUnit
 {
-    public interface ILogicalLink<out T>
+    public interface IRule<out T>
     {
         T And();
     }

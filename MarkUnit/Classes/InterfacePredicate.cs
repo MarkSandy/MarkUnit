@@ -2,9 +2,9 @@
 {
     internal class InterfacePredicate : IInterfacePredicate
     {
-        private readonly AssertionVerifier<IClass> _verifier;
+        private readonly IAssertionVerifier<IClass> _verifier;
 
-        public InterfacePredicate(AssertionVerifier<IClass> verifier)
+        public InterfacePredicate(IAssertionVerifier<IClass> verifier)
         {
             _verifier = verifier;
         }

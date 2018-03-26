@@ -3,7 +3,7 @@
 namespace MarkUnit
 {
     internal class TestCollectionBase<T, TCondition, TAssertion, TPostCondition>
-        : ILogicalLink<TCondition>
+        : IRule<TCondition>
         where TPostCondition : IFilterConditionChain<TCondition, TAssertion>
     {
         protected IFilter<T> Filter;

@@ -6,11 +6,11 @@ using MarkUnit.Classes;
 
 namespace MarkUnit.Assemblies
 {
-    internal class ArchUnitAssembly : IAssembly
+    internal class MarkUnitAssembly : IAssembly
     {
         private readonly List<IClass> _classes = new List<IClass>();
 
-        public ArchUnitAssembly(Assembly assembly)
+        public MarkUnitAssembly(Assembly assembly)
         {
             var a = assembly.FullName.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
             Name = a.FirstOrDefault();

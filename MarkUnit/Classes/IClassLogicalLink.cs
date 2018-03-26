@@ -1,6 +1,6 @@
 ﻿namespace MarkUnit.Classes
 {
     public interface IClassRule
-        : ILogicalLink<IClassTestCondition>,
+        : IRule<IClassTestCondition>,
           ICheckable { }
 }

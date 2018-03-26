@@ -1,6 +1,6 @@
 ﻿namespace MarkUnit
 {
-    internal class LogicalLink<T> : ILogicalLink<T>
+    internal class LogicalLink<T> : IRule<T>
     {
         public LogicalLink(T followUp)
         {

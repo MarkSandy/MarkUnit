@@ -75,7 +75,7 @@
     <Compile Include="Classes\IClassBinaryOperator.cs" />
     <Compile Include="Classes\IClassInfoCollector.cs" />
     <Compile Include="Classes\IClassMatchingInterfaceCondition.cs" />
-    <Compile Include="Classes\IClassRule.cs" />
+    <Compile Include="Classes\IClassLogicalLink.cs" />
     <Compile Include="Classes\ICondition.cs" />
     <Compile Include="Classes\IInterface.cs" />
     <Compile Include="Classes\IInterfacePredicate.cs" />
