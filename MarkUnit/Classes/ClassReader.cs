@@ -17,7 +17,7 @@ namespace MarkUnit.Classes
         {
             if (!_classes.TryGetValue(assembly, out IClass[] classes))
             {
-                classes = assembly.Assembly.GetTypes().Where(c => c.IsClass).Select(t => new ArchNetClass(assembly, t)).ToArray();
+                classes = assembly.Assembly.GetTypes().Where(c => c.IsClass).Select(t => new MarkUnitClass(assembly, t)).ToArray();
                 _classes.Add(assembly, classes);
             }
 

@@ -97,12 +97,12 @@ namespace MarkUnit.Assemblies
             return _loadedAssemblies.TryGetValue(assemblyName, out assembly);
         }
 
-        private bool IsCompatibleInGAC(string assemblyName, out Assembly assembly)
+        private bool IsCompatibleInGac(string assemblyName, out Assembly assembly)
         {
             try
             {
                 assembly = Assembly.Load(new AssemblyName(assemblyName));
-                if (IsInGAC(assembly.FullName, out assembly)) return true;
+                if (IsInGac(assembly.FullName, out assembly)) return true;
                 throw new InvalidOperationException();
             }
             catch
@@ -120,7 +120,6 @@ namespace MarkUnit.Assemblies
             if (!string.IsNullOrEmpty(filename) && File.Exists(filename))
             {
                 assembly = Assembly.ReflectionOnlyLoadFrom(filename);
-                //     if (assembly.FullName != assemblyName) return false;
                 AddAssemblyToCache(assembly, assemblyName);
                 return true;
             }
@@ -128,7 +127,7 @@ namespace MarkUnit.Assemblies
             return false;
         }
 
-        private bool IsInGAC(string assemblyName, out Assembly assembly)
+        private bool IsInGac(string assemblyName, out Assembly assembly)
         {
             try
             {
@@ -145,11 +144,10 @@ namespace MarkUnit.Assemblies
 
         private Assembly LoadAssemblyByFullName(string assemblyName)
         {
-            Assembly assembly;
-            if (IsCached(assemblyName, out assembly)) return assembly;
+            if (IsCached(assemblyName, out var assembly)) return assembly;
             if (IsInAssemblyPath(assemblyName, out assembly)) return assembly;
-            if (IsInGAC(assemblyName, out assembly)) return assembly;
-            if (IsCompatibleInGAC(assemblyName, out assembly)) return assembly;
+            if (IsInGac(assemblyName, out assembly)) return assembly;
+            if (IsCompatibleInGac(assemblyName, out assembly)) return assembly;
             return null;
         }
 

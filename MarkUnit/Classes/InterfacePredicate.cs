@@ -12,7 +12,7 @@
         public IClassMatchingInterfaceCondition That()
         {
             PredicateString.Add("that");
-            return  new ClassMatchingInterfaceCondition(new ClassToInterfaceFilterMapper(_verifier.Items),false);
+            return new ClassMatchingInterfaceCondition(new ClassToInterfaceFilterMapper(_verifier.Items), false);
         }
     }
 }

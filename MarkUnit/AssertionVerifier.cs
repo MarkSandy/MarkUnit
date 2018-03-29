@@ -43,7 +43,10 @@ namespace MarkUnit
             if (TestsPassed())
                 _testResultLogger.LogTestsPassed();
             else
-                _testResultLogger.LogTestsFailed(_assertions.FilteredItems);
+            {
+                var failedItems = _negateAssertion ? _assertions.FilteredItems : Items.FilteredItems.Except(_assertions.FilteredItems);
+                _testResultLogger.LogTestsFailed(failedItems);
+            }
         }
 
         public void Negate()

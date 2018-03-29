@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using MarkUnit.Assemblies;
 using MarkUnit.Classes;
-using Ninject;
 
 namespace MarkUnit
 {
@@ -9,14 +8,11 @@ namespace MarkUnit
     {
         static Solution()
         {
-            Kernel = new StandardKernel(new NinjectSetup());
         }
-
-        private static KernelBase Kernel { get; }
 
         public static Solution Create(Assembly mainAssembly)
         {
-            var assemblyCollector = Kernel.Get<AssemblyCollector>();
+            var assemblyCollector = Instances.AssemblyCollector;
             assemblyCollector.MainAssembly = mainAssembly;
             return new Solution(assemblyCollector);
         }
@@ -28,7 +24,7 @@ namespace MarkUnit
 
         public Solution FromPath(string path)
         {
-            var directoryAssemblyCollector = Kernel.Get<DirectoryAssemblyCollector>();
+            var directoryAssemblyCollector = Instances.DirectoryAssemblyCollector;
             directoryAssemblyCollector.Path = path;
             _assemblyCollector = directoryAssemblyCollector;
             return this;
@@ -43,7 +39,7 @@ namespace MarkUnit
 
         public static Solution Create(string path, string pattern=null)
         {
-            var assemblyCollector = Kernel.Get<DirectoryAssemblyCollector>();
+            var assemblyCollector = Instances.DirectoryAssemblyCollector;
             assemblyCollector.Path = path;
             assemblyCollector.Pattern = pattern;
             return new Solution(assemblyCollector);
@@ -77,7 +73,7 @@ namespace MarkUnit
 
         private IClassPredicate CreateClass(bool negate)
         {
-            var classCollector = Kernel.Get<IClassCollector>();
+            var classCollector = Instances.ClassCollector;
             classCollector.Assemblies=new FilteredAssemblies(_assemblyCollector.SolutionAssemblies);
             return new ClassPredicate(classCollector, negate);
         }

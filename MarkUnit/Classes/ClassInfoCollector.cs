@@ -109,7 +109,7 @@ namespace MarkUnit.Classes
         {
             if (!_classes.TryGetValue(type, out IClass result))
             {
-                result = new ArchNetClass(_assemblyReader.LoadAssembly(type.Assembly), type);
+                result = new MarkUnitClass(_assemblyReader.LoadAssembly(type.Assembly), type);
             }
 
             return result;

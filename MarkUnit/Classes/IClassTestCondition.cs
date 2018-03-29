@@ -15,5 +15,8 @@ namespace MarkUnit.Classes
 
         IClassRule ReferenceNamespacesMatching(string pattern);
         IClassRule UsesClassMatching(string regExOnClassName, string regExreplace);
+        IClassRule BeInAssemblyMatching(string pattern);
+        IClassRule BeDeclaredInNamespaceMatching(string pattern);
+        IClassRule Be(Expression<Predicate<Type>> typeFilterExpression);
     }
 }

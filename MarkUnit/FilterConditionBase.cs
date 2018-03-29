@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace MarkUnit
 {
@@ -21,6 +22,8 @@ namespace MarkUnit
         {
             PredicateString.Add("should");
             _filter.Materialize();
+            if (!_filter.FilteredItems.Any())
+                PredicateString.Add("WARNING! No matches ******");
             return CeateAssertionFunc(_filter, _negate);
         }
     }
