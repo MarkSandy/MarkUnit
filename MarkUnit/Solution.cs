@@ -54,41 +54,51 @@ namespace MarkUnit
         
         }
 
-        private IAssemblyPredicate CreateAssembly(bool negate)
+        private IAssemblyPredicate CreateAssembly(bool negate, bool not)
         {
-            return new AssemblyPredicate(_assemblyCollector, negate);
+            return new AssemblyPredicate(_assemblyCollector, negate,not);
         }
 
         public IAssemblyPredicate NoAssembly()
         {
             PredicateString.Start("No assembly");
-            return CreateAssembly(true);
+            return CreateAssembly(true, false);
         }
 
         public IAssemblyPredicate EachAssembly()
         {
             PredicateString.Start("Each assembly");
-            return CreateAssembly(false);
+            return CreateAssembly(false, false);
         }
 
-        private IClassPredicate CreateClass(bool negate)
+        private IClassPredicate CreateClass(bool negate, bool not)
         {
             var classCollector = Instances.ClassCollector;
             classCollector.Assemblies=new FilteredAssemblies(_assemblyCollector.SolutionAssemblies);
-            return new ClassPredicate(classCollector, negate);
+            return new ClassPredicate(classCollector, negate,not);
         }
 
+        public IClassPredicate OnlyClasses()
+        {
+            PredicateString.Start("Only classes");
+            return CreateClass(true,true);
+        }
 
+        public IClassPredicate OnlyAssemblies()
+        {
+            PredicateString.Start("Only assemblies");
+            return CreateAssembly(true,true);;
+        }
         public IClassPredicate EachClass()
         {
             PredicateString.Start("Each class");
-            return CreateClass(false);
+            return CreateClass(false,false);
         }
 
         public IClassPredicate NoClass()
         {
             PredicateString.Start("No class");
-            return CreateClass(true);
+            return CreateClass(true,false);
         }
     }
 }

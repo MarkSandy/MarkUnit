@@ -3,5 +3,6 @@
     public interface IPredicate<out TCondition>
     {
         TCondition That();
+        TCondition Which();
     }
 }
