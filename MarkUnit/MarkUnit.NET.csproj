@@ -93,7 +93,7 @@
     <Compile Include="TestCollectionBase.cs" />
     <Compile Include="FilterConditionBase.cs" />
     <Compile Include="AssertionVerifier.cs" />
-    <Compile Include="Classes\ArchNetClass.cs" />
+    <Compile Include="Classes\MarkUnitClass.cs" />
     <Compile Include="Classes\ClassRule.cs" />
     <Compile Include="Classes\ClassCollector.cs" />
     <Compile Include="Classes\ClassPredicate.cs" />
@@ -124,7 +124,7 @@
     <Compile Include="Assemblies\IAssemblyReader.cs" />
     <Compile Include="ISolutionCondition.cs" />
     <Compile Include="ITestResultLogger.cs" />
-    <Compile Include="NinjectSetup.cs" />
+    <Compile Include="Instances.cs" />
     <Compile Include="PredicateString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solution.cs" />

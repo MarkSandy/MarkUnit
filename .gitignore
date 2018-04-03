@@ -5,3 +5,6 @@ packages/
 Tests.MarkUnit.NET/bin/
 *.cache
 Tests.MarkUnit.NET/obj/
+Sample-Tests/
+UnitTestProject1/
+SampleApp/
