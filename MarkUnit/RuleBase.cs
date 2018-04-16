@@ -12,7 +12,12 @@ namespace MarkUnit
         public RuleBase(IFilter<T> items, bool negateAssertion)
         {
             var assertions = new Filter<T>(items.FilteredItems);
-            Verifier = new AssertionVerifier<T>(items, assertions, negateAssertion, new TestResultLogger<T>());
+            Verifier = new AssertionVerifier<T>(items, assertions, negateAssertion, new TestResultLogger());
+        }
+
+        public RuleBase(IAssertionVerifier<T> verifier)
+        {
+            Verifier = verifier;
         }
 
         protected TLogicalLink LogicalLink { get; set; }

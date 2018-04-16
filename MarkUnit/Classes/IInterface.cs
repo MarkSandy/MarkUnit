@@ -19,6 +19,8 @@ namespace MarkUnit.Classes
 
         public IEnumerable<IClass> ReferencedClasses => _classWrapper.ReferencedClasses;
 
+        public string Namespace => ClassType.Namespace;
+
         public void AddReferencedClass(IClass referencedClass)
         {
             _classWrapper.AddReferencedClass(referencedClass);

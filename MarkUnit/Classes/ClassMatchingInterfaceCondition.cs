@@ -9,11 +9,15 @@ namespace MarkUnit.Classes
         : RuleBase<IInterface, IClassMatchingInterfaceCondition, IClassMatchingInterfaceRule>,
          IInternalClassMatchingInterfaceCondition
     {
+        public ClassMatchingInterfaceCondition(IAssertionVerifier<IInterface> verifier) : base(verifier)
+        {
+            LogicalLink = new ClassMatchingInterfaceLogicalLink(this);
+        }
+
         public ClassMatchingInterfaceCondition(IFilter<IInterface> items, bool negateAssertion)
             : base(items, negateAssertion)
         {
-            var x=new ClassMatchingInterfaceLogicalLink(this);
-            LogicalLink = x;
+            LogicalLink = new ClassMatchingInterfaceLogicalLink(this);
         }
 
         public IClassMatchingInterfaceRule HasMatchingName(Expression<Func<Type, string>> typeFilterExpression)

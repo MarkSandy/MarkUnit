@@ -7,6 +7,11 @@ namespace MarkUnit.Classes
 {
     internal class ClassRule : RuleBase<IClass, IClassTestCondition,IClassRule>, IInternalClassTestCondition
     {
+        public ClassRule(IAssertionVerifier<IClass> verifier) : base(verifier)
+        {
+            LogicalLink = new ClassLogicalLink(this);
+        }
+
         public ClassRule(IFilter<IClass> items, bool negateAssertion) : base(items, negateAssertion)
         {
             LogicalLink = new ClassLogicalLink(this);
@@ -64,7 +69,7 @@ namespace MarkUnit.Classes
         public IClassRule BeDeclaredInNamespaceMatching(string pattern)
         {
             PredicateString.Add($"be declared in namespace matching '{pattern}'");
-            return AppendCondition(c => c.ClassType.Namespace.Matches(pattern));
+            return AppendCondition(c => c.Namespace.Matches(pattern));
         }
 
         public IClassRule Be(Expression<Predicate<Type>> typeFilterExpression)

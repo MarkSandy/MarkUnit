@@ -70,7 +70,14 @@
   </Choose>
   <ItemGroup>
     <Compile Include="AssertionVerifierFixture.cs" />
+    <Compile Include="Assemblies\AssemblyLogicalLinkFixture.cs" />
+    <Compile Include="Classes\ClassLogicalLinkFixture.cs" />
+    <Compile Include="Classes\ClassConditionFixture.cs" />
+    <Compile Include="Classes\ClassMatchingInterfaceConditionFixture.cs" />
     <Compile Include="Classes\ClassRuleFixture.cs" />
+    <Compile Include="Classes\ClassToInterfaceFilterMapperFixture.cs" />
+    <Compile Include="Classes\InterfacePredicateFixture.cs" />
+    <Compile Include="Classes\MarkUnitInterfaceFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringHelperFixture.cs" />
   </ItemGroup>

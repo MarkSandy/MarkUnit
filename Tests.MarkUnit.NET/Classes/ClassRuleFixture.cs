@@ -1,204 +1,155 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MarkUnit.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using MarkUnit;
 using MarkUnit.Assemblies;
-using MarkUnit.Classes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Tests.MarkUnit.Classes
 {
     [TestClass()]
-    public class ClassConditionFixture
+    public class ClassRuleFixture
     {
-        [TestMethod]
-        public void HasName_Should_FilterByPredicate()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-            
-            sut.HasName(s => s == "A");
+        private Predicate<IClass> _savedPredicate = null;
 
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        }
-
-        [TestMethod]
-        public void HasNameMatching_Should_FilterByPattern()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-            
-            sut.HasNameMatching("A");
-            
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        }
-
-        [TestMethod]
-        public void ImplementsInterface_Should_FilterByImplementedInterface()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-            _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(SampleImplementation));
-            _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
-            _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
-
-            sut.ImplementsInterface<ISample>();
-            
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        }
-
-        [TestMethod]
-        public void ImplementsInterfaceMatching_Should_FilterByImplementedInterfaceName()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-            _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(SampleImplementation));
-            _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
-            _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
-
-            sut.ImplementsInterfaceMatching("*Sampl*");
-            
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        }
-
-        [TestMethod]
-        public void Is_Should_FilterByTypePredicate()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-            _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(SampleImplementation));
-            _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
-            _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
-
-            sut.Is(t => t == typeof(SampleImplementation));
-            
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        }
-
-        [TestMethod]
-        public void HasAttribute_Should_FilterByAttribute()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-            _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(ClassConditionFixture));
-            _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
-            _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
-
-            sut.HasAttribute<TestClassAttribute>();
-            
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        }
-        
-        [TestMethod]
-        public void IsDerivedFrom_Should_FilterByTypePredicate()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-            _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(SampleDerived));
-            _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
-            _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
-
-            sut.IsDerivedFrom<SampleImplementation>();
-        
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        }
-        [TestMethod]
-        public void IsDerivedFrom_Should_FilterByTypePredicate_WhenTypeIsGeneric()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-            _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(ClassCondition));
-            _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
-            _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
-
-            sut.IsDerivedFrom(typeof(TestCollectionBase<,,,>));
-        
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        }
-        [TestMethod]
-        public void IsDeclaredInAssembly_Should_FilterByAssemblyName()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-           
-            var sampleAssembly = new MarkUnitAssembly(GetType().Assembly);
-            var otherAssembly=new MarkUnitAssembly(typeof(List<>).Assembly);
-            _mockClass1.SetupGet(c => c.Assembly).Returns(sampleAssembly);
-            _mockClass2.SetupGet(c => c.Assembly).Returns(otherAssembly);
-            _mockClass3.SetupGet(c => c.Assembly).Returns(otherAssembly);
-
-            sut.IsDeclaredInAssembly(sampleAssembly.Name);
-            
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        } 
-        
-        [TestMethod]
-        public void IsDeclaredInAssembly_Should_FilterByPredicate()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-           
-            var sampleAssembly = new MarkUnitAssembly(GetType().Assembly);
-            var otherAssembly=new MarkUnitAssembly(typeof(List<>).Assembly);
-            _mockClass1.SetupGet(c => c.Assembly).Returns(sampleAssembly);
-            _mockClass2.SetupGet(c => c.Assembly).Returns(otherAssembly);
-            _mockClass3.SetupGet(c => c.Assembly).Returns(otherAssembly);
-
-            sut.IsDeclaredInAssembly(a=>a==sampleAssembly.Assembly);
-            
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        }
-
-        [TestMethod]
-        public void IsDeclaredInAssemblyMatching_Should_FilterByPAttern()
-        {
-            var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
-           
-            var sampleAssembly = new MarkUnitAssembly(GetType().Assembly);
-            var otherAssembly=new MarkUnitAssembly(typeof(List<>).Assembly);
-            _mockClass1.SetupGet(c => c.Assembly).Returns(sampleAssembly);
-            _mockClass2.SetupGet(c => c.Assembly).Returns(otherAssembly);
-            _mockClass3.SetupGet(c => c.Assembly).Returns(otherAssembly);
-
-            sut.IsDeclaredInAssemblyMatching("Tests.*");
-            
-            Assert.AreEqual(1,classFilter.FilteredItems.Count());
-            Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
-        }
-
-        private readonly Mock<IClass> _mockClass1=new Mock<IClass>();
-        private readonly Mock<IClass> _mockClass2=new Mock<IClass>();
-        private readonly Mock<IClass> _mockClass3=new Mock<IClass>();
-
-        private IEnumerable<IClass> CreateSampleClasses()
+        private readonly Mock<IClass> _mockClass1 = new Mock<IClass>();
+        private readonly Mock<IClass> _mockClass2 = new Mock<IClass>();
+        [TestInitialize]
+        public void Setup()
         {
             _mockClass1.SetupGet(c => c.Name).Returns("A");
-            _mockClass2.SetupGet(c => c.Name).Returns("B");
-            _mockClass3.SetupGet(c => c.Name).Returns("C");
+            var assemblyMock1=new Mock<IAssembly>();
+            assemblyMock1.SetupGet(a => a.Name).Returns("Assembly1");
+            IAssembly assembly1=assemblyMock1.Object;
+            _mockClass1.SetupGet(c => c.Assembly).Returns(assembly1);
+            _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(Class1));
+            _mockClass1.SetupGet(c => c.ReferencedNameSpaces).Returns(new[] {"ReferencedNameSpace1"});
+            _mockClass1.SetupGet(c => c.Namespace).Returns("NameSpace1");
+            _mockClass2.SetupGet(c => c.Name).Returns("AB");
+            var assemblyMock2=new Mock<IAssembly>();
+            assemblyMock2.SetupGet(a => a.Name).Returns("Assembly2");
+            IAssembly assembly2=assemblyMock2.Object;
+            _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(Class2));
+            _mockClass2.SetupGet(c => c.Assembly).Returns(assembly2);
+            _mockClass2.SetupGet(c => c.ReferencedNameSpaces).Returns(new[] {"ReferencedNameSpace2"});
+            _mockClass2.SetupGet(c => c.Namespace).Returns("NameSpace2");
 
-            yield return _mockClass1.Object;
-            yield return _mockClass2.Object;
-            yield return _mockClass3.Object;
+            _mockClass1.SetupGet(c => c.ReferencedClasses).Returns(new[] {_mockClass2.Object});
+
         }
- 
-        public interface ISample{}
 
-        private class SampleImplementation : ISample
+        [TestMethod]
+        public void ImplementInterfaceMatching_Should_AppendConditionToVerifier()
         {
+            var sut = CreateSystemUnderTest();
+            sut.ImplementInterfaceMatching(nameof(IInterfaceOfClass1));
+            AssertThatSavedPredicateMatchesClass1AndNotClass2();
+        }
+        [TestMethod()]
+        public void HaveNameMatching_Should_AppendConditionToVerifier()
+        {
+            var sut = CreateSystemUnderTest();
+            sut.HaveNameMatching("A");
+            AssertThatSavedPredicateMatchesClass1AndNotClass2();
         }
 
-        private class SampleDerived : SampleImplementation{}
+
+        private void AssertThatSavedPredicateMatchesClass1AndNotClass2()
+        {
+            Assert.IsTrue(_savedPredicate(_mockClass1.Object));
+            Assert.IsFalse(_savedPredicate(_mockClass2.Object));
+        }
+
+        private ClassRule CreateSystemUnderTest()
+        {
+            var verifierMock = new Mock<IAssertionVerifier<IClass>>(MockBehavior.Loose);
+            verifierMock.Setup(v => v.AppendCondition(It.IsAny<Predicate<IClass>>())).Callback<Predicate<IClass>>(p => _savedPredicate = p);
+            var filter=new FilteredClasses(new []{_mockClass1.Object, _mockClass2.Object});
+            verifierMock.SetupGet(v => v.Items).Returns(filter);
+            var sut = new ClassRule(verifierMock.Object);
+            return sut;
+        }
+
+
+        [TestMethod()]
+        public void HaveName_Should_AppendConditionToVerifier()
+        {
+            var sut = CreateSystemUnderTest();
+            sut.HaveName(n => n == "A");
+            AssertThatSavedPredicateMatchesClass1AndNotClass2();
+        }
+
+        [TestMethod()]
+        public void ReferenceNamespacesMatching_Should_AppendConditionToVerifier()
+        {
+            var sut = CreateSystemUnderTest();
+            sut.ReferenceNamespacesMatching("ReferencedNameSpace1");
+            AssertThatSavedPredicateMatchesClass1AndNotClass2();
+        }
+
+        [TestMethod()]
+        public void ImplementInterfaceGeneric_Should_AppendConditionToVerifier()
+        {
+            var sut = CreateSystemUnderTest();
+            sut.ImplementInterface<IInterfaceOfClass1>();
+            AssertThatSavedPredicateMatchesClass1AndNotClass2();
+        }
+
+        [TestMethod()]
+        public void ImplementInterface_Should_AppendConditionToVerifier()
+        {
+            var f=new FilteredClasses(new []{_mockClass1.Object});
+            var sut = new ClassRule(f,false);
+            sut.ImplementInterface().That().HasNameMatching(nameof(IInterfaceOfClass1)).Check();
+        }
+
+        [TestMethod()]
+        public void UsesClassMatching_Should_AppendConditionToVerifier()
+        {
+            var sut = CreateSystemUnderTest();
+            sut.UsesClassMatching("(\\w+)[0-1]", "$12");
+            AssertThatSavedPredicateMatchesClass1AndNotClass2();
+        }
+
+        [TestMethod()]
+        public void BeInAssemblyMatching_Should_AppendConditionToVerifier()
+        {
+            var sut = CreateSystemUnderTest();
+            sut.BeInAssemblyMatching("Assembly1");
+            AssertThatSavedPredicateMatchesClass1AndNotClass2();
+        }
+
+        [TestMethod()]
+        public void BeDeclaredInNamespaceMatching_Should_AppendConditionToVerifier()
+        {
+            var sut = CreateSystemUnderTest();
+            sut.BeDeclaredInNamespaceMatching("NameSpace1");
+            AssertThatSavedPredicateMatchesClass1AndNotClass2();
+        }
+
+        [TestMethod()]
+        public void Be_Should_AppendConditionToVerifier()
+        {
+            var sut = CreateSystemUnderTest();
+            sut.Be(c => c==typeof(Class1));
+            AssertThatSavedPredicateMatchesClass1AndNotClass2();
+        }
+
+    }
+
+    internal class Class1 : IInterfaceOfClass1
+    {
+        private Class2 _class2 = new Class2();
+    }
+    internal interface IInterfaceOfClass1
+    {
+    }
+    internal class Class2 : IInterfaceOfClass2{}
+    internal interface IInterfaceOfClass2
+    {
     }
 }

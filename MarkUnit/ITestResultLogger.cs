@@ -2,9 +2,9 @@
 
 namespace MarkUnit
 {
-    internal interface ITestResultLogger<T> 
+    internal interface ITestResultLogger
     {
         void LogTestsPassed();
-        void LogTestsFailed(IEnumerable<T> errorItems);
+        void LogTestsFailed(IEnumerable<INamedComponent> errorItems);
     }
 }

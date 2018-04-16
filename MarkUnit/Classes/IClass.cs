@@ -10,6 +10,7 @@ namespace MarkUnit.Classes
         IAssembly Assembly { get; }
         IEnumerable<string> ReferencedNameSpaces { get; }
         IEnumerable<IClass> ReferencedClasses { get; }
+        string Namespace { get; }
         void AddReferencedClass(IClass referencedClass);
     }
 }

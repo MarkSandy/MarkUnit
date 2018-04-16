@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace MarkUnit.Assemblies
 {
@@ -6,9 +7,8 @@ namespace MarkUnit.Assemblies
     {
         IAssemblyTestCondition Not();
         IAssemblyRule ReferenceAssembliesMatching(string pattern);
-        IAssemblyRule ReferenceAssembliesMatching(Predicate<IAssembly> func);
+        IAssemblyRule ReferenceAssembliesMatching(Expression<Predicate<IAssembly>> assemblyFilterExpression);
         IAssemblyRule ReferenceAssembly(string name);
+        IAssemblyRule HaveName(Expression<Predicate<string>> nameFilterExpression);
     }
-
-    // IAssemblyTestCondition And() =>  + void Check();
 }

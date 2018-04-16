@@ -18,8 +18,10 @@ namespace MarkUnit.Classes
         public string Name => ClassType.Name;
         public Type ClassType { get; }
         public IAssembly Assembly { get; }
-        public IEnumerable<string> ReferencedNameSpaces => _referencedClasses.Select(c => c.ClassType.Namespace).Distinct();
+        public IEnumerable<string> ReferencedNameSpaces => _referencedClasses.Select(c => c.Namespace).Distinct();
         public IEnumerable<IClass> ReferencedClasses => _referencedClasses;
+
+        public string Namespace => ClassType.Namespace;
 
         public void AddReferencedClass(IClass referencedClass)
         {

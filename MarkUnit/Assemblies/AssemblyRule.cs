@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 
 namespace MarkUnit.Assemblies
 {
@@ -12,11 +14,18 @@ namespace MarkUnit.Assemblies
         {
             LogicalLink = new AssemblyLogicalLink(this);
         }
-
+        
         public IAssemblyRule ReferenceAssembly(string name)
         {
             PredicateString.Add($"reference assembly '{name}'");
             return AppendCondition(r => r.Name == name);
+        }
+
+        public IAssemblyRule HaveName(Expression<Predicate<string>> nameFilterExpression)
+        {
+            PredicateString.Add($"have name matching {nameFilterExpression}");
+            var nameFilter = nameFilterExpression.Compile();
+            return AppendCondition(r => nameFilter(r.Name));
         }
 
         public IAssemblyRule ReferenceAssembliesMatching(string pattern)
@@ -25,10 +34,11 @@ namespace MarkUnit.Assemblies
             return AppendCondition(r => r.Name.Matches(pattern));
         }
 
-        public IAssemblyRule ReferenceAssembliesMatching(Predicate<IAssembly> func)
+        public IAssemblyRule ReferenceAssembliesMatching(Expression<Predicate<IAssembly>> assemblyFilterExpression)
         {
-            PredicateString.Add($"reference assemblies matching '{func}'");
-            return AppendCondition(a => a.ReferencedAssemblies.Any(r => func(r)));
+            PredicateString.Add($"reference assemblies matching '{assemblyFilterExpression}'");
+            var assemblyFilter = assemblyFilterExpression.Compile();
+            return AppendCondition(a => a.ReferencedAssemblies.Any(r => assemblyFilter(r)));
         }
     }
 }

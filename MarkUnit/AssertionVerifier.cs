@@ -3,14 +3,13 @@ using System.Linq;
 
 namespace MarkUnit
 {
-    
-    internal class AssertionVerifier<T> : IAssertionVerifier<T> 
+    internal class AssertionVerifier<T> : IAssertionVerifier<T> where T : INamedComponent
     {
         private readonly IFilter<T> _assertions;
         private readonly bool _negateAssertion;
-        private readonly ITestResultLogger<T> _testResultLogger;
+        private readonly ITestResultLogger _testResultLogger;
 
-        public AssertionVerifier(IFilter<T> items, IFilter<T> assertions, bool negateAssertion, ITestResultLogger<T> testResultLogger)
+        public AssertionVerifier(IFilter<T> items, IFilter<T> assertions, bool negateAssertion, ITestResultLogger testResultLogger)
         {
             Items = items;
             _assertions = assertions;
@@ -19,7 +18,7 @@ namespace MarkUnit
         }
 
         public IFilter<T> Items { get; }
-
+        
         private bool TestsPassed()
         {
             if (_negateAssertion)
@@ -45,7 +44,7 @@ namespace MarkUnit
             else
             {
                 var failedItems = _negateAssertion ? _assertions.FilteredItems : Items.FilteredItems.Except(_assertions.FilteredItems);
-                _testResultLogger.LogTestsFailed(failedItems);
+                _testResultLogger.LogTestsFailed(failedItems.Cast<INamedComponent>());
             }
         }
 

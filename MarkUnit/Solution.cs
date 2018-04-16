@@ -84,7 +84,7 @@ namespace MarkUnit
             return CreateClass(true,true);
         }
 
-        public IClassPredicate OnlyAssemblies()
+        public IAssemblyPredicate OnlyAssemblies()
         {
             PredicateString.Start("Only assemblies");
             return CreateAssembly(true,true);;

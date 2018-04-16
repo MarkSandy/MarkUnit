@@ -9,15 +9,15 @@ namespace Tests.MarkUnit
     [TestClass]
     public class AssertionVerifierFixture
     {
-        private Mock<ITestResultLogger<int>> _loggerMock;
-
+        private Mock<ITestResultLogger> _loggerMock;
+        
         private static IEnumerable<object[]> ParametersThatCauseAnException
         {
             get
             {
-                Predicate<int> satisfiesAll = x => x < 6;
-                Predicate<int> satisfiesSome = x => x < 3;
-                Predicate<int> satisfiesNone = x => x > 5;
+                Predicate<TestItem> satisfiesAll = x => x.Value < 6;
+                Predicate<TestItem> satisfiesSome = x => x.Value < 3;
+                Predicate<TestItem> satisfiesNone = x => x.Value > 5;
 
                 yield return new object[] {satisfiesNone, false};
                 yield return new object[] {satisfiesSome, true};
@@ -30,8 +30,8 @@ namespace Tests.MarkUnit
         {
             get
             {
-                Predicate<int> satisfiesAll = x => x < 6;
-                Predicate<int> satisfiesNone = x => x > 5;
+                Predicate<TestItem> satisfiesAll = x => x.Value < 6;
+                Predicate<TestItem> satisfiesNone = x => x.Value > 5;
 
                 yield return new object[] {satisfiesNone, true};
                 yield return new object[] {satisfiesAll, false};
@@ -40,20 +40,20 @@ namespace Tests.MarkUnit
 
         [TestMethod]
         [DynamicData(nameof(ParametersThatCauseAnException))]
-        public void AppendCondition_Should_ThrowException_WhenAddingNonMatchingConditions(Predicate<int> condition, bool negate)
+        public void AppendCondition_Should_ThrowException_WhenAddingNonMatchingConditions(Predicate<TestItem> condition, bool negate)
         {
             var sut = CreateSystemUnderTest(negate);
             sut.AppendCondition(condition);
             sut.Verify();
-            _loggerMock.Verify(l=>l.LogTestsFailed(It.IsAny<IEnumerable<int>>()));
+            _loggerMock.Verify(l=>l.LogTestsFailed(It.IsAny<IEnumerable<TestItem>>()));
         }
 
         [TestMethod]
         [DynamicData(nameof(ParametersThatDontCauseAnException))]
-        public void Negate_Should_AllowInverseCondition(Predicate<int> condition, bool negate)
+        public void Negate_Should_AllowInverseCondition(Predicate<TestItem> condition, bool negate)
         {
             var sut = CreateSystemUnderTest(negate);
-            Predicate<int> inverseCondition = x => !condition(x);
+            Predicate<TestItem> inverseCondition = x => !condition(x);
             sut.Negate();
             sut.AppendCondition(inverseCondition);
             sut.Verify();
@@ -61,33 +61,45 @@ namespace Tests.MarkUnit
 
         [TestMethod]
         [DynamicData(nameof(ParametersThatCauseAnException))]
-        public void Negate_Should_ThrowExceptionOnInverseCondition(Predicate<int> condition, bool negate)
+        public void Negate_Should_ThrowExceptionOnInverseCondition(Predicate<TestItem> condition, bool negate)
         {
             var sut = CreateSystemUnderTest(negate);
-            Predicate<int> inverseCondition = x => !condition(x);
+            Predicate<TestItem> inverseCondition = x => !condition(x);
             sut.Negate();
             sut.AppendCondition(inverseCondition);
-        sut.Verify();
-            _loggerMock.Verify(l=>l.LogTestsFailed(It.IsAny<IEnumerable<int>>()));
+            sut.Verify();
+            _loggerMock.Verify(l=>l.LogTestsFailed(It.IsAny<IEnumerable<TestItem>>()));
         }
 
         [TestMethod]
         [DynamicData(nameof(ParametersThatDontCauseAnException))]
-        public void Verify_Should_PassValidConditions(Predicate<int> condition, bool negate)
+        public void Verify_Should_PassValidConditions(Predicate<TestItem> condition, bool negate)
         {
             var sut = CreateSystemUnderTest(negate);
             sut.AppendCondition(condition);
             sut.Verify();
         }
 
-        private IAssertionVerifier<int> CreateSystemUnderTest(bool negate)
+        private IAssertionVerifier<TestItem> CreateSystemUnderTest(bool negate)
         {
-            var filterMock = new Mock<IFilter<int>>(MockBehavior.Strict);
-            filterMock.Setup(f => f.FilteredItems).Returns(new[] {1, 2, 3, 4, 5});
-            var items = filterMock.Object;
-            var assertions = new Filter<int>(items.FilteredItems);
-            _loggerMock = new Mock<ITestResultLogger<int>>(MockBehavior.Loose);
-            return new AssertionVerifier<int>(items, assertions, negate, _loggerMock.Object);
+            var filterMock = new Mock<IFilter<TestItem>>(MockBehavior.Strict);
+            var items = new[] {new TestItem(1), new TestItem(2), new TestItem(3), new TestItem(4), new TestItem(5)};
+            filterMock.Setup(f => f.FilteredItems).Returns(items);
+            var filter = filterMock.Object;
+            var assertions = new Filter<TestItem>(filter.FilteredItems);
+            _loggerMock = new Mock<ITestResultLogger>(MockBehavior.Loose);
+            return new AssertionVerifier<TestItem>(filter, assertions, negate, _loggerMock.Object);
         }
+    }
+
+    public class TestItem : INamedComponent
+    {
+        public TestItem(int value)
+        {
+            Value = value;
+        }
+
+        public string Name => Value.ToString();
+        public int Value { get; }
     }
 }

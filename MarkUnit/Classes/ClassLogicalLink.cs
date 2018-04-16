@@ -1,4 +1,5 @@
-﻿namespace MarkUnit.Classes {
+﻿namespace MarkUnit.Classes 
+{
     internal class ClassLogicalLink : LogicalLink<IClassTestCondition>, IClassRule 
     {
         private readonly IInternalClassTestCondition _followUp;
