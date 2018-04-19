@@ -145,7 +145,8 @@ namespace Tests.MarkUnit.Classes
     {
         private Class2 _class2 = new Class2();
     }
-    internal interface IInterfaceOfClass1
+    internal interface IBaseInterface {}
+    internal interface IInterfaceOfClass1 : IBaseInterface
     {
     }
     internal class Class2 : IInterfaceOfClass2{}

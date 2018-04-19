@@ -14,6 +14,11 @@ namespace MarkUnit.Classes
             LogicalLink = new InterfaceLogicalLink(this);
         }
 
+        public InterfaceRule(IAssertionVerifier<IInterface> verifier) : base(verifier)
+        {
+            LogicalLink = new InterfaceLogicalLink(this);
+        }
+
         public IInterfaceRule HasName(Expression<Predicate<string>> nameFilterExpression)
         {
             PredicateString.Add($"has name ({nameFilterExpression})");

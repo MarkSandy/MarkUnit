@@ -22,7 +22,7 @@ namespace MarkUnit.Classes
 
         public IClassMatchingInterfaceRule HasMatchingName(Expression<Func<Type, string>> typeFilterExpression)
         {
-            PredicateString.Add($"has matching name");
+            PredicateString.Add($"has matching name {typeFilterExpression}");
             var classNameMatcher = typeFilterExpression.Compile();
             return InnerAppendCondition((c,i) => i.Name.Matches(classNameMatcher(c.ClassType)));
         }

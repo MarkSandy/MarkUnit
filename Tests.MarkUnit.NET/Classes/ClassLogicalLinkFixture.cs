@@ -13,10 +13,23 @@ namespace Tests.MarkUnit.Classes
     public class ClassLogicalLinkFixture
     {
         [TestMethod]
-        public void ClassLogicalLink_Check_Should_CallCheckOfFollowUp()
+        public void Check_Should_CallCheckOfFollowUp()
         {
             var followUpMock = new Mock<IInternalClassTestCondition>(MockBehavior.Loose);
             var sut=new ClassLogicalLink(followUpMock.Object);
+            sut.Check();
+            followUpMock.Verify(f=>f.Check(),Times.Once);
+        }
+    }
+
+    [TestClass]
+    public class InterfaceLogicalLinkFixture
+    {
+        [TestMethod]
+        public void Check_Should_CallCheckOfFollowUp()
+        {
+            var followUpMock = new Mock<IInternalInterfaceTestCondition>(MockBehavior.Loose);
+            var sut=new InterfaceLogicalLink(followUpMock.Object);
             sut.Check();
             followUpMock.Verify(f=>f.Check(),Times.Once);
         }
