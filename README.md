@@ -27,3 +27,14 @@ This will load all assemblies that are referenced by the given assembly and thei
 The project is in it's alpha state and requires tests, review and code improvements.
     
 
+You can now create your first constraint and check it.
+
+   solution
+     .EachClass()
+	 .That()
+	 .ImplementsInterface<IBackEndService>()
+	 .Should()
+	 .BeInAssemblyMatching("XY.Services")
+	 .Check();
+	 
+The last method to call must be 'Check()'. It will evaluate the constraint and eventually throws an exception together with the constraint and all failing elements..
