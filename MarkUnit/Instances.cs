@@ -14,7 +14,7 @@ namespace MarkUnit
         private static IAssemblyReader _assemblyReader;
         private static IClassReader _classReader;
 
-        public static IAssemblyReader AssemblyReader => _assemblyReader ?? (_assemblyReader = new AssemblyReader());
+        public static IAssemblyReader AssemblyReader => _assemblyReader ?? (_assemblyReader = new AssemblyReader(new AssemblyUtils()));
 
         public static IClassReader ClassReader => _classReader ?? (_classReader = new ClassReader());
 

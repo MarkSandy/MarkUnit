@@ -59,11 +59,11 @@ namespace MarkUnit.Classes
 
         private void CollectInfoFromConstructors(IClass classInfo)
         {
-            CollectInfoFromConstructors(classInfo, BindingFlags.Static | BindingFlags.NonPublic);
-            CollectInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
+            CollectClassInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.Public);
+            CollectClassInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
-        private void CollectInfoFromConstructors(IClass classInfo, BindingFlags bindingFlags)
+        private void CollectClassInfoFromConstructors(IClass classInfo, BindingFlags bindingFlags)
         {
             foreach (ConstructorInfo constructorInfo in classInfo.ClassType.GetConstructors(bindingFlags))
             {
@@ -96,7 +96,6 @@ namespace MarkUnit.Classes
 
         private void CollectInfoFromMethods(IClass classInfo, BindingFlags bindingFlags)
         {
-            var x = classInfo.ClassType.GetMethods(BindingFlags.Instance | BindingFlags.Public).Select(n => n.Name).ToArray();
             foreach (MethodInfo methodInfo in classInfo.ClassType.GetMethods(bindingFlags))
             {
                 Collect(classInfo, methodInfo.ReturnType);

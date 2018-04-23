@@ -18,6 +18,7 @@ namespace Tests.MarkUnit.Classes
 
         private readonly Mock<IClass> _mockClass1 = new Mock<IClass>();
         private readonly Mock<IClass> _mockClass2 = new Mock<IClass>();
+
         [TestInitialize]
         public void Setup()
         {

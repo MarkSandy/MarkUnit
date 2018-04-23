@@ -1,16 +1,25 @@
-﻿namespace MarkUnit.Classes
+﻿using System.Runtime.CompilerServices;
+
+namespace MarkUnit.Classes
 {
     internal class ClassPredicate : IClassPredicate
     {
+        private readonly IClassCollectionFactory _classCollectionFactory;
         private readonly IClassCollector _classCollector;
         private readonly bool _negate;
         private readonly bool _not;
 
         public ClassPredicate(IClassCollector classCollector, bool negate, bool not)
+        : this(classCollector,negate,not,new ClassCollectionFactory())
+        {
+        }
+
+        public ClassPredicate(IClassCollector classCollector, bool negate, bool not,IClassCollectionFactory classCollectionFactory)
         {
             _classCollector = classCollector;
             _negate = negate;
             _not = not;
+            _classCollectionFactory = classCollectionFactory;
         }
 
         public IClassCollection That()
@@ -21,10 +30,7 @@
         private IClassCollection ThatOrWhich(string word)
         {
             PredicateString.Add(word);
-            var classes = _classCollector.Get();
-            var classFilter = new FilteredClasses(classes);
-            var result = new ClassCondition(classFilter, _negate);
-            return _not ? result.Not() : result;
+            return _classCollectionFactory.Create(_classCollector, _negate, _not);
         }
 
         public IClassCollection Which()

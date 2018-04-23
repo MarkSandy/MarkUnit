@@ -69,12 +69,16 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Assemblies\AssemblyReaderFixture.cs" />
+    <Compile Include="Assemblies\AssemblyRuleFixture.cs" />
     <Compile Include="AssertionVerifierFixture.cs" />
     <Compile Include="Assemblies\AssemblyLogicalLinkFixture.cs" />
+    <Compile Include="Classes\ClassCollectorFixture.cs" />
     <Compile Include="Classes\ClassInfoCollectorFixture.cs" />
     <Compile Include="Classes\ClassLogicalLinkFixture.cs" />
     <Compile Include="Classes\ClassConditionFixture.cs" />
     <Compile Include="Classes\ClassMatchingInterfaceConditionFixture.cs" />
+    <Compile Include="Classes\ClassPredicateFixture.cs" />
     <Compile Include="Classes\ClassRuleFixture.cs" />
     <Compile Include="Classes\ClassToInterfaceFilterMapperFixture.cs" />
     <Compile Include="Classes\InterfacePredicateFixture.cs" />

@@ -11,9 +11,133 @@ namespace MarkUnit.Assemblies
         private readonly Dictionary<string, IAssembly> _assemblies = new Dictionary<string, IAssembly>();
         private readonly Dictionary<string, Assembly> _loadedAssemblies = new Dictionary<string, Assembly>();
 
-        public AssemblyReader()
+        private readonly IAssemblyUtils _assemblyUtils;
+
+        public AssemblyReader(IAssemblyUtils assemblyUtils)
         {
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_AssemblyResolve;
+            _assemblyUtils = assemblyUtils;
+            _assemblyUtils.EnableReflectionOnlyLoad(CurrentDomain_AssemblyResolve);
+        }
+
+        ~AssemblyReader()
+        {
+            _assemblyUtils.DisableReflectionOnlyLoad();
+        }
+
+        protected IAssembly LoadAssembly(AssemblyName assemblyName)
+        {
+            try
+            {
+                return TryLoad(assemblyName);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        private void AddAssemblyToCache(Assembly assembly, string assemblyName)
+        {
+            if (assemblyName != null) TryAdd(assembly, assemblyName);
+            TryAdd(assembly, assembly.FullName);
+            TryAdd(assembly, assembly.Location);
+        }
+
+        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return LoadAssemblyByFullName(args.Name);
+        }
+
+        private string GetFullPathToAssembly(string assemblyName)
+        {
+            var f = assemblyName.Split(',');
+            var filename = _assemblyUtils.GetAssemblyNameInDirectory(AssemblyPath, f.First());
+            return filename;
+        }
+
+        private bool IsCached(string assemblyName, out Assembly assembly)
+        {
+            return _loadedAssemblies.TryGetValue(assemblyName, out assembly);
+        }
+
+        private bool IsCompatibleAssemblyInGac(string assemblyName, out Assembly assembly)
+        {
+            try
+            {
+                assembly = _assemblyUtils.LoadFromAssemblyName(assemblyName);
+                if (IsInGac(assembly.FullName, out assembly)) return true;
+                throw new InvalidOperationException();
+            }
+            catch
+            {
+                Console.WriteLine("Could not load assembly: " + assemblyName);
+                assembly = null;
+                return false;
+            }
+        }
+
+        private bool IsInAssemblyPath(string assemblyName, out Assembly assembly)
+        {
+            assembly = null;
+            var filename = GetFullPathToAssembly(assemblyName);
+            if (!string.IsNullOrEmpty(filename) && File.Exists(filename))
+            {
+                assembly =  _assemblyUtils.LoadFrom(filename);
+                AddAssemblyToCache(assembly, assemblyName);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool IsInGac(string assemblyName, out Assembly assembly)
+        {
+            try
+            {
+                assembly = _assemblyUtils.Load(assemblyName);
+                AddAssemblyToCache(assembly, assemblyName);
+                return true;
+            }
+            catch
+            {
+                assembly = null;
+                return false;
+            }
+        }
+
+        private Assembly LoadAssemblyByFullName(string assemblyName)
+        {
+            if (IsCached(assemblyName, out var assembly)) return assembly;
+            if (IsInAssemblyPath(assemblyName, out assembly)) return assembly;
+            if (IsInGac(assemblyName, out assembly)) return assembly;
+            if (IsCompatibleAssemblyInGac(assemblyName, out assembly)) return assembly;
+            return null;
+        }
+
+        private Assembly LoadAssemblyByLocation(string fullPathToAssembly)
+        {
+            if (_loadedAssemblies.TryGetValue(fullPathToAssembly, out var assembly) == false)
+            {
+                assembly = _assemblyUtils.LoadFrom(fullPathToAssembly);
+                AddAssemblyToCache(assembly, assembly.FullName);
+            }
+
+            return assembly;
+        }
+
+        private void TryAdd(Assembly assembly, string key)
+        {
+            if (_loadedAssemblies.ContainsKey(key)) return;
+            _loadedAssemblies.Add(key, assembly);
+        }
+
+        private IAssembly TryLoad(AssemblyName assemblyName)
+        {
+            if (_assemblies.TryGetValue(assemblyName.FullName, out var result))
+                return result;
+
+            var assembly = LoadAssemblyByFullName(assemblyName.FullName);
+            return LoadAssembly(assembly);
         }
 
         public string AssemblyPath { get; set; }
@@ -48,140 +172,6 @@ namespace MarkUnit.Assemblies
             }
 
             return result;
-        }
-
-        ~AssemblyReader()
-        {
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve -= CurrentDomain_AssemblyResolve;
-        }
-
-        protected IAssembly LoadAssembly(AssemblyName assemblyName)
-        {
-            try
-            {
-                return TryLoad(assemblyName);
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
-
-        private void AddAssemblyToCache(Assembly assembly, string assemblyName)
-        {
-            if (assemblyName != null) TryAdd(assembly, assemblyName);
-            TryAdd(assembly, assembly.FullName);
-            TryAdd(assembly, assembly.Location);
-        }
-
-        private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            return LoadAssemblyByFullName(args.Name);
-        }
-
-        private string GetAssemblyWithProperExtension(string path, string filename)
-        {
-            return Directory.EnumerateFiles(path).FirstOrDefault(n => MightBeAssembly(n, filename));
-        }
-
-        private string GetFullPathToAssembly(string assemblyName)
-        {
-            var p = AssemblyPath;
-            var f = assemblyName.Split(',');
-            var filename = GetAssemblyWithProperExtension(p, f[0]);
-            return filename;
-        }
-
-        private bool IsCached(string assemblyName, out Assembly assembly)
-        {
-            return _loadedAssemblies.TryGetValue(assemblyName, out assembly);
-        }
-
-        private bool IsCompatibleInGac(string assemblyName, out Assembly assembly)
-        {
-            try
-            {
-                assembly = Assembly.Load(new AssemblyName(assemblyName));
-                if (IsInGac(assembly.FullName, out assembly)) return true;
-                throw new InvalidOperationException();
-            }
-            catch
-            {
-                Console.WriteLine("Could not load assembly: " + assemblyName);
-                assembly = null;
-                return false;
-            }
-        }
-
-        private bool IsInAssemblyPath(string assemblyName, out Assembly assembly)
-        {
-            assembly = null;
-            var filename = GetFullPathToAssembly(assemblyName);
-            if (!string.IsNullOrEmpty(filename) && File.Exists(filename))
-            {
-                assembly = Assembly.ReflectionOnlyLoadFrom(filename);
-                AddAssemblyToCache(assembly, assemblyName);
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool IsInGac(string assemblyName, out Assembly assembly)
-        {
-            try
-            {
-                assembly = Assembly.ReflectionOnlyLoad(assemblyName);
-                AddAssemblyToCache(assembly, assemblyName);
-                return true;
-            }
-            catch
-            {
-                assembly = null;
-                return false;
-            }
-        }
-
-        private Assembly LoadAssemblyByFullName(string assemblyName)
-        {
-            if (IsCached(assemblyName, out var assembly)) return assembly;
-            if (IsInAssemblyPath(assemblyName, out assembly)) return assembly;
-            if (IsInGac(assemblyName, out assembly)) return assembly;
-            if (IsCompatibleInGac(assemblyName, out assembly)) return assembly;
-            return null;
-        }
-
-        private Assembly LoadAssemblyByLocation(string fullPathToAssembly)
-        {
-            if (_loadedAssemblies.TryGetValue(fullPathToAssembly, out var assembly) == false)
-            {
-                assembly = Assembly.ReflectionOnlyLoadFrom(fullPathToAssembly);
-                AddAssemblyToCache(assembly, assembly.FullName);
-            }
-
-            return assembly;
-        }
-
-        private bool MightBeAssembly(string arg, string filename)
-        {
-            var l = filename.ToLower();
-            var a = Path.GetFileName(arg.ToLower());
-            return a == l + ".dll" || a == l + ".exe";
-        }
-
-        private void TryAdd(Assembly assembly, string key)
-        {
-            if (_loadedAssemblies.ContainsKey(key)) return;
-            _loadedAssemblies.Add(key, assembly);
-        }
-
-        private IAssembly TryLoad(AssemblyName assemblyName)
-        {
-            if (_assemblies.TryGetValue(assemblyName.FullName, out var result))
-                return result;
-
-            var assembly = LoadAssemblyByFullName(assemblyName.FullName);
-            return LoadAssembly(assembly);
         }
     }
 }

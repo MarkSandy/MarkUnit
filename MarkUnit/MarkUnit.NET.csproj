@@ -56,10 +56,12 @@
     <Compile Include="Assemblies\AssemblyPredicate.cs" />
     <Compile Include="Assemblies\IAssemblyFilterCondition.cs" />
     <Compile Include="Assemblies\IAssemblyCollection.cs" />
+    <Compile Include="Assemblies\IAssemblyUtils.cs" />
     <Compile Include="Assemblies\IFilteredAssemblies.cs" />
     <Compile Include="Assemblies\IAssemblyRule.cs" />
     <Compile Include="Assemblies\IInternalAssemblyTestCondition.cs" />
     <Compile Include="Assemblies\IReducedAssemblyCollection.cs" />
+    <Compile Include="Classes\IClassCollectionFactory.cs" />
     <Compile Include="Classes\IClassRuleFactory.cs" />
     <Compile Include="RuleBase.cs" />
     <Compile Include="BinaryAssertionOperator.cs" />

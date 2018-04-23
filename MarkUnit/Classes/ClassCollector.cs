@@ -21,10 +21,10 @@ namespace MarkUnit.Classes {
             return _classReader.LoadFromAssemblies(Assemblies).Select(Examine);
         }
 
-        private IClass Examine(IClass arg)
+        private IClass Examine(IClass classInfo)
         {
-            _classInfoCollector.Examine(arg);
-            return arg;
+            _classInfoCollector.Examine(classInfo);
+            return classInfo;
         }
     }
 }

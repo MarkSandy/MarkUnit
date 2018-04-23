@@ -9,6 +9,11 @@ namespace MarkUnit.Assemblies
         : RuleBase<IAssembly, IAssemblyTestCondition, IAssemblyRule>,
           IInternalAssemblyTestCondition
     {
+        public AssemblyRule(IAssertionVerifier<IAssembly> verifier) : base(verifier)
+        {
+            LogicalLink = new AssemblyLogicalLink(this);
+        }
+
         public AssemblyRule(IFilter<IAssembly> items, bool negateAssertion)
             : base(items, negateAssertion)
         {
@@ -18,7 +23,7 @@ namespace MarkUnit.Assemblies
         public IAssemblyRule ReferenceAssembly(string name)
         {
             PredicateString.Add($"reference assembly '{name}'");
-            return AppendCondition(r => r.Name == name);
+            return AppendCondition(r => r.ReferencedAssemblies.Any(x=>x.Name == name));
         }
 
         public IAssemblyRule HaveName(Expression<Predicate<string>> nameFilterExpression)
@@ -31,7 +36,7 @@ namespace MarkUnit.Assemblies
         public IAssemblyRule ReferenceAssembliesMatching(string pattern)
         {
             PredicateString.Add($"reference assemblies matching '{pattern}'");
-            return AppendCondition(r => r.Name.Matches(pattern));
+            return AppendCondition(r => r.ReferencedAssemblies.Any(x=>x.Name.Matches(pattern)));
         }
 
         public IAssemblyRule ReferenceAssembliesMatching(Expression<Predicate<IAssembly>> assemblyFilterExpression)
