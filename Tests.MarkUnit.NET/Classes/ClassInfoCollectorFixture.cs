@@ -23,7 +23,7 @@ namespace Tests.MarkUnit.Classes
              _sut=new ClassInfoCollector(assemblyReaderMock.Object);
 
             var classToExamine = typeof(TestClass);
-            IAssembly assembly=new MarkUnitAssembly(classToExamine.Assembly);
+            IAssemblyInfo assembly=new MarkUnitAssembly(classToExamine.Assembly);
             _classInfo=new MarkUnitClass(assembly, classToExamine);
 
         }

@@ -43,7 +43,7 @@ namespace Tests.MarkUnit.Assemblies
         {
             var assemblyUtilMock = new Mock<IAssemblyUtils>();
             var sut=new AssemblyReader(assemblyUtilMock.Object);
-            sut.Loadall();
+//            sut.Loadall();
         }
 
         [TestMethod()]

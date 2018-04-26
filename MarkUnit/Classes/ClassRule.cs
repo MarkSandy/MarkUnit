@@ -5,14 +5,14 @@ using System.Text.RegularExpressions;
 
 namespace MarkUnit.Classes
 {
-    internal class ClassRule : RuleBase<IClass, IClassTestCondition,IClassRule>, IInternalClassTestCondition
+    internal class ClassRule : RuleBase<IClassInfo, IClassTestCondition,IClassRule>, IInternalClassTestCondition
     {
-        public ClassRule(IAssertionVerifier<IClass> verifier) : base(verifier)
+        public ClassRule(IAssertionVerifier<IClassInfo> verifier) : base(verifier)
         {
             LogicalLink = new ClassLogicalLink(this);
         }
 
-        public ClassRule(IFilter<IClass> items, bool negateAssertion) : base(items, negateAssertion)
+        public ClassRule(IFilter<IClassInfo> items, bool negateAssertion) : base(items, negateAssertion)
         {
             LogicalLink = new ClassLogicalLink(this);
         }

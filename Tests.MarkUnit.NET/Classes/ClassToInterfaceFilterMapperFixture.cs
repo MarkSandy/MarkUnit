@@ -17,16 +17,16 @@ namespace Tests.MarkUnit.Classes
         [TestMethod()]
         public void AppendCondition_Should_AppendPredicateToVerifier()
         {
-            var classFilterMock = new Mock<IFilter<IClass>>();
+            var classFilterMock = new Mock<IFilter<IClassInfo>>();
             var sut = new ClassToInterfaceFilterMapper(classFilterMock.Object);
             sut.AppendCondition(i=>true);
-            classFilterMock.Verify(f=>f.AppendCondition(It.IsAny<Predicate<IClass>>()));
+            classFilterMock.Verify(f=>f.AppendCondition(It.IsAny<Predicate<IClassInfo>>()));
         }
 
         [TestMethod()]
         public void Materialize_Should_MaterializeFilter()
         {
-            var classFilterMock = new Mock<IFilter<IClass>>();
+            var classFilterMock = new Mock<IFilter<IClassInfo>>();
             var sut = new ClassToInterfaceFilterMapper(classFilterMock.Object);
             sut.Materialize();
             classFilterMock.Verify(f=>f.Materialize(),Times.Once);
@@ -35,7 +35,7 @@ namespace Tests.MarkUnit.Classes
         [TestMethod()]
         public void Negate_Should_NegateFilter()
         {
-            var classFilterMock = new Mock<IFilter<IClass>>();
+            var classFilterMock = new Mock<IFilter<IClassInfo>>();
             var sut = new ClassToInterfaceFilterMapper(classFilterMock.Object);
             sut.Negate();
             classFilterMock.Verify(f=>f.Negate(),Times.Once);

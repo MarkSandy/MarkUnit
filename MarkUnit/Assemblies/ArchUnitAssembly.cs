@@ -6,9 +6,9 @@ using MarkUnit.Classes;
 
 namespace MarkUnit.Assemblies
 {
-    internal class MarkUnitAssembly : IAssembly
+    internal class MarkUnitAssembly : IAssemblyInfo
     {
-        private readonly List<IClass> _classes = new List<IClass>();
+        private readonly List<IClassInfo> _classes = new List<IClassInfo>();
 
         public MarkUnitAssembly(Assembly assembly)
         {
@@ -17,15 +17,15 @@ namespace MarkUnit.Assemblies
             Assembly = assembly;
         }
 
-        public IAssembly[] ReferencedAssemblies { get; set; }
+        public IAssemblyInfo[] ReferencedAssemblies { get; set; }
         public Assembly Assembly { get; }
 
-        public void AddClass(IClass classType)
+        public void AddClass(IClassInfo classType)
         {
             _classes.Add(classType);
         }
 
-        public IEnumerable<IClass> Classes => _classes;
+        public IEnumerable<IClassInfo> Classes => _classes;
 
         public string Name { get; }
     }

@@ -10,14 +10,14 @@ namespace MarkUnit.Classes
         : IClassInfoCollector
     {
         private readonly IAssemblyReader _assemblyReader;
-        private readonly Dictionary<Type, IClass> _classes = new Dictionary<Type, IClass>();
+        private readonly Dictionary<Type, IClassInfo> _classes = new Dictionary<Type, IClassInfo>();
 
         public ClassInfoCollector(IAssemblyReader assemblyReader)
         {
             _assemblyReader = assemblyReader;
         }
 
-        public void Examine(IClass classInfo)
+        public void Examine(IClassInfo classInfo)
         {
             if (_classes.ContainsKey(classInfo.ClassType)) return;
             CollectInfoFromConstructors(classInfo);
@@ -26,19 +26,19 @@ namespace MarkUnit.Classes
             Add(classInfo, classInfo.ClassType);
         }
 
-        private void Add(IClass classInfo, Type type)
+        private void Add(IClassInfo classInfo, Type type)
         {
             if (!_classes.ContainsKey(type)) _classes.Add(type, classInfo);
         }
 
-        private void Collect(IClass classType, Type type)
+        private void Collect(IClassInfo classType, Type type)
         {
             if (type.IsGenericParameter || type == typeof(void)) return;
             var referencedClass = Get(type);
             classType.AddReferencedClass(referencedClass);
         }
 
-        private void CollectFromMethodBody(IClass classInfo, MethodBody methodBody)
+        private void CollectFromMethodBody(IClassInfo classInfo, MethodBody methodBody)
         {
             if (methodBody != null)
             {
@@ -49,7 +49,7 @@ namespace MarkUnit.Classes
             }
         }
 
-        private void CollectFromParameters(IClass classInfo, ParameterInfo[] parameters)
+        private void CollectFromParameters(IClassInfo classInfo, ParameterInfo[] parameters)
         {
             foreach (ParameterInfo parameterInfo in parameters)
             {
@@ -57,13 +57,13 @@ namespace MarkUnit.Classes
             }
         }
 
-        private void CollectInfoFromConstructors(IClass classInfo)
+        private void CollectInfoFromConstructors(IClassInfo classInfo)
         {
             CollectClassInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.Public);
             CollectClassInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
-        private void CollectClassInfoFromConstructors(IClass classInfo, BindingFlags bindingFlags)
+        private void CollectClassInfoFromConstructors(IClassInfo classInfo, BindingFlags bindingFlags)
         {
             foreach (ConstructorInfo constructorInfo in classInfo.ClassType.GetConstructors(bindingFlags))
             {
@@ -72,13 +72,13 @@ namespace MarkUnit.Classes
             }
         }
 
-        private void CollectInfoFromFields(IClass classInfo)
+        private void CollectInfoFromFields(IClassInfo classInfo)
         {
             CollectInfoFromFields(classInfo, BindingFlags.Static | BindingFlags.NonPublic);
             CollectInfoFromFields(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
-        private void CollectInfoFromFields(IClass classInfo, BindingFlags bindingFlags)
+        private void CollectInfoFromFields(IClassInfo classInfo, BindingFlags bindingFlags)
         {
             foreach (FieldInfo fieldInfo in classInfo.ClassType.GetFields(bindingFlags))
             {
@@ -86,7 +86,7 @@ namespace MarkUnit.Classes
             }
         }
 
-        private void CollectInfoFromMethods(IClass classInfo)
+        private void CollectInfoFromMethods(IClassInfo classInfo)
         {
             CollectInfoFromMethods(classInfo, BindingFlags.Instance | BindingFlags.Public);
             CollectInfoFromMethods(classInfo, BindingFlags.Static | BindingFlags.Public);
@@ -94,7 +94,7 @@ namespace MarkUnit.Classes
             CollectInfoFromMethods(classInfo, BindingFlags.Static | BindingFlags.NonPublic);
         }
 
-        private void CollectInfoFromMethods(IClass classInfo, BindingFlags bindingFlags)
+        private void CollectInfoFromMethods(IClassInfo classInfo, BindingFlags bindingFlags)
         {
             foreach (MethodInfo methodInfo in classInfo.ClassType.GetMethods(bindingFlags))
             {
@@ -104,9 +104,9 @@ namespace MarkUnit.Classes
             }
         }
 
-        private IClass Get(Type type)
+        private IClassInfo Get(Type type)
         {
-            if (!_classes.TryGetValue(type, out IClass result))
+            if (!_classes.TryGetValue(type, out IClassInfo result))
             {
                 result = new MarkUnitClass(_assemblyReader.LoadAssembly(type.Assembly), type);
             }

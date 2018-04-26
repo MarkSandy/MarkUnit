@@ -14,26 +14,26 @@ namespace Tests.MarkUnit.Classes
     [TestClass()]
     public class ClassRuleFixture
     {
-        private Predicate<IClass> _savedPredicate = null;
+        private Predicate<IClassInfo> _savedPredicate = null;
 
-        private readonly Mock<IClass> _mockClass1 = new Mock<IClass>();
-        private readonly Mock<IClass> _mockClass2 = new Mock<IClass>();
+        private readonly Mock<IClassInfo> _mockClass1 = new Mock<IClassInfo>();
+        private readonly Mock<IClassInfo> _mockClass2 = new Mock<IClassInfo>();
 
         [TestInitialize]
         public void Setup()
         {
             _mockClass1.SetupGet(c => c.Name).Returns("A");
-            var assemblyMock1=new Mock<IAssembly>();
+            var assemblyMock1=new Mock<IAssemblyInfo>();
             assemblyMock1.SetupGet(a => a.Name).Returns("Assembly1");
-            IAssembly assembly1=assemblyMock1.Object;
+            IAssemblyInfo assembly1=assemblyMock1.Object;
             _mockClass1.SetupGet(c => c.Assembly).Returns(assembly1);
             _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(Class1));
             _mockClass1.SetupGet(c => c.ReferencedNameSpaces).Returns(new[] {"ReferencedNameSpace1"});
             _mockClass1.SetupGet(c => c.Namespace).Returns("NameSpace1");
             _mockClass2.SetupGet(c => c.Name).Returns("AB");
-            var assemblyMock2=new Mock<IAssembly>();
+            var assemblyMock2=new Mock<IAssemblyInfo>();
             assemblyMock2.SetupGet(a => a.Name).Returns("Assembly2");
-            IAssembly assembly2=assemblyMock2.Object;
+            IAssemblyInfo assembly2=assemblyMock2.Object;
             _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(Class2));
             _mockClass2.SetupGet(c => c.Assembly).Returns(assembly2);
             _mockClass2.SetupGet(c => c.ReferencedNameSpaces).Returns(new[] {"ReferencedNameSpace2"});
@@ -67,8 +67,8 @@ namespace Tests.MarkUnit.Classes
 
         private ClassRule CreateSystemUnderTest()
         {
-            var verifierMock = new Mock<IAssertionVerifier<IClass>>(MockBehavior.Loose);
-            verifierMock.Setup(v => v.AppendCondition(It.IsAny<Predicate<IClass>>())).Callback<Predicate<IClass>>(p => _savedPredicate = p);
+            var verifierMock = new Mock<IAssertionVerifier<IClassInfo>>(MockBehavior.Loose);
+            verifierMock.Setup(v => v.AppendCondition(It.IsAny<Predicate<IClassInfo>>())).Callback<Predicate<IClassInfo>>(p => _savedPredicate = p);
             var filter=new FilteredClasses(new []{_mockClass1.Object, _mockClass2.Object});
             verifierMock.SetupGet(v => v.Items).Returns(filter);
             var sut = new ClassRule(verifierMock.Object);

@@ -7,7 +7,7 @@ namespace MarkUnit.Assemblies
 {
     internal class DirectoryAssemblyCollector : IAssemblyCollector
     {
-        private readonly List<IAssembly> _assembliesInDirectory = new List<IAssembly>();
+        private readonly List<IAssemblyInfo> _assembliesInDirectory = new List<IAssemblyInfo>();
         private readonly IAssemblyReader _assemblyReader;
         private string _path;
 
@@ -28,7 +28,7 @@ namespace MarkUnit.Assemblies
 
         public string Pattern { get; set; }
 
-        public IEnumerable<IAssembly> Get()
+        public IEnumerable<IAssemblyInfo> Get()
         {
             if (_assemblyReader.AllAssemblies.Any() == false)
             {
@@ -38,7 +38,7 @@ namespace MarkUnit.Assemblies
             return _assemblyReader.AllAssemblies;
         }
 
-        public IEnumerable<IAssembly> SolutionAssemblies
+        public IEnumerable<IAssemblyInfo> SolutionAssemblies
         {
             get
             {

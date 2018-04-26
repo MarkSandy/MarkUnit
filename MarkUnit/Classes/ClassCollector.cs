@@ -16,12 +16,12 @@ namespace MarkUnit.Classes {
 
         public IFilteredAssemblies Assemblies { get; set; }
 
-        public IEnumerable<IClass> Get()
+        public IEnumerable<IClassInfo> Get()
         {
             return _classReader.LoadFromAssemblies(Assemblies).Select(Examine);
         }
 
-        private IClass Examine(IClass classInfo)
+        private IClassInfo Examine(IClassInfo classInfo)
         {
             _classInfoCollector.Examine(classInfo);
             return classInfo;

@@ -5,10 +5,10 @@ namespace MarkUnit.Assemblies
 {
     public interface IAssemblyReader
     {
-        IEnumerable<IAssembly> AllAssemblies { get; }
+        IEnumerable<IAssemblyInfo> AllAssemblies { get; }
         string AssemblyPath { get; set; }
         void Loadall(Assembly mainAssembly);
-        IAssembly LoadAssembly(string fullName);
-        IAssembly LoadAssembly(Assembly assembly);
+        IAssemblyInfo LoadAssembly(string fullName);
+        IAssemblyInfo LoadAssembly(Assembly assembly);
     }
 }

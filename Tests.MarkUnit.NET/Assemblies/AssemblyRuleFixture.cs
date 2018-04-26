@@ -14,16 +14,16 @@ namespace Tests.MarkUnit.Assemblies
     [TestClass()]
     public class AssemblyRuleFixture
     {
-        private Predicate<IAssembly> _savedPredicate;
+        private Predicate<IAssemblyInfo> _savedPredicate;
 
-        private readonly Mock<IAssembly> _mockAssembly1=new Mock<IAssembly>();
-        private readonly Mock<IAssembly> _mockAssembly2=new Mock<IAssembly>();
+        private readonly Mock<IAssemblyInfo> _mockAssembly1=new Mock<IAssemblyInfo>();
+        private readonly Mock<IAssemblyInfo> _mockAssembly2=new Mock<IAssemblyInfo>();
 
         private AssemblyRule CreateSystemUnderTest()
         {
             CreateSampleAssemblies();
-            var verifierMock = new Mock<IAssertionVerifier<IAssembly>>(MockBehavior.Loose);
-            verifierMock.Setup(v => v.AppendCondition(It.IsAny<Predicate<IAssembly>>())).Callback<Predicate<IAssembly>>(p => _savedPredicate = p);
+            var verifierMock = new Mock<IAssertionVerifier<IAssemblyInfo>>(MockBehavior.Loose);
+            verifierMock.Setup(v => v.AppendCondition(It.IsAny<Predicate<IAssemblyInfo>>())).Callback<Predicate<IAssemblyInfo>>(p => _savedPredicate = p);
             var filter=new FilteredAssemblies(new []{_mockAssembly1.Object, _mockAssembly2.Object});
             verifierMock.SetupGet(v => v.Items).Returns(filter);
             var sut = new AssemblyRule(verifierMock.Object);
@@ -36,12 +36,12 @@ namespace Tests.MarkUnit.Assemblies
             CreateSampleAssembly(_mockAssembly2,"B");
         }
 
-        private void CreateSampleAssembly(Mock<IAssembly> mock, string s)
+        private void CreateSampleAssembly(Mock<IAssemblyInfo> mock, string s)
         {
             mock.SetupGet(a => a.Name).Returns(s);
-            var m1=new Mock<IAssembly>();
+            var m1=new Mock<IAssemblyInfo>();
             m1.SetupGet(x => x.Name).Returns("ReferencedFrom" + s);
-            IAssembly[] referencedAssemblies={m1.Object};
+            IAssemblyInfo[] referencedAssemblies={m1.Object};
             mock.SetupGet(a => a.ReferencedAssemblies).Returns(referencedAssemblies);
         }
 

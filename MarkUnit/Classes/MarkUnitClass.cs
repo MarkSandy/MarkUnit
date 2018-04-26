@@ -5,11 +5,11 @@ using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
 {
-    internal class MarkUnitClass : IClass
+    internal class MarkUnitClass : IClassInfo
     {
-        private readonly HashSet<IClass> _referencedClasses = new HashSet<IClass>();
+        private readonly HashSet<IClassInfo> _referencedClasses = new HashSet<IClassInfo>();
 
-        public MarkUnitClass(IAssembly assembly, Type type)
+        public MarkUnitClass(IAssemblyInfo assembly, Type type)
         {
             ClassType = type;
             Assembly = assembly;
@@ -17,13 +17,13 @@ namespace MarkUnit.Classes
 
         public string Name => ClassType.Name;
         public Type ClassType { get; }
-        public IAssembly Assembly { get; }
+        public IAssemblyInfo Assembly { get; }
         public IEnumerable<string> ReferencedNameSpaces => _referencedClasses.Select(c => c.Namespace).Distinct();
-        public IEnumerable<IClass> ReferencedClasses => _referencedClasses;
+        public IEnumerable<IClassInfo> ReferencedClasses => _referencedClasses;
 
         public string Namespace => ClassType.Namespace;
 
-        public void AddReferencedClass(IClass referencedClass)
+        public void AddReferencedClass(IClassInfo referencedClass)
         {
             _referencedClasses.Add(referencedClass);
         }

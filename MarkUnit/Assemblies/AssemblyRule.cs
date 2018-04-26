@@ -6,15 +6,15 @@ using System.Text.RegularExpressions;
 namespace MarkUnit.Assemblies
 {
     internal class AssemblyRule
-        : RuleBase<IAssembly, IAssemblyTestCondition, IAssemblyRule>,
+        : RuleBase<IAssemblyInfo, IAssemblyTestCondition, IAssemblyRule>,
           IInternalAssemblyTestCondition
     {
-        public AssemblyRule(IAssertionVerifier<IAssembly> verifier) : base(verifier)
+        public AssemblyRule(IAssertionVerifier<IAssemblyInfo> verifier) : base(verifier)
         {
             LogicalLink = new AssemblyLogicalLink(this);
         }
 
-        public AssemblyRule(IFilter<IAssembly> items, bool negateAssertion)
+        public AssemblyRule(IFilter<IAssemblyInfo> items, bool negateAssertion)
             : base(items, negateAssertion)
         {
             LogicalLink = new AssemblyLogicalLink(this);
@@ -39,7 +39,7 @@ namespace MarkUnit.Assemblies
             return AppendCondition(r => r.ReferencedAssemblies.Any(x=>x.Name.Matches(pattern)));
         }
 
-        public IAssemblyRule ReferenceAssembliesMatching(Expression<Predicate<IAssembly>> assemblyFilterExpression)
+        public IAssemblyRule ReferenceAssembliesMatching(Expression<Predicate<IAssemblyInfo>> assemblyFilterExpression)
         {
             PredicateString.Add($"reference assemblies matching '{assemblyFilterExpression}'");
             var assemblyFilter = assemblyFilterExpression.Compile();

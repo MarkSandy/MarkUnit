@@ -6,16 +6,16 @@ namespace MarkUnit.Classes
 {
     internal class ClassReader : IClassReader
     {
-        private readonly Dictionary<IAssembly, IClass[]> _classes = new Dictionary<IAssembly, IClass[]>();
+        private readonly Dictionary<IAssemblyInfo, IClassInfo[]> _classes = new Dictionary<IAssemblyInfo, IClassInfo[]>();
 
-        public IEnumerable<IClass> LoadFromAssemblies(IFilteredAssemblies assemblies)
+        public IEnumerable<IClassInfo> LoadFromAssemblies(IFilteredAssemblies assemblies)
         {
             return assemblies.FilteredItems.SelectMany(LoadFromAssembly);
         }
 
-        private IEnumerable<IClass> LoadFromAssembly(IAssembly assembly)
+        private IEnumerable<IClassInfo> LoadFromAssembly(IAssemblyInfo assembly)
         {
-            if (!_classes.TryGetValue(assembly, out IClass[] classes))
+            if (!_classes.TryGetValue(assembly, out IClassInfo[] classes))
             {
                 classes = assembly.Assembly.GetTypes().Where(c => c.IsClass).Select(t => new MarkUnitClass(assembly, t)).ToArray();
                 _classes.Add(assembly, classes);

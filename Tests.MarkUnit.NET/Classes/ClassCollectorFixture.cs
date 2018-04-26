@@ -21,13 +21,13 @@ namespace Tests.MarkUnit.Classes
         {
             var assemblyFilter=new Mock<IFilteredAssemblies>().Object; 
             var classReaderMock = new Mock<IClassReader>();
-            var c1 = new Mock<IClass>().Object;
-            var c2 = new Mock<IClass>().Object;
-            var classes=new IClass[]{c1,c2};
+            var c1 = new Mock<IClassInfo>().Object;
+            var c2 = new Mock<IClassInfo>().Object;
+            var classes=new IClassInfo[]{c1,c2};
             classReaderMock.Setup(c => c.LoadFromAssemblies(assemblyFilter)).Returns(classes);
             var classInfoCollectorMock = new Mock<IClassInfoCollector>();
-            var examinedClasses = new List<IClass>();
-            classInfoCollectorMock.Setup(c => c.Examine(It.IsAny<IClass>())).Callback<IClass>(c => examinedClasses.Add(c));
+            var examinedClasses = new List<IClassInfo>();
+            classInfoCollectorMock.Setup(c => c.Examine(It.IsAny<IClassInfo>())).Callback<IClassInfo>(c => examinedClasses.Add(c));
             
 
             var sut=new ClassCollector(classReaderMock.Object,classInfoCollectorMock.Object);

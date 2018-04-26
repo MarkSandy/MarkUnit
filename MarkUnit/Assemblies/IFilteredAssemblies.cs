@@ -1,4 +1,4 @@
 ﻿namespace MarkUnit.Assemblies
 {
-    internal interface IFilteredAssemblies : IFilter<IAssembly> { }
+    internal interface IFilteredAssemblies : IFilter<IAssemblyInfo> { }
 }

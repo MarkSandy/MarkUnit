@@ -178,11 +178,11 @@ namespace Tests.MarkUnit.Classes
             Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
         }
 
-        private readonly Mock<IClass> _mockClass1=new Mock<IClass>();
-        private readonly Mock<IClass> _mockClass2=new Mock<IClass>();
-        private readonly Mock<IClass> _mockClass3=new Mock<IClass>();
+        private readonly Mock<IClassInfo> _mockClass1=new Mock<IClassInfo>();
+        private readonly Mock<IClassInfo> _mockClass2=new Mock<IClassInfo>();
+        private readonly Mock<IClassInfo> _mockClass3=new Mock<IClassInfo>();
 
-        private IEnumerable<IClass> CreateSampleClasses()
+        private IEnumerable<IClassInfo> CreateSampleClasses()
         {
             _mockClass1.SetupGet(c => c.Name).Returns("A");
             _mockClass2.SetupGet(c => c.Name).Returns("B");

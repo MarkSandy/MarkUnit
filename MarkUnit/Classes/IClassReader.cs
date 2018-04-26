@@ -5,6 +5,6 @@ namespace MarkUnit.Classes
 {
     internal interface IClassReader
     {
-        IEnumerable<IClass> LoadFromAssemblies(IFilteredAssemblies assemblies);
+        IEnumerable<IClassInfo> LoadFromAssemblies(IFilteredAssemblies assemblies);
     }
 }

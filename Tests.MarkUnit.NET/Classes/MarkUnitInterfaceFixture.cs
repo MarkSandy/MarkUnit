@@ -17,7 +17,7 @@ namespace Tests.MarkUnit.Classes
         [TestMethod()]
         public void AddReferencedClass_Should_AddItemToWrappedClass()
         {
-            var iclassMock=new Mock<IClass>();
+            var iclassMock=new Mock<IClassInfo>();
             var sut=new MarkUnitInterface(iclassMock.Object);
 
             var c1 = iclassMock.Object;

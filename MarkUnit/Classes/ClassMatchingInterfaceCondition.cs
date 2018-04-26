@@ -27,7 +27,7 @@ namespace MarkUnit.Classes
             return InnerAppendCondition((c,i) => i.Name.Matches(classNameMatcher(c.ClassType)));
         }
 
-        private IClassMatchingInterfaceRule InnerAppendCondition(Func<IClass,Type,bool> interfaceFilter)
+        private IClassMatchingInterfaceRule InnerAppendCondition(Func<IClassInfo,Type,bool> interfaceFilter)
         {
             return AppendCondition(c => c.ClassType.GetInterfaces().Any(i => interfaceFilter(c,i)));
         }

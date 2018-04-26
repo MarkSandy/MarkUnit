@@ -4,13 +4,13 @@ using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
 {
-    public interface IClass : INamedComponent
+    public interface IClassInfo : INamedComponent
     {
         Type ClassType { get; }
-        IAssembly Assembly { get; }
+        IAssemblyInfo Assembly { get; }
         IEnumerable<string> ReferencedNameSpaces { get; }
-        IEnumerable<IClass> ReferencedClasses { get; }
+        IEnumerable<IClassInfo> ReferencedClasses { get; }
         string Namespace { get; }
-        void AddReferencedClass(IClass referencedClass);
+        void AddReferencedClass(IClassInfo referencedClass);
     }
 }

@@ -16,8 +16,8 @@ namespace Tests.MarkUnit.Classes
         [TestMethod()]
         public void That_Should_ReturnTheSameAsWith()
         {
-            var verifierMock=new Mock<IAssertionVerifier<IClass>>();
-            var filterMock = new Mock<IFilter<IClass>>();
+            var verifierMock=new Mock<IAssertionVerifier<IClassInfo>>();
+            var filterMock = new Mock<IFilter<IClassInfo>>();
             verifierMock.SetupGet(v => v.Items).Returns(filterMock.Object);
             var sut=new InterfacePredicate(verifierMock.Object);
             

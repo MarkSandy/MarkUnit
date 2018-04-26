@@ -4,7 +4,7 @@
     {
         private readonly ClassMatchingInterfaceCondition _classMatchingInterfaceCondition;
 
-        public InterfacePredicate(IAssertionVerifier<IClass> verifier)
+        public InterfacePredicate(IAssertionVerifier<IClassInfo> verifier)
         {
             _classMatchingInterfaceCondition = new ClassMatchingInterfaceCondition(new ClassToInterfaceFilterMapper(verifier.Items), false);
         }

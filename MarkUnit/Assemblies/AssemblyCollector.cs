@@ -7,7 +7,7 @@ namespace MarkUnit.Assemblies
     public class AssemblyCollector : IAssemblyCollector
     {
         private readonly IAssemblyReader _assemblyReader;
-        private IEnumerable<IAssembly> _solutionAssemblies;
+        private IEnumerable<IAssemblyInfo> _solutionAssemblies;
 
         public AssemblyCollector(IAssemblyReader assemblyReader)
         {
@@ -16,15 +16,15 @@ namespace MarkUnit.Assemblies
 
         public Assembly MainAssembly { get; set; }
 
-        public IEnumerable<IAssembly> Get()
+        public IEnumerable<IAssemblyInfo> Get()
         {
             return ReadAllAssemblies(MainAssembly);
         }
 
-        public IEnumerable<IAssembly> SolutionAssemblies => null;
+        public IEnumerable<IAssemblyInfo> SolutionAssemblies => null;
         public string Pattern { get; set; }
 
-        private IEnumerable<IAssembly> ReadAllAssemblies(Assembly mainAssembly)
+        private IEnumerable<IAssemblyInfo> ReadAllAssemblies(Assembly mainAssembly)
         {
             _assemblyReader.Loadall(mainAssembly);
             _solutionAssemblies = _assemblyReader.AllAssemblies.Where(a => a.Name.Matches(Pattern)).ToArray();

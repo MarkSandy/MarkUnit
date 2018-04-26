@@ -2,9 +2,9 @@
 
 namespace MarkUnit.Assemblies
 {
-    public interface IAssemblyCollector : ICollector<IAssembly>
+    public interface IAssemblyCollector : ICollector<IAssemblyInfo>
     {
         string Pattern { get; set; }
-        IEnumerable<IAssembly> SolutionAssemblies { get; }
+        IEnumerable<IAssemblyInfo> SolutionAssemblies { get; }
     }
 }

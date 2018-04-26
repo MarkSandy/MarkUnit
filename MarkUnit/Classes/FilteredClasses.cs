@@ -3,10 +3,10 @@
 namespace MarkUnit.Classes
 {
     internal class FilteredClasses
-        : Filter<IClass>,
+        : Filter<IClassInfo>,
           IFilteredClasses
     {
-        public FilteredClasses(IEnumerable<IClass> classes)
+        public FilteredClasses(IEnumerable<IClassInfo> classes)
             : base(classes) { }
     }
 }

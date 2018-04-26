@@ -8,7 +8,7 @@ namespace MarkUnit.Assemblies
 {
     internal class AssemblyReader : IAssemblyReader
     {
-        private readonly Dictionary<string, IAssembly> _assemblies = new Dictionary<string, IAssembly>();
+        private readonly Dictionary<string, IAssemblyInfo> _assemblies = new Dictionary<string, IAssemblyInfo>();
         private readonly Dictionary<string, Assembly> _loadedAssemblies = new Dictionary<string, Assembly>();
 
         private readonly IAssemblyUtils _assemblyUtils;
@@ -24,7 +24,7 @@ namespace MarkUnit.Assemblies
             _assemblyUtils.DisableReflectionOnlyLoad();
         }
 
-        protected IAssembly LoadAssembly(AssemblyName assemblyName)
+        protected IAssemblyInfo LoadAssembly(AssemblyName assemblyName)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace MarkUnit.Assemblies
             _loadedAssemblies.Add(key, assembly);
         }
 
-        private IAssembly TryLoad(AssemblyName assemblyName)
+        private IAssemblyInfo TryLoad(AssemblyName assemblyName)
         {
             if (_assemblies.TryGetValue(assemblyName.FullName, out var result))
                 return result;
@@ -142,7 +142,7 @@ namespace MarkUnit.Assemblies
 
         public string AssemblyPath { get; set; }
 
-        public IAssembly LoadAssembly(string location)
+        public IAssemblyInfo LoadAssembly(string location)
         {
             try
             {
@@ -159,9 +159,9 @@ namespace MarkUnit.Assemblies
             LoadAssembly(assembly.Location);
         }
 
-        public IEnumerable<IAssembly> AllAssemblies => _assemblies.Values;
+        public IEnumerable<IAssemblyInfo> AllAssemblies => _assemblies.Values;
 
-        public IAssembly LoadAssembly(Assembly assembly)
+        public IAssemblyInfo LoadAssembly(Assembly assembly)
         {
             if (assembly == null) return null;
             if (!_assemblies.TryGetValue(assembly.FullName, out var result))

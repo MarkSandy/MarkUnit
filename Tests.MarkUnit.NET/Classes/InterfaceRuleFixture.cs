@@ -21,7 +21,7 @@ namespace Tests.MarkUnit.Classes
         private void SetupInterface<T>(Mock<IInterface> mock,   int index)
         {
             mock.SetupGet(c => c.Name).Returns("A");
-            var assemblyMock = new Mock<IAssembly>();
+            var assemblyMock = new Mock<IAssemblyInfo>();
             assemblyMock.SetupGet(a => a.Name).Returns("Assembly" + index);
             assemblyMock.SetupGet(a => a.Assembly).Returns(typeof(T).Assembly);
             var assembly1 = assemblyMock.Object;

@@ -102,7 +102,7 @@
     <Compile Include="Classes\ClassPredicate.cs" />
     <Compile Include="Classes\FilteredClasses.cs" />
     <Compile Include="Classes\ClassReader.cs" />
-    <Compile Include="Classes\IClass.cs" />
+    <Compile Include="Classes\IClassInfo.cs" />
     <Compile Include="Classes\IClassCollector.cs" />
     <Compile Include="Classes\IFilteredClasses.cs" />
     <Compile Include="Classes\IClassReader.cs" />
@@ -122,7 +122,7 @@
     <Compile Include="IPredicate.cs" />
     <Compile Include="Contracts\IService.cs" />
     <Compile Include="Assemblies\DirectoryAssemblyCollector.cs" />
-    <Compile Include="Assemblies\IAssembly.cs" />
+    <Compile Include="Assemblies\IAssemblyInfo.cs" />
     <Compile Include="Assemblies\IAssemblyCollector.cs" />
     <Compile Include="Assemblies\IAssemblyReader.cs" />
     <Compile Include="ISolutionCondition.cs" />

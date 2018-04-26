@@ -6,16 +6,16 @@ namespace MarkUnit.Classes
 {
     internal class ClassToInterfaceFilterMapper : IFilter<IInterface>
     {
-        private readonly IFilter<IClass> _filter;
+        private readonly IFilter<IClassInfo> _filter;
 
         public IEnumerable<IInterface> FilteredItems => _filter.FilteredItems.Select(ConvertToIInterface);
 
-        private IInterface ConvertToIInterface(IClass @class)
+        private IInterface ConvertToIInterface(IClassInfo @class)
         {
             return new MarkUnitInterface(@class);
         }
 
-        public ClassToInterfaceFilterMapper(IFilter<IClass> filter)
+        public ClassToInterfaceFilterMapper(IFilter<IClassInfo> filter)
         {
             _filter = filter;
         }

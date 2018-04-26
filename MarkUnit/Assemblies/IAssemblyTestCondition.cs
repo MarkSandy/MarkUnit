@@ -7,7 +7,7 @@ namespace MarkUnit.Assemblies
     {
         IAssemblyTestCondition Not();
         IAssemblyRule ReferenceAssembliesMatching(string pattern);
-        IAssemblyRule ReferenceAssembliesMatching(Expression<Predicate<IAssembly>> assemblyFilterExpression);
+        IAssemblyRule ReferenceAssembliesMatching(Expression<Predicate<IAssemblyInfo>> assemblyFilterExpression);
         IAssemblyRule ReferenceAssembly(string name);
         IAssemblyRule HaveName(Expression<Predicate<string>> nameFilterExpression);
     }

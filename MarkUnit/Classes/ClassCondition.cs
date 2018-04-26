@@ -6,7 +6,7 @@ using System.Reflection;
 namespace MarkUnit.Classes
 {
     internal class ClassCondition
-        : TestCollectionBase<IClass, IClassCollection, IClassTestCondition, IReducedClassCollection>,
+        : TestCollectionBase<IClassInfo, IClassCollection, IClassTestCondition, IReducedClassCollection>,
           IClassCollection
     {
         public ClassCondition(FilteredClasses classFilter, bool negate)

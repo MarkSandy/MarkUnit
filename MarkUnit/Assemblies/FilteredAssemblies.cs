@@ -3,10 +3,10 @@
 namespace MarkUnit.Assemblies
 {
     internal class FilteredAssemblies
-        : Filter<IAssembly>,
+        : Filter<IAssemblyInfo>,
           IFilteredAssemblies
     {
-        public FilteredAssemblies(IEnumerable<IAssembly> assemblies)
+        public FilteredAssemblies(IEnumerable<IAssemblyInfo> assemblies)
             : base(assemblies) { }
     }
 }

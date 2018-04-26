@@ -4,29 +4,29 @@ using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
 {
-    public interface IInterface : IClass { }
+    public interface IInterface : IClassInfo { }
 
     internal class MarkUnitInterface : IInterface
     {
-        private readonly IClass _classWrapper;
+        private readonly IClassInfo _classWrapper;
         public string Name => _classWrapper.Name;
 
         public Type ClassType => _classWrapper.ClassType;
 
-        public IAssembly Assembly => _classWrapper.Assembly;
+        public IAssemblyInfo Assembly => _classWrapper.Assembly;
 
         public IEnumerable<string> ReferencedNameSpaces => _classWrapper.ReferencedNameSpaces;
 
-        public IEnumerable<IClass> ReferencedClasses => _classWrapper.ReferencedClasses;
+        public IEnumerable<IClassInfo> ReferencedClasses => _classWrapper.ReferencedClasses;
 
         public string Namespace => ClassType.Namespace;
 
-        public void AddReferencedClass(IClass referencedClass)
+        public void AddReferencedClass(IClassInfo referencedClass)
         {
             _classWrapper.AddReferencedClass(referencedClass);
         }
 
-        public MarkUnitInterface(IClass classWrapper)
+        public MarkUnitInterface(IClassInfo classWrapper)
         {
             _classWrapper = classWrapper;
         }
