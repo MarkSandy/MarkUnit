@@ -6,7 +6,7 @@ namespace MarkUnit.Assemblies
 {
     public interface IAssemblyInfo : INamedComponent
     {
-        Assembly Assembly { get; }
+        IAssembly Assembly { get; }
         IEnumerable<IClassInfo> Classes { get; }
         IAssemblyInfo[] ReferencedAssemblies { get; set; }
         void AddClass(IClassInfo classType);

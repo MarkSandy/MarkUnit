@@ -7,31 +7,32 @@ namespace MarkUnit.Assemblies
 {
     internal interface IAssemblyUtils
     {
-        Assembly LoadFrom(string fullPathName);
-        Assembly LoadFromAssemblyName(string assemblyName);
-        Assembly Load(string assemblyName);
-        void EnableReflectionOnlyLoad(Func<object, ResolveEventArgs,Assembly> eventhandler);
+        IAssembly LoadFrom(string fullPathName);
+        IAssembly LoadFromAssemblyName(string assemblyName);
+        IAssembly Load(string assemblyName);
+        void EnableReflectionOnlyLoad(Func<object, ResolveEventArgs, Assembly> eventhandler);
         void DisableReflectionOnlyLoad();
         string GetAssemblyNameInDirectory(string path, string filename);
+        bool FileExists(string filename);
     }
 
     internal class AssemblyUtils : IAssemblyUtils
     {
         private Func<object, ResolveEventArgs,Assembly> _eventHandler;
 
-        public Assembly LoadFrom(string fullPathName)
+        public IAssembly LoadFrom(string fullPathName)
         {
-            return Assembly.ReflectionOnlyLoadFrom(fullPathName);
+            return new AssemblyWrapper(Assembly.ReflectionOnlyLoadFrom(fullPathName));
         }
 
-        public Assembly LoadFromAssemblyName(string assemblyName)
+        public IAssembly LoadFromAssemblyName(string assemblyName)
         {
-            return Assembly.Load(new AssemblyName(assemblyName));
+            return new AssemblyWrapper(Assembly.Load(new AssemblyName(assemblyName)));
         }
 
-        public Assembly Load(string assemblyName)
+        public IAssembly Load(string assemblyName)
         {
-            return Assembly.ReflectionOnlyLoad(assemblyName);
+            return new AssemblyWrapper(Assembly.ReflectionOnlyLoad(assemblyName));
         }
 
         public void EnableReflectionOnlyLoad(Func<object, ResolveEventArgs,Assembly> eventhandler)
@@ -53,6 +54,11 @@ namespace MarkUnit.Assemblies
         public string GetAssemblyNameInDirectory(string path, string filename)
         {
             return Directory.EnumerateFiles(path).FirstOrDefault(n => MightBeAssembly(n, filename));
+        }
+
+        public bool FileExists(string filename)
+        {
+            return !string.IsNullOrEmpty(filename) && File.Exists(filename);
         }
 
         private bool MightBeAssembly(string filename, string nameOfAssembly)

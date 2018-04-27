@@ -13,7 +13,7 @@ namespace MarkUnit
         public static Solution Create(Assembly mainAssembly)
         {
             var assemblyCollector = Instances.AssemblyCollector;
-            assemblyCollector.MainAssembly = mainAssembly;
+            assemblyCollector.MainAssembly = new AssemblyWrapper(mainAssembly);
             return new Solution(assemblyCollector);
         }
 

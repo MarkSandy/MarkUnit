@@ -61,14 +61,14 @@
 
     //    public ICheckableCondition<IInterfaceCondition> IsDeclaredInAssemblyMatching(string pattern)
     //    {
-    //        return AppendCondition(c=>c.Assembly.Name.Matches(pattern));
+    //        return AppendCondition(c=>c.IAssembly.Name.Matches(pattern));
     //    }
 
-    //    public ICheckableCondition<IInterfaceCondition> IsDeclaredInAssembly(Expression<Predicate<Assembly>> assemblyFilterExpression)
+    //    public ICheckableCondition<IInterfaceCondition> IsDeclaredInAssembly(Expression<Predicate<IAssembly>> assemblyFilterExpression)
     //    {
     //        PredicateString.Add($"is declared in assembly matching '{assemblyFilterExpression}'");
     //        var assemblyFilter = assemblyFilterExpression.Compile();
-    //        return AppendCondition(c=>assemblyFilter(c.ClassType.Assembly));
+    //        return AppendCondition(c=>assemblyFilter(c.ClassType.IAssembly));
     //    }
 
     //    public ICheckableCondition<IInterfaceCondition> Is(Expression<Predicate<Type>> typeFilterExpression)

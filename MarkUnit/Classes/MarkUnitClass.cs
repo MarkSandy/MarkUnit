@@ -12,12 +12,12 @@ namespace MarkUnit.Classes
         public MarkUnitClass(IAssemblyInfo assembly, Type type)
         {
             ClassType = type;
-            Assembly = assembly;
+            AssemblyInfo = assembly;
         }
 
         public string Name => ClassType.Name;
         public Type ClassType { get; }
-        public IAssemblyInfo Assembly { get; }
+        public IAssemblyInfo AssemblyInfo { get; }
         public IEnumerable<string> ReferencedNameSpaces => _referencedClasses.Select(c => c.Namespace).Distinct();
         public IEnumerable<IClassInfo> ReferencedClasses => _referencedClasses;
 

@@ -14,7 +14,7 @@ namespace MarkUnit.Assemblies
             _assemblyReader = assemblyReader;
         }
 
-        public Assembly MainAssembly { get; set; }
+        public IAssembly MainAssembly { get; set; }
 
         public IEnumerable<IAssemblyInfo> Get()
         {
@@ -24,7 +24,7 @@ namespace MarkUnit.Assemblies
         public IEnumerable<IAssemblyInfo> SolutionAssemblies => null;
         public string Pattern { get; set; }
 
-        private IEnumerable<IAssemblyInfo> ReadAllAssemblies(Assembly mainAssembly)
+        private IEnumerable<IAssemblyInfo> ReadAllAssemblies(IAssembly mainAssembly)
         {
             _assemblyReader.Loadall(mainAssembly);
             _solutionAssemblies = _assemblyReader.AllAssemblies.Where(a => a.Name.Matches(Pattern)).ToArray();

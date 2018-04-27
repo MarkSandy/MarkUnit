@@ -27,7 +27,8 @@ namespace Tests.MarkUnit.Assemblies
             // Arrange
             var assemblyUtilMock = new Mock<IAssemblyUtils>();
             string fullPathNameToAssembly="Location";
-            Assembly thisAssembly=GetType().Assembly;
+
+            var thisAssembly = CreateAssemblyMock("L", "A").Object;
             assemblyUtilMock.Setup(x => x.LoadFrom(fullPathNameToAssembly)).Returns(thisAssembly);
             var sut=new AssemblyReader(assemblyUtilMock.Object);
             
@@ -38,20 +39,62 @@ namespace Tests.MarkUnit.Assemblies
             Assert.AreSame(thisAssembly,actualAssembly.Assembly);
         }
 
-        [TestMethod()]
-        public void Loadall_Should_()
+        Mock<IAssembly> CreateAssemblyMock(string location, string fullName)
         {
-            var assemblyUtilMock = new Mock<IAssemblyUtils>();
-            var sut=new AssemblyReader(assemblyUtilMock.Object);
-//            sut.Loadall();
+            var assemblyMock=new Mock<IAssembly>();
+            assemblyMock.SetupGet(a => a.FullName).Returns(fullName);
+            assemblyMock.SetupGet(a => a.Location).Returns(location);
+            return assemblyMock;
         }
 
         [TestMethod()]
-        public void LoadAssembly_Should_CreateWrapperAroundAssembly_WhenCalledWithAssembly()
+        public void Loadall_Should_LoadAssembliesOnlyOnce()
+        {
+            string nameOfa1 = "A1";
+            string nameOfa2 = "A2";
+            var twoAssemblyNames = new[]
+            {
+                new AssemblyName(nameOfa1),
+                new AssemblyName(nameOfa2),
+            };
+            
+            var assemblyUtilMock = new Mock<IAssemblyUtils>();
+            IAssembly a1=CreateAssemblyMock("L1",nameOfa1).Object;
+
+
+            var a2Mock = CreateAssemblyMock("L2", nameOfa2);
+            a2Mock.Setup(a => a.GetReferencedAssemblies()).Returns(twoAssemblyNames);
+            IAssembly a2=a2Mock.Object;
+
+            assemblyUtilMock.Setup(u => u.Load(a1.FullName)).Returns(a1);
+            assemblyUtilMock.Setup(u => u.Load(a2.FullName)).Returns(a2);
+            assemblyUtilMock.Setup(u => u.FileExists("filenameOfA1")).Returns(true);
+            assemblyUtilMock.Setup(u => u.GetAssemblyNameInDirectory("AssemblyPath", a1.FullName)).Returns("filenameOfA1");
+            assemblyUtilMock.Setup(u => u.LoadFrom("filenameOfA1")).Returns(a1);
+            var sut=new AssemblyReader(assemblyUtilMock.Object);
+            sut.AssemblyPath = "AssemblyPath";
+            var assemblyMock = CreateAssemblyMock("Location", "Assembly");
+            var assembly = assemblyMock.Object;
+            
+            assemblyUtilMock.Setup(a => a.LoadFrom(assembly.Location)).Returns(assemblyMock.Object);
+            assemblyMock.Setup(a => a.GetReferencedAssemblies()).Returns(twoAssemblyNames);
+
+            sut.Loadall(assembly);
+            sut.Loadall(assembly);
+
+            assemblyUtilMock.Verify(u=>u.LoadFrom(assembly.Location),Times.Once);
+            assemblyUtilMock.Verify(u=>u.Load(a1.FullName),Times.Never);
+            assemblyUtilMock.Verify(u=>u.LoadFrom("filenameOfA1"),Times.Once);
+            assemblyUtilMock.Verify(u=>u.Load(a2.FullName),Times.Once);
+        }
+
+        [TestMethod()]
+        public void LoadAssembly_Should_CreateAssemblyInfo_WhenCalledWithAssembly()
         {
             // Arrange
             var assemblyUtilMock = new Mock<IAssemblyUtils>();
-            var thisAssembly=GetType().Assembly;
+
+            var thisAssembly = CreateAssemblyMock("L", "A").Object;
             var sut=new AssemblyReader(assemblyUtilMock.Object);
             
             // Act

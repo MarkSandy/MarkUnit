@@ -50,20 +50,20 @@ namespace MarkUnit.Classes
         public IReducedClassCollection IsDeclaredInAssemblyMatching(string pattern)
         {
             PredicateString.Add($"is declared in an assembly matching '{pattern}");
-            return AppendCondition(c => c.Assembly.Name.Matches(pattern));
+            return AppendCondition(c => c.AssemblyInfo.Name.Matches(pattern));
         }
 
         public IReducedClassCollection IsDeclaredInAssembly(string name)
         {
             PredicateString.Add($"is declared in an assembly '{name}'");
-            return AppendCondition(c => c.Assembly.Name == name);
+            return AppendCondition(c => c.AssemblyInfo.Name == name);
         }
 
         public IReducedClassCollection IsDeclaredInAssembly(Expression<Predicate<Assembly>> assemblyFilterExpression)
         {
             var predicate = assemblyFilterExpression.Compile();
             PredicateString.Add($"is declared in an assembly matching '{assemblyFilterExpression}'");
-            return AppendCondition(c => predicate(c.Assembly.Assembly));
+            return AppendCondition(c => predicate(c.AssemblyInfo.Assembly.Assembly));
         }
 
         public IReducedClassCollection Is(Expression<Predicate<Type>> typeExpression)

@@ -41,14 +41,14 @@ namespace MarkUnit.Classes
         public IInterfaceRule IsDeclaredInAssemblyMatching(string pattern)
         {
             PredicateString.Add($"is declared in an assembly matching '{pattern}'");
-            return AppendCondition(c => c.Assembly.Name.Matches(pattern));
+            return AppendCondition(c => c.AssemblyInfo.Name.Matches(pattern));
         }
 
         public IInterfaceRule IsDeclaredInAssembly(Expression<Predicate<Assembly>> assemblyMatchingExpression)
         {
             PredicateString.Add($"is declared in assembly '{assemblyMatchingExpression}'");
             var assemblyMatcher = assemblyMatchingExpression.Compile();
-            return AppendCondition(c => assemblyMatcher(c.Assembly.Assembly));
+            return AppendCondition(c => assemblyMatcher(c.AssemblyInfo.Assembly.Assembly));
         }
 
         public IInterfaceRule Is(Expression<Predicate<Type>> typeExpression)

@@ -54,6 +54,7 @@
     <Compile Include="Assemblies\FilteredAssemblies.cs" />
     <Compile Include="Assemblies\AssemblyReader.cs" />
     <Compile Include="Assemblies\AssemblyPredicate.cs" />
+    <Compile Include="Assemblies\IAssembly.cs" />
     <Compile Include="Assemblies\IAssemblyFilterCondition.cs" />
     <Compile Include="Assemblies\IAssemblyCollection.cs" />
     <Compile Include="Assemblies\IAssemblyUtils.cs" />

@@ -10,7 +10,10 @@ namespace MarkUnit.Assemblies
     {
         private readonly List<IClassInfo> _classes = new List<IClassInfo>();
 
-        public MarkUnitAssembly(Assembly assembly)
+        public MarkUnitAssembly(Assembly assembly) : this(new AssemblyWrapper(assembly))
+        {
+        }
+        public MarkUnitAssembly(IAssembly assembly)
         {
             var a = assembly.FullName.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
             Name = a.FirstOrDefault();
@@ -18,7 +21,7 @@ namespace MarkUnit.Assemblies
         }
 
         public IAssemblyInfo[] ReferencedAssemblies { get; set; }
-        public Assembly Assembly { get; }
+        public IAssembly Assembly { get; }
 
         public void AddClass(IClassInfo classType)
         {

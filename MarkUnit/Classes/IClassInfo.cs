@@ -7,7 +7,7 @@ namespace MarkUnit.Classes
     public interface IClassInfo : INamedComponent
     {
         Type ClassType { get; }
-        IAssemblyInfo Assembly { get; }
+        IAssemblyInfo AssemblyInfo { get; }
         IEnumerable<string> ReferencedNameSpaces { get; }
         IEnumerable<IClassInfo> ReferencedClasses { get; }
         string Namespace { get; }

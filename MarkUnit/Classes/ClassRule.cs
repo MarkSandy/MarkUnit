@@ -63,7 +63,7 @@ namespace MarkUnit.Classes
         public IClassRule BeInAssemblyMatching(string pattern)
         {
             PredicateString.Add($"be in an assembly matching '{pattern}'");
-            return AppendCondition(c => c.Assembly.Name.Matches(pattern));
+            return AppendCondition(c => c.AssemblyInfo.Name.Matches(pattern));
         }
 
         public IClassRule BeDeclaredInNamespaceMatching(string pattern)

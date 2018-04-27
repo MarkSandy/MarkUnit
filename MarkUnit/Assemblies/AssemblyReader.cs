@@ -9,7 +9,7 @@ namespace MarkUnit.Assemblies
     internal class AssemblyReader : IAssemblyReader
     {
         private readonly Dictionary<string, IAssemblyInfo> _assemblies = new Dictionary<string, IAssemblyInfo>();
-        private readonly Dictionary<string, Assembly> _loadedAssemblies = new Dictionary<string, Assembly>();
+        private readonly Dictionary<string, IAssembly> _loadedAssemblies = new Dictionary<string, IAssembly>();
 
         private readonly IAssemblyUtils _assemblyUtils;
 
@@ -36,7 +36,7 @@ namespace MarkUnit.Assemblies
             }
         }
 
-        private void AddAssemblyToCache(Assembly assembly, string assemblyName)
+        private void AddAssemblyToCache(IAssembly assembly, string assemblyName)
         {
             if (assemblyName != null) TryAdd(assembly, assemblyName);
             TryAdd(assembly, assembly.FullName);
@@ -45,7 +45,7 @@ namespace MarkUnit.Assemblies
 
         private Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            return LoadAssemblyByFullName(args.Name);
+            return LoadAssemblyByFullName(args.Name).Assembly;
         }
 
         private string GetFullPathToAssembly(string assemblyName)
@@ -55,12 +55,12 @@ namespace MarkUnit.Assemblies
             return filename;
         }
 
-        private bool IsCached(string assemblyName, out Assembly assembly)
+        private bool IsCached(string assemblyName, out IAssembly assembly)
         {
             return _loadedAssemblies.TryGetValue(assemblyName, out assembly);
         }
 
-        private bool IsCompatibleAssemblyInGac(string assemblyName, out Assembly assembly)
+        private bool IsCompatibleAssemblyInGac(string assemblyName, out IAssembly assembly)
         {
             try
             {
@@ -76,11 +76,11 @@ namespace MarkUnit.Assemblies
             }
         }
 
-        private bool IsInAssemblyPath(string assemblyName, out Assembly assembly)
+        private bool IsInAssemblyPath(string assemblyName, out IAssembly assembly)
         {
             assembly = null;
             var filename = GetFullPathToAssembly(assemblyName);
-            if (!string.IsNullOrEmpty(filename) && File.Exists(filename))
+            if (_assemblyUtils.FileExists(filename))
             {
                 assembly =  _assemblyUtils.LoadFrom(filename);
                 AddAssemblyToCache(assembly, assemblyName);
@@ -90,7 +90,7 @@ namespace MarkUnit.Assemblies
             return false;
         }
 
-        private bool IsInGac(string assemblyName, out Assembly assembly)
+        private bool IsInGac(string assemblyName, out IAssembly assembly)
         {
             try
             {
@@ -105,16 +105,20 @@ namespace MarkUnit.Assemblies
             }
         }
 
-        private Assembly LoadAssemblyByFullName(string assemblyName)
+        private IAssembly LoadAssemblyByFullName(string assemblyName)
         {
-            if (IsCached(assemblyName, out var assembly)) return assembly;
-            if (IsInAssemblyPath(assemblyName, out assembly)) return assembly;
-            if (IsInGac(assemblyName, out assembly)) return assembly;
-            if (IsCompatibleAssemblyInGac(assemblyName, out assembly)) return assembly;
+            if (IsCached(assemblyName, out var assembly)) 
+                return assembly;
+            if (IsInAssemblyPath(assemblyName, out assembly)) 
+                return assembly;
+            if (IsInGac(assemblyName, out assembly)) 
+                return assembly;
+            if (IsCompatibleAssemblyInGac(assemblyName, out assembly)) 
+                return assembly;
             return null;
         }
 
-        private Assembly LoadAssemblyByLocation(string fullPathToAssembly)
+        private IAssembly LoadAssemblyByLocation(string fullPathToAssembly)
         {
             if (_loadedAssemblies.TryGetValue(fullPathToAssembly, out var assembly) == false)
             {
@@ -125,7 +129,7 @@ namespace MarkUnit.Assemblies
             return assembly;
         }
 
-        private void TryAdd(Assembly assembly, string key)
+        private void TryAdd(IAssembly assembly, string key)
         {
             if (_loadedAssemblies.ContainsKey(key)) return;
             _loadedAssemblies.Add(key, assembly);
@@ -154,14 +158,14 @@ namespace MarkUnit.Assemblies
             }
         }
 
-        public void Loadall(Assembly assembly)
+        public void Loadall(IAssembly assembly)
         {
             LoadAssembly(assembly.Location);
         }
 
         public IEnumerable<IAssemblyInfo> AllAssemblies => _assemblies.Values;
 
-        public IAssemblyInfo LoadAssembly(Assembly assembly)
+        public IAssemblyInfo LoadAssembly(IAssembly assembly)
         {
             if (assembly == null) return null;
             if (!_assemblies.TryGetValue(assembly.FullName, out var result))

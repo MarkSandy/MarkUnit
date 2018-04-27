@@ -29,10 +29,10 @@ namespace Tests.MarkUnit.Classes
         public void MarkUnitInterface_Should_WrapInterfaceProperties()
         {
             var thisClass = typeof(MarkUnitInterfaceFixture);
-            var iclass=new MarkUnitClass(new MarkUnitAssembly(thisClass.Assembly),  thisClass);
+            var iclass=new MarkUnitClass(new MarkUnitAssembly(new AssemblyWrapper(thisClass.Assembly)),  thisClass);
              var sut=new MarkUnitInterface(iclass);
             Assert.AreEqual(sut.ClassType,iclass.ClassType);
-            Assert.AreEqual(sut.Assembly, iclass.Assembly);
+            Assert.AreEqual(sut.AssemblyInfo, iclass.AssemblyInfo);
             Assert.IsTrue(Equivalent(sut.ReferencedNameSpaces, iclass.ReferencedNameSpaces));
             Assert.IsTrue(Equivalent(sut.ReferencedClasses, iclass.ReferencedClasses));
             Assert.AreEqual(sut.Namespace, iclass.Namespace);

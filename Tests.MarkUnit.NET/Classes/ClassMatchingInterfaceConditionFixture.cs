@@ -98,7 +98,7 @@ namespace Tests.MarkUnit.Classes
             var assemblyMock = new Mock<IAssemblyInfo>();
             assemblyMock.SetupGet(a => a.Name).Returns("Assembly" + index);
             var assembly1 = assemblyMock.Object;
-            mock.SetupGet(c => c.Assembly).Returns(assembly1);
+            mock.SetupGet(c => c.AssemblyInfo).Returns(assembly1);
             mock.SetupGet(c => c.Name).Returns(name);
             mock.SetupGet(c => c.ClassType).Returns(typeof(T));
         }

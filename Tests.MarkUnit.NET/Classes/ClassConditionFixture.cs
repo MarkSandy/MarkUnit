@@ -132,9 +132,9 @@ namespace Tests.MarkUnit.Classes
            
             var sampleAssembly = new MarkUnitAssembly(GetType().Assembly);
             var otherAssembly=new MarkUnitAssembly(typeof(List<>).Assembly);
-            _mockClass1.SetupGet(c => c.Assembly).Returns(sampleAssembly);
-            _mockClass2.SetupGet(c => c.Assembly).Returns(otherAssembly);
-            _mockClass3.SetupGet(c => c.Assembly).Returns(otherAssembly);
+            _mockClass1.SetupGet(c => c.AssemblyInfo).Returns(sampleAssembly);
+            _mockClass2.SetupGet(c => c.AssemblyInfo).Returns(otherAssembly);
+            _mockClass3.SetupGet(c => c.AssemblyInfo).Returns(otherAssembly);
 
             sut.IsDeclaredInAssembly(sampleAssembly.Name);
             
@@ -150,11 +150,11 @@ namespace Tests.MarkUnit.Classes
            
             var sampleAssembly = new MarkUnitAssembly(GetType().Assembly);
             var otherAssembly=new MarkUnitAssembly(typeof(List<>).Assembly);
-            _mockClass1.SetupGet(c => c.Assembly).Returns(sampleAssembly);
-            _mockClass2.SetupGet(c => c.Assembly).Returns(otherAssembly);
-            _mockClass3.SetupGet(c => c.Assembly).Returns(otherAssembly);
+            _mockClass1.SetupGet(c => c.AssemblyInfo).Returns(sampleAssembly);
+            _mockClass2.SetupGet(c => c.AssemblyInfo).Returns(otherAssembly);
+            _mockClass3.SetupGet(c => c.AssemblyInfo).Returns(otherAssembly);
 
-            sut.IsDeclaredInAssembly(a=>a==sampleAssembly.Assembly);
+            sut.IsDeclaredInAssembly(a=>a==sampleAssembly.Assembly.Assembly);
             
             Assert.AreEqual(1,classFilter.FilteredItems.Count());
             Assert.IsTrue(classFilter.FilteredItems.Any(f=>f.Name=="A"));
@@ -168,9 +168,9 @@ namespace Tests.MarkUnit.Classes
            
             var sampleAssembly = new MarkUnitAssembly(GetType().Assembly);
             var otherAssembly=new MarkUnitAssembly(typeof(List<>).Assembly);
-            _mockClass1.SetupGet(c => c.Assembly).Returns(sampleAssembly);
-            _mockClass2.SetupGet(c => c.Assembly).Returns(otherAssembly);
-            _mockClass3.SetupGet(c => c.Assembly).Returns(otherAssembly);
+            _mockClass1.SetupGet(c => c.AssemblyInfo).Returns(sampleAssembly);
+            _mockClass2.SetupGet(c => c.AssemblyInfo).Returns(otherAssembly);
+            _mockClass3.SetupGet(c => c.AssemblyInfo).Returns(otherAssembly);
 
             sut.IsDeclaredInAssemblyMatching("Tests.*");
             

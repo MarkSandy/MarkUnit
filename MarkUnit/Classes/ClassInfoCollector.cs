@@ -108,7 +108,7 @@ namespace MarkUnit.Classes
         {
             if (!_classes.TryGetValue(type, out IClassInfo result))
             {
-                result = new MarkUnitClass(_assemblyReader.LoadAssembly(type.Assembly), type);
+                result = new MarkUnitClass(_assemblyReader.LoadAssembly(new AssemblyWrapper(type.Assembly)), type);
             }
 
             return result;

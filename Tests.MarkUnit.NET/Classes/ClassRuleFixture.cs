@@ -26,7 +26,7 @@ namespace Tests.MarkUnit.Classes
             var assemblyMock1=new Mock<IAssemblyInfo>();
             assemblyMock1.SetupGet(a => a.Name).Returns("Assembly1");
             IAssemblyInfo assembly1=assemblyMock1.Object;
-            _mockClass1.SetupGet(c => c.Assembly).Returns(assembly1);
+            _mockClass1.SetupGet(c => c.AssemblyInfo).Returns(assembly1);
             _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(Class1));
             _mockClass1.SetupGet(c => c.ReferencedNameSpaces).Returns(new[] {"ReferencedNameSpace1"});
             _mockClass1.SetupGet(c => c.Namespace).Returns("NameSpace1");
@@ -35,7 +35,7 @@ namespace Tests.MarkUnit.Classes
             assemblyMock2.SetupGet(a => a.Name).Returns("Assembly2");
             IAssemblyInfo assembly2=assemblyMock2.Object;
             _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(Class2));
-            _mockClass2.SetupGet(c => c.Assembly).Returns(assembly2);
+            _mockClass2.SetupGet(c => c.AssemblyInfo).Returns(assembly2);
             _mockClass2.SetupGet(c => c.ReferencedNameSpaces).Returns(new[] {"ReferencedNameSpace2"});
             _mockClass2.SetupGet(c => c.Namespace).Returns("NameSpace2");
 

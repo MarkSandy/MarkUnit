@@ -7,8 +7,8 @@ namespace MarkUnit.Assemblies
     {
         IEnumerable<IAssemblyInfo> AllAssemblies { get; }
         string AssemblyPath { get; set; }
-        void Loadall(Assembly mainAssembly);
+        void Loadall(IAssembly mainAssembly);
         IAssemblyInfo LoadAssembly(string fullName);
-        IAssemblyInfo LoadAssembly(Assembly assembly);
+        IAssemblyInfo LoadAssembly(IAssembly assembly);
     }
 }

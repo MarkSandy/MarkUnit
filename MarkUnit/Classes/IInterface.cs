@@ -13,7 +13,7 @@ namespace MarkUnit.Classes
 
         public Type ClassType => _classWrapper.ClassType;
 
-        public IAssemblyInfo Assembly => _classWrapper.Assembly;
+        public IAssemblyInfo AssemblyInfo => _classWrapper.AssemblyInfo;
 
         public IEnumerable<string> ReferencedNameSpaces => _classWrapper.ReferencedNameSpaces;
 
