@@ -10,16 +10,17 @@ namespace MarkUnit
         {
         }
 
-        public static Solution Create(Assembly mainAssembly)
-        {
-            var assemblyCollector = Instances.AssemblyCollector;
-            assemblyCollector.MainAssembly = new AssemblyWrapper(mainAssembly);
-            return new Solution(assemblyCollector);
-        }
-
         public static Solution Create()
         {
             return new Solution(null);
+        }
+
+        public Solution FromMainAssembly(Assembly mainAssembly)
+        {
+            var assemblyCollector = Instances.AssemblyCollector;
+            assemblyCollector.MainAssembly = new AssemblyWrapper(mainAssembly);
+            _assemblyCollector = assemblyCollector;
+            return this;
         }
 
         public Solution FromPath(string path)
@@ -32,11 +33,15 @@ namespace MarkUnit
 
         public Solution Matching(string pattern)
         {
-            _pattern = pattern;
             _assemblyCollector.Pattern = pattern;
             return this;
         }
 
+        public Solution WithImmediateCheck()
+        {
+            _immediateCheck = true;
+            return this;
+        }
         public static Solution Create(string path, string pattern=null)
         {
             var assemblyCollector = Instances.DirectoryAssemblyCollector;
@@ -46,7 +51,7 @@ namespace MarkUnit
         }
 
         private   IAssemblyCollector _assemblyCollector;
-        private string _pattern;
+        private bool _immediateCheck=false;
 
         public Solution(IAssemblyCollector assemblyCollector)
         {
@@ -78,15 +83,15 @@ namespace MarkUnit
             return new ClassPredicate(classCollector, negate,not);
         }
 
-        public IClassPredicate OnlyClasses()
+        public IClassPredicate OnlyAClass()
         {
-            PredicateString.Start("Only classes");
+            PredicateString.Start("Only a class");
             return CreateClass(true,true);
         }
 
-        public IAssemblyPredicate OnlyAssemblies()
+        public IAssemblyPredicate OnlyAnAssembly()
         {
-            PredicateString.Start("Only assemblies");
+            PredicateString.Start("Only an assembly");
             return CreateAssembly(true,true);;
         }
         public IClassPredicate EachClass()

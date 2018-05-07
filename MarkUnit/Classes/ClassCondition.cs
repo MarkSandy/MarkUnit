@@ -31,7 +31,7 @@ namespace MarkUnit.Classes
         public IReducedClassCollection ImplementsInterface<TInterface>()
         {
             PredicateString.Add($"implements '{typeof(TInterface)}'");
-            return AppendCondition(c => typeof(TInterface).IsAssignableFrom(c.ClassType));
+            return AppendCondition(c=>c.ClassType.ImplementsInterface<TInterface>());
         }
 
         public IReducedClassCollection IsDerivedFrom<TClass>()

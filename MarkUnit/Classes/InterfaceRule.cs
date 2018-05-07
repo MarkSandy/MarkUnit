@@ -35,7 +35,7 @@ namespace MarkUnit.Classes
         public IInterfaceRule ImplementsInterface<TInterface>()
         {
             PredicateString.Add($"implements {typeof(TInterface).Name}");
-            return AppendCondition(c => typeof(TInterface).IsAssignableFrom(c.ClassType));
+            return AppendCondition(c => c.ClassType.ImplementsInterface<TInterface>());
         }
 
         public IInterfaceRule IsDeclaredInAssemblyMatching(string pattern)

@@ -5,7 +5,7 @@ namespace MarkUnit
 {
     internal class TestCollectionBase<T, TCondition, TAssertion, TPostCondition>
         : IRule<TCondition>
-        where TPostCondition : IFilterConditionChain<TCondition, TAssertion>
+        where TPostCondition : IFilterConditionChain<TCondition, TAssertion>, IFollowUp<TCondition> 
     {
         protected IFilter<T> Filter;
 
@@ -24,7 +24,7 @@ namespace MarkUnit
         public TCondition Not()
         {
             Filter.Negate();
-            return FilterCondition.And();
+            return FilterCondition.FollowUp; // Nee
         }
 
         public TAssertion Should()

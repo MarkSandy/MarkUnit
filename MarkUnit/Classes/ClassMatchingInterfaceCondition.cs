@@ -45,10 +45,27 @@ namespace MarkUnit.Classes
             return InnerAppendCondition((c,i)=> i.Name.Matches(pattern));
         }
 
+        public IClassMatchingInterfaceRule HasMatchingClassName()
+        {
+            PredicateString.Add($"has a name matching the name of the class (eg. MyClass implements IMyClass)");
+         
+            return InnerMatchesClassName("(^.*$)", "I$1");
+        }
+        private IClassMatchingInterfaceRule InnerMatchesClassName(string regExPatternOnClass, string matchingInterfaceRegEx)
+        {
+              return InnerAppendCondition((c,i)=> i.Name.MatchesRegEx(c.Name,regExPatternOnClass, matchingInterfaceRegEx));
+        }
+
+        public IClassMatchingInterfaceRule MatchesClassName(string regExPatternOnClass, string matchingInterfaceRegEx)
+        {
+            PredicateString.Add($"has a name matching the name of the class ('{regExPatternOnClass}', '{matchingInterfaceRegEx}'");
+            return InnerMatchesClassName(regExPatternOnClass,matchingInterfaceRegEx);
+        }
+
         public IClassMatchingInterfaceRule ImplementsInterface<TInterface>()
         {
             PredicateString.Add($"implements '{typeof(TInterface)}");
-            return InnerAppendCondition((c, i) => typeof(TInterface).IsAssignableFrom(i));
+            return InnerAppendCondition((c, i) => i.ImplementsInterface<TInterface>());
         }
 
         public IClassMatchingInterfaceRule Is(Expression<Predicate<Type>> typeExpressionExpression)

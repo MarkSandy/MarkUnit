@@ -11,6 +11,8 @@ namespace MarkUnit
     /// </summary>
     internal class Instances
     {
+        public static bool ImmediateCheck = false;
+        
         private static IAssemblyReader _assemblyReader;
         private static IClassReader _classReader;
 
@@ -25,5 +27,14 @@ namespace MarkUnit
         public static IClassInfoCollector ClassInfoCollector=>new ClassInfoCollector(AssemblyReader);
      
         public static IClassCollector ClassCollector=new ClassCollector(ClassReader, ClassInfoCollector);
+
+        public static IAssertionVerifier<T> CreateAssertionVerifier<T>(IFilter<T> items, IFilter<T> assertions, bool negateAssertion) where T : INamedComponent
+        {
+            ITestResultLogger testResultLogger=new TestResultLogger();
+            if (!ImmediateCheck)
+                return new AssertionVerifier<T>(items, assertions, negateAssertion, testResultLogger);
+            else
+                return new ImmediateCheckAssertionVerifier<T>(items, assertions, negateAssertion, testResultLogger);
+        }
     }
 }

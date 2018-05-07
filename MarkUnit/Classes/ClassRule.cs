@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace MarkUnit.Classes
@@ -45,7 +46,7 @@ namespace MarkUnit.Classes
         public IClassRule ImplementInterface<T>()
         {
             PredicateString.Add($"implement interface {typeof(T).Name}");
-            return AppendCondition(c => typeof(T).IsAssignableFrom(c.ClassType));
+            return AppendCondition(c => c.ClassType.ImplementsInterface<T>());
         }
 
         public IInterfacePredicate ImplementInterface()
@@ -57,7 +58,14 @@ namespace MarkUnit.Classes
         public IClassRule UsesClassMatching(string regExOnClassName, string regExOnMatchingClass)
         {
             PredicateString.Add($"uses a class matching the regex expressions('{regExOnClassName}','{regExOnMatchingClass}'");
-            return AppendCondition(c => c.ReferencedClasses.Any(x => MatchesName(x.Name, regExOnClassName, regExOnMatchingClass)));
+            return AppendCondition(c => c.ReferencedClasses.Any(x => x.Name.MatchesRegEx(x.Name,regExOnClassName, regExOnMatchingClass)));
+        }
+
+        public IClassRule BeInAssembly(Expression<Predicate<Assembly>> assemblyFilterExpression)
+        {
+            PredicateString.Add($"be in an assembly matching '{assemblyFilterExpression}'");
+            var filter = assemblyFilterExpression.Compile();
+            return AppendCondition(c => filter(c.AssemblyInfo.Assembly.Assembly));
         }
 
         public IClassRule BeInAssemblyMatching(string pattern)
@@ -78,11 +86,6 @@ namespace MarkUnit.Classes
             var typePredicate = typeFilterExpression.Compile();
             return AppendCondition(c => typePredicate(c.ClassType));
         }
-
-        bool MatchesName(string name, string regExOnClassName, string regExOnMatchingClass)
-        {
-            string repl = Regex.Replace(name, regExOnClassName, regExOnMatchingClass);
-            return name.Matches(repl);
-        }
+ 
     }
 }
