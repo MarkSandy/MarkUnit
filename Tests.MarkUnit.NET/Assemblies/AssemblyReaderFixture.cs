@@ -38,13 +38,13 @@ namespace Tests.MarkUnit.Assemblies
             Assert.AreSame(thisAssembly,actualAssembly.Assembly);
         }
 
-        [TestMethod()]
-        public void Loadall_Should_()
-        {
-            var assemblyUtilMock = new Mock<IAssemblyUtils>();
-            var sut=new AssemblyReader(assemblyUtilMock.Object);
-            sut.Loadall();
-        }
+        //[TestMethod()]
+        //public void Loadall_Should_()
+        //{
+        //    var assemblyUtilMock = new Mock<IAssemblyUtils>();
+        //    var sut=new AssemblyReader(assemblyUtilMock.Object);
+        //    sut.Loadall();
+        //}
 
         [TestMethod()]
         public void LoadAssembly_Should_CreateWrapperAroundAssembly_WhenCalledWithAssembly()

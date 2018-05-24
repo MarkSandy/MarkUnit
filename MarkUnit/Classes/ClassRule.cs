@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace MarkUnit.Classes
@@ -64,6 +65,12 @@ namespace MarkUnit.Classes
         {
             PredicateString.Add($"be in an assembly matching '{pattern}'");
             return AppendCondition(c => c.Assembly.Name.Matches(pattern));
+        }
+
+        public IClassRule BeInAssembly(Assembly assembly)
+        {
+            PredicateString.Add($"be in assembly '{assembly.FullName}'");
+            return AppendCondition(c => c.Assembly.Assembly.FullName == assembly.FullName);
         }
 
         public IClassRule BeDeclaredInNamespaceMatching(string pattern)

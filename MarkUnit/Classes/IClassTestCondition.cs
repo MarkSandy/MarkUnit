@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace MarkUnit.Classes
 {
@@ -16,6 +17,7 @@ namespace MarkUnit.Classes
         IClassRule ReferenceNamespacesMatching(string pattern);
         IClassRule UsesClassMatching(string regExOnClassName, string regExreplace);
         IClassRule BeInAssemblyMatching(string pattern);
+        IClassRule BeInAssembly(Assembly assembly);
         IClassRule BeDeclaredInNamespaceMatching(string pattern);
         IClassRule Be(Expression<Predicate<Type>> typeFilterExpression);
     }

@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkUnit.NET", "MarkUnit\Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.MarkUnit", "Tests.MarkUnit.NET\Tests.MarkUnit.csproj", "{B28BF951-A5CA-4B1F-88C4-872759E967DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp", "SampleApp\SampleApp.csproj", "{BE64DAB1-3CCB-4199-A80A-F9E7276D8ABC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{B28BF951-A5CA-4B1F-88C4-872759E967DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B28BF951-A5CA-4B1F-88C4-872759E967DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B28BF951-A5CA-4B1F-88C4-872759E967DD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BE64DAB1-3CCB-4199-A80A-F9E7276D8ABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BE64DAB1-3CCB-4199-A80A-F9E7276D8ABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BE64DAB1-3CCB-4199-A80A-F9E7276D8ABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BE64DAB1-3CCB-4199-A80A-F9E7276D8ABC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
