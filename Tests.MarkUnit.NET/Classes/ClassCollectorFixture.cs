@@ -1,12 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MarkUnit.Classes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using Castle.DynamicProxy.Generators.Emitters;
 using MarkUnit.Assemblies;
 using Moq;
 
@@ -20,7 +15,7 @@ namespace Tests.MarkUnit.Classes
         public void Get_Should_ExamineAllClassesFromAssemblies()
         {
             var assemblyFilter=new Mock<IFilteredAssemblies>().Object; 
-            var classReaderMock = new Mock<ITypeReader>();
+            var classReaderMock = new Mock<ITypeReader<IClass>>();
             var c1 = new Mock<IClass>().Object;
             var c2 = new Mock<IClass>().Object;
             var classes=new IClass[]{c1,c2};

@@ -11,10 +11,10 @@ namespace MarkUnit.Classes
     }
 
     internal class FilteredTypes
-        : Filter<IClass>,
+        : Filter<IType>,
             IFilteredTypes
     {
-        public FilteredTypes(IEnumerable<IClass> classes)
+        public FilteredTypes(IEnumerable<IType> classes)
             : base(classes) { }
     }
 }

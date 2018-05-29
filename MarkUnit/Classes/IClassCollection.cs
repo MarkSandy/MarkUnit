@@ -28,10 +28,8 @@ namespace MarkUnit.Classes
         IReducedTypeCollection HasAttribute<TAttribute>()
             where TAttribute : Attribute;
         IReducedTypeCollection IsEnum();
-        IReducedTypeCollection IsInterface();
-        IReducedTypeCollection ImplementsInterface<TInterface>();
-        IReducedTypeCollection ImplementsInterfaceMatching(string pattern);
-
+        IReducedTypeCollection IsInterface(); // should return 'IReducedInterfaceCollection' later
+        IReducedTypeCollection IsClass(); 
         IReducedTypeCollection HasName(Expression<Predicate<string>> nameFilter);
         IReducedTypeCollection HasNameMatching(string pattern);
         IReducedTypeCollection Is(Expression<Predicate<Type>> typeExpression);
@@ -39,7 +37,5 @@ namespace MarkUnit.Classes
         IReducedTypeCollection IsDeclaredInAssembly(string name);
         IReducedTypeCollection IsDeclaredInAssembly(Expression<Predicate<Assembly>> predicate);
         IReducedTypeCollection IsDeclaredInAssemblyMatching(string pattern);
-
-        IReducedTypeCollection IsDerivedFrom<TClass>() where TClass : class;
     }
 }

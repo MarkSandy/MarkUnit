@@ -6,13 +6,12 @@ namespace MarkUnit.Classes
 {
     internal class ClassCollector : IClassCollector
     {
-        private readonly ITypeReader _classReader;
+        private readonly ITypeReader<IClass> _classReader;
         private readonly IClassInfoCollector _classInfoCollector;
 
-        public ClassCollector(ITypeReader classReader, IClassInfoCollector classInfoCollector)
+        public ClassCollector(ITypeReader<IClass> classReader, IClassInfoCollector classInfoCollector)
         {
             _classReader = classReader;
-            _classReader.FilterFunc = t => t.IsClass;
             _classInfoCollector = classInfoCollector;
         }
 
@@ -32,24 +31,18 @@ namespace MarkUnit.Classes
 
     internal class TypeCollector : ITypeCollector
     {
-        private readonly ITypeReader _classReader;
+        private readonly ITypeReader<IType> _typeReader;
 
-        public TypeCollector(ITypeReader classReader)
+        public TypeCollector(ITypeReader<IType> typeReader)
         {
-            _classReader = classReader;
-            _classReader.FilterFunc = t => true;
+            _typeReader = typeReader;
         }
 
         public IFilteredAssemblies Assemblies { get; set; }
 
-        public IEnumerable<IClass> Get()
+        public IEnumerable<IType> Get()
         {
-            return _classReader.LoadFromAssemblies(Assemblies).Select(Examine);
-        }
-
-        private IClass Examine(IClass classInfo)
-        {
-              return classInfo;
+            return _typeReader.LoadFromAssemblies(Assemblies);
         }
     }
 }

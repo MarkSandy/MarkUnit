@@ -12,11 +12,13 @@ namespace MarkUnit
     internal class Instances
     {
         private static IAssemblyReader _assemblyReader;
-        private static ITypeReader _classReader;
+        private static ITypeReader<IClass> _classReader;
+        private static ITypeReader<IType> _typeReader;
 
         public static IAssemblyReader AssemblyReader => _assemblyReader ?? (_assemblyReader = new AssemblyReader(new AssemblyUtils()));
 
-        public static ITypeReader ClassReader => _classReader ?? (_classReader = new ClassReader());
+        public static ITypeReader<IClass> ClassReader => _classReader ?? (_classReader = new ClassReader());
+        public static ITypeReader<IType> TypeReader => _typeReader ?? (_typeReader = new TypeReader());
 
         public static AssemblyCollector AssemblyCollector=>new AssemblyCollector(AssemblyReader);
         
@@ -25,6 +27,6 @@ namespace MarkUnit
         public static IClassInfoCollector ClassInfoCollector=>new ClassInfoCollector(AssemblyReader);
      
         public static IClassCollector ClassCollector=new ClassCollector(ClassReader, ClassInfoCollector);
-        public static ITypeCollector TypeCollector=new TypeCollector(ClassReader);
+        public static ITypeCollector TypeCollector=new TypeCollector(TypeReader);
     }
 }

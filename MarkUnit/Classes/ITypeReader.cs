@@ -4,9 +4,8 @@ using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
 {
-    internal interface ITypeReader
+    internal interface ITypeReader<out T> where T : IType
     {
-        Predicate<Type> FilterFunc { get;set; }
-        IEnumerable<IClass> LoadFromAssemblies(IFilteredAssemblies assemblies);
+        IEnumerable<T> LoadFromAssemblies(IFilteredAssemblies assemblies);
     }
 }
