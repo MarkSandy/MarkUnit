@@ -20,7 +20,7 @@ namespace Tests.MarkUnit.Classes
         public void Get_Should_ExamineAllClassesFromAssemblies()
         {
             var assemblyFilter=new Mock<IFilteredAssemblies>().Object; 
-            var classReaderMock = new Mock<IClassReader>();
+            var classReaderMock = new Mock<ITypeReader>();
             var c1 = new Mock<IClass>().Object;
             var c2 = new Mock<IClass>().Object;
             var classes=new IClass[]{c1,c2};

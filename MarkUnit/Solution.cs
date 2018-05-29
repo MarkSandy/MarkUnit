@@ -64,6 +64,11 @@ namespace MarkUnit
             PredicateString.Start("No assembly");
             return CreateAssembly(true, false);
         }
+        public IAssemblyPredicate OnlyAnAssembly()
+        {
+            PredicateString.Start("Only an assembly");
+            return CreateAssembly(true,true);;
+        }
 
         public IAssemblyPredicate EachAssembly()
         {
@@ -78,17 +83,19 @@ namespace MarkUnit
             return new ClassPredicate(classCollector, negate,not);
         }
 
-        public IClassPredicate OnlyClasses()
+        private ITypePredicate CreateType(bool negate, bool not)
         {
-            PredicateString.Start("Only classes");
+            var typeCollector = Instances.TypeCollector;
+            typeCollector.Assemblies=new FilteredAssemblies(_assemblyCollector.SolutionAssemblies);
+            return new TypePredicate(typeCollector, negate,not);
+        }
+
+        public IClassPredicate OnlyAClass()
+        {
+            PredicateString.Start("Only a class");
             return CreateClass(true,true);
         }
 
-        public IAssemblyPredicate OnlyAssemblies()
-        {
-            PredicateString.Start("Only assemblies");
-            return CreateAssembly(true,true);;
-        }
         public IClassPredicate EachClass()
         {
             PredicateString.Start("Each class");
@@ -100,5 +107,25 @@ namespace MarkUnit
             PredicateString.Start("No class");
             return CreateClass(true,false);
         }
+
+        
+        public ITypePredicate OnlyAType()
+        {
+            PredicateString.Start("Only a type");
+            return CreateType(true,true);
+        }
+
+        public ITypePredicate EachType()
+        {
+            PredicateString.Start("Each type");
+            return CreateType(false,false);
+        }
+
+        public ITypePredicate NoType()
+        {
+            PredicateString.Start("No type");
+            return CreateType(true,false);
+        }
+
     }
 }

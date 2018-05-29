@@ -15,4 +15,20 @@
             return not ? result.Not() : result;
         }
     }
+
+    internal interface ITypeCollectionFactory
+    {
+        ITypeCollection Create(ITypeCollector typeCollector, bool negate, bool not);
+    }
+
+    internal class TypeCollectionFactory : ITypeCollectionFactory
+    {
+        public ITypeCollection Create(ITypeCollector typeCollector, bool negate, bool not)
+        {
+            var types = typeCollector.Get();
+            var typeFilter = new FilteredTypes(types);
+            var result = new TypeCondition(typeFilter, negate);
+            return not ? result.Not() : result;
+        }
+    }
 }

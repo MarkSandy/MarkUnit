@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
 {
-    internal class ClassReader : IClassReader
+    internal class ClassReader : ITypeReader
     {
         private readonly Dictionary<IAssembly, IClass[]> _classes = new Dictionary<IAssembly, IClass[]>();
+
+        public Predicate<Type> FilterFunc { get; set; }
 
         public IEnumerable<IClass> LoadFromAssemblies(IFilteredAssemblies assemblies)
         {
@@ -17,7 +20,8 @@ namespace MarkUnit.Classes
         {
             if (!_classes.TryGetValue(assembly, out IClass[] classes))
             {
-                classes = assembly.Assembly.GetTypes().Where(c => c.IsClass).Select(t => new MarkUnitClass(assembly, t)).ToArray();
+                if (FilterFunc == null) FilterFunc = t => true;
+                classes = assembly.Assembly.GetTypes().Where(c=>FilterFunc(c)).Select(t => new MarkUnitClass(assembly, t)).ToArray();
                 _classes.Add(assembly, classes);
             }
 

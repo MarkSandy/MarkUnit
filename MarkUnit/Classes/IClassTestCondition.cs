@@ -21,4 +21,25 @@ namespace MarkUnit.Classes
         IClassRule BeDeclaredInNamespaceMatching(string pattern);
         IClassRule Be(Expression<Predicate<Type>> typeFilterExpression);
     }
+
+
+    public interface ITypeTestCondition
+    {
+        ITypeRule HaveName(Expression<Predicate<string>> nameFunc);
+        ITypeRule HaveNameMatching(string pattern);
+        ITypeRule ImplementInterface<T>();
+
+        IInterfacePredicate ImplementInterface();
+        ITypeRule ImplementInterfaceMatching(string pattern);
+        ITypeTestCondition Not();
+
+        ITypeRule ReferenceNamespacesMatching(string pattern);
+        ITypeRule UsesClassMatching(string regExOnClassName, string regExreplace);
+        ITypeRule BeInAssemblyMatching(string pattern);
+        ITypeRule BeInAssembly(Assembly assembly);
+        ITypeRule BeDeclaredInNamespaceMatching(string pattern);
+        ITypeRule Be(Expression<Predicate<Type>> typeFilterExpression);
+    }
+
+    
 }

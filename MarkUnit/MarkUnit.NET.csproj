@@ -105,7 +105,7 @@
     <Compile Include="Classes\IClass.cs" />
     <Compile Include="Classes\IClassCollector.cs" />
     <Compile Include="Classes\IFilteredClasses.cs" />
-    <Compile Include="Classes\IClassReader.cs" />
+    <Compile Include="Classes\ITypeReader.cs" />
     <Compile Include="ICheckableCondition.cs" />
     <Compile Include="IFilterConditionChain.cs" />
     <Compile Include="ICollector.cs" />
