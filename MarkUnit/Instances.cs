@@ -28,5 +28,15 @@ namespace MarkUnit
      
         public static IClassCollector ClassCollector=new ClassCollector(ClassReader, ClassInfoCollector);
         public static ITypeCollector TypeCollector=new TypeCollector(TypeReader);
+        public static IAssertionVerifier<T> CreateAssertionVerifier<T>(IFilter<T> items, IFilter<T> assertions, bool negateAssertion) where T : INamedComponent
+        {
+            ITestResultLogger testResultLogger=new TestResultLogger();
+            if (!ImmediateCheck)
+                return new AssertionVerifier<T>(items, assertions, negateAssertion, testResultLogger);
+            else
+                return new ImmediateCheckAssertionVerifier<T>(items, assertions, negateAssertion, testResultLogger);
+        }
+
+        public static bool ImmediateCheck { get; set; } = false;
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace MarkUnit.Classes
 {
@@ -20,6 +21,22 @@ namespace MarkUnit.Classes
             LogicalLink = new ClassMatchingInterfaceLogicalLink(this);
         }
 
+        public IClassMatchingInterfaceRule HasMatchingClassName()
+        {
+            PredicateString.Add($"has matching name");
+            return InnerHasMatchingClassName("(.*)^$", "I$1");
+        }
+
+        public IClassMatchingInterfaceRule HasMatchingClassName(string regExClass, string matchingInterfaceNameRegEx)
+        {
+            PredicateString.Add($"has a name matching the implementation ('{regExClass}' => '{matchingInterfaceNameRegEx}'");
+            return InnerHasMatchingClassName(regExClass, matchingInterfaceNameRegEx);
+        }
+
+        private IClassMatchingInterfaceRule InnerHasMatchingClassName(string regExClass, string matchingInterfaceNameRegEx)
+        {
+            return InnerAppendCondition((c, i) => i.Name == Regex.Replace(c.Name, regExClass, matchingInterfaceNameRegEx));
+        }
         public IClassMatchingInterfaceRule HasMatchingName(Expression<Func<Type, string>> typeFilterExpression)
         {
             PredicateString.Add($"has matching name {typeFilterExpression}");

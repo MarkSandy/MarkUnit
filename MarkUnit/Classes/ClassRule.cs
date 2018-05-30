@@ -73,6 +73,13 @@ namespace MarkUnit.Classes
             return AppendCondition(c => c.Assembly.Assembly.FullName == assembly.FullName);
         }
 
+        public IClassRule BeInAssembly(Expression<Predicate<Assembly>> assemblyPredicate)
+        {
+            PredicateString.Add($"be declared in assembly matching {assemblyPredicate}");
+            var assemblyFilter = assemblyPredicate.Compile();
+            return AppendCondition(c => assemblyFilter(c.Assembly.Assembly));
+        }
+
         public IClassRule BeDeclaredInNamespaceMatching(string pattern)
         {
             PredicateString.Add($"be declared in namespace matching '{pattern}'");

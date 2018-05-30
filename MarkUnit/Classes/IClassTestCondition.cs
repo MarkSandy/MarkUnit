@@ -18,6 +18,7 @@ namespace MarkUnit.Classes
         IClassRule UsesClassMatching(string regExOnClassName, string regExreplace);
         IClassRule BeInAssemblyMatching(string pattern);
         IClassRule BeInAssembly(Assembly assembly);
+        IClassRule BeInAssembly(Expression<Predicate<Assembly>> assemblyFilterExpression);
         IClassRule BeDeclaredInNamespaceMatching(string pattern);
         IClassRule Be(Expression<Predicate<Type>> typeFilterExpression);
     }

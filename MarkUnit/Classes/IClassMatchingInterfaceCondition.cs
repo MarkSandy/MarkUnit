@@ -16,7 +16,8 @@ namespace MarkUnit.Classes
         IClassMatchingInterfaceRule Is(Expression<Predicate<Type>> typeExpressionExpression);
         IClassMatchingInterfaceRule IsDeclaredInAssembly(Expression<Predicate<Assembly>> predicateExpression);
         IClassMatchingInterfaceRule IsDeclaredInAssemblyMatching(string pattern);
-
+        IClassMatchingInterfaceRule HasMatchingClassName();
+        IClassMatchingInterfaceRule HasMatchingClassName(string regExClass, string matchingInterfaceNameRegEx);
         IClassMatchingInterfaceRule HasMatchingName(Expression<Func<Type, string>> typeFilterExpression);
     }
 }

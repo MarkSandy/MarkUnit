@@ -30,6 +30,13 @@ namespace MarkUnit
             return this;
         }
 
+        public Solution FromMainAssembly(Assembly mainAssembly)
+        {
+            var assemblyCollector = Instances.AssemblyCollector;
+            assemblyCollector.MainAssembly = mainAssembly;
+            _assemblyCollector = assemblyCollector;
+            return this;
+        }
         public Solution Matching(string pattern)
         {
             _pattern = pattern;
