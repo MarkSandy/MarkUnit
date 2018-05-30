@@ -22,6 +22,12 @@ namespace MarkUnit
             return new Solution(null);
         }
 
+        public Solution WithImmediateCheck()
+        {
+            Instances.ImmediateCheck = true;
+            return this;
+        }
+
         public Solution FromPath(string path)
         {
             var directoryAssemblyCollector = Instances.DirectoryAssemblyCollector;
