@@ -10,9 +10,23 @@
         public ClassRule Create(IFilter<IClass> filter, bool negateAssertion)
         {
             var assertions = new Filter<IClass>(filter.FilteredItems);
-            var verifier = new AssertionVerifier<IClass>(filter, assertions, negateAssertion, new TestResultLogger());
-
+            var verifier = Instances.CreateAssertionVerifier(filter,assertions,negateAssertion);
             return new ClassRule(verifier);
+        }
+    }
+
+    internal interface ITypeRuleFactory
+    {
+        TypeRule Create(IFilter<IType> filter, bool negateAssertion);
+    }
+
+    internal class TypeRuleFactory : ITypeRuleFactory
+    {
+        public TypeRule Create(IFilter<IType> filter, bool negateAssertion)
+        {
+            var assertions = new Filter<IType>(filter.FilteredItems);
+            var verifier = Instances.CreateAssertionVerifier(filter,assertions,negateAssertion);
+            return new TypeRule(verifier);
         }
     }
 }

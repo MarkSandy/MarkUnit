@@ -30,7 +30,7 @@ namespace MarkUnit.Classes
         private IClassCollection ThatOrWhich(string word)
         {
             PredicateString.Add(word);
-            return _classCollectionFactory.Create(_classCollector, _negate, _not);
+            return _classCollectionFactory.Create(Instances.ClassRuleFactory, _classCollector, _negate, _not);
         }
 
         public IClassCollection Which()

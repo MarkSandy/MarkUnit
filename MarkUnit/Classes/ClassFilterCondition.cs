@@ -4,10 +4,10 @@
         : FilterConditionBase<IClassCollection, IClassTestCondition, IClass>,
           IClassBinaryOperator
     {
-        public ClassFilterCondition(IClassCollection condition, IFilter<IClass> filter, bool negate)
+        public ClassFilterCondition(IClassRuleFactory classRuleFactory, IClassCollection condition, IFilter<IClass> filter, bool negate)
             : base(condition, filter, negate)
         {
-            CeateAssertionFunc = (f, b) => new ClassRule(f, b);
+            CeateAssertionFunc = classRuleFactory.Create;
         }
     }
 

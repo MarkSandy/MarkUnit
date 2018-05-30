@@ -38,5 +38,7 @@ namespace MarkUnit
         }
 
         public static bool ImmediateCheck { get; set; } = false;
+        public static IClassRuleFactory ClassRuleFactory = new ClassRuleFactory();
+        public static ITypeRuleFactory TypeRuleFactory = new TypeRuleFactory();
     }
 }

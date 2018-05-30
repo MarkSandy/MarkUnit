@@ -9,10 +9,10 @@ namespace MarkUnit.Classes
         : TestCollectionBase<IClass, IClassCollection, IClassTestCondition, IReducedClassCollection>,
           IClassCollection
     {
-        public ClassCondition(FilteredClasses classFilter, bool negate)
+        public ClassCondition(IClassRuleFactory classRuleFactory,FilteredClasses classFilter, bool negate)
             : base(classFilter)
         {
-            FilterCondition = new ClassFilterCondition(this, classFilter, negate);
+            FilterCondition = new ClassFilterCondition(classRuleFactory,this, classFilter, negate);
         }
 
         public IReducedClassCollection HasName(Expression<Predicate<string>> nameFilterExpression)
