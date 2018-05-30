@@ -14,19 +14,7 @@ namespace MarkUnit.Classes
         {
             FilterCondition = new ClassFilterCondition(classRuleFactory,this, classFilter, negate);
         }
-
-        public IReducedClassCollection HasName(Expression<Predicate<string>> nameFilterExpression)
-        {
-            var nameFilter = nameFilterExpression.Compile();
-            PredicateString.Add($"has name matching '{nameFilterExpression}'");
-            return AppendCondition(c => nameFilter(c.Name));
-        }
-
-        public IReducedClassCollection HasNameMatching(string pattern)
-        {
-            PredicateString.Add($"has name matching '{pattern}'");
-            return AppendCondition(c => c.Name.Matches(pattern));
-        }
+ 
 
         public IReducedClassCollection ImplementsInterface<TInterface>()
         {

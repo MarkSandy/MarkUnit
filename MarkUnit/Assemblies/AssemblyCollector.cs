@@ -21,7 +21,15 @@ namespace MarkUnit.Assemblies
             return ReadAllAssemblies(MainAssembly);
         }
 
-        public IEnumerable<IAssembly> SolutionAssemblies => null;
+        public IEnumerable<IAssembly> SolutionAssemblies
+        {
+            get
+            {
+                if (_solutionAssemblies == null) Get();
+                return _solutionAssemblies;
+            }
+        }
+
         public string Pattern { get; set; }
 
         private IEnumerable<IAssembly> ReadAllAssemblies(Assembly mainAssembly)

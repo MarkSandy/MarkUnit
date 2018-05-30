@@ -12,22 +12,5 @@ namespace MarkUnit.Assemblies
         {
             FilterCondition = new AssemblyFilterCondition(this, assemblies, negate);
         }
-
-        public IReducedAssemblyCollection HasName(Expression<Predicate<string>> nameFilter)
-        {
-            PredicateString.Add($"has name matching {nameFilter}");
-            return InnerHasName(nameFilter.Compile());
-        }
-
-        public IReducedAssemblyCollection HasNameMatching(string pattern)
-        {
-            PredicateString.Add($"has name matching '{pattern}'");
-            return InnerHasName(n => n.Matches(pattern));
-        }
-
-        private IReducedAssemblyCollection InnerHasName(Predicate<string> nameFilter)
-        {
-            return AppendCondition(a => nameFilter(a.Name));
-        }
     }
 }

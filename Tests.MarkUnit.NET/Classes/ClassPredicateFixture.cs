@@ -17,7 +17,7 @@ namespace Tests.MarkUnit.Classes
             var classCollectionFactoryMock=new Mock<IClassCollectionFactory>();
             var sut = new ClassPredicate(classCollector, negate, not,classCollectionFactoryMock.Object);
             sut.That();
-            classCollectionFactoryMock.Verify(x=>x.Create(classCollector,negate,not),Times.Once);
+            classCollectionFactoryMock.Verify(x=>x.Create(It.IsAny<IClassRuleFactory>(), classCollector,negate,not),Times.Once);
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace Tests.MarkUnit.Classes
             var classCollectionFactoryMock=new Mock<IClassCollectionFactory>();
             var sut = new ClassPredicate(classCollector, negate, not,classCollectionFactoryMock.Object);
             sut.Which();
-            classCollectionFactoryMock.Verify(x=>x.Create(classCollector,negate,not),Times.Once);
+            classCollectionFactoryMock.Verify(x=>x.Create(It.IsAny<IClassRuleFactory>(),classCollector,negate,not),Times.Once);
         }
     }
 }

@@ -30,7 +30,11 @@ namespace MarkUnit
         public static ITypeCollector TypeCollector=new TypeCollector(TypeReader);
         public static IAssertionVerifier<T> CreateAssertionVerifier<T>(IFilter<T> items, IFilter<T> assertions, bool negateAssertion) where T : INamedComponent
         {
-            ITestResultLogger testResultLogger=new TestResultLogger();
+            ITestResultLogger testResultLogger;
+            if (ThrowException)
+                testResultLogger = new TestResultExceptionLogger();
+            else
+                    testResultLogger=new TestResultLogger();
             if (!ImmediateCheck)
                 return new AssertionVerifier<T>(items, assertions, negateAssertion, testResultLogger);
             else
@@ -38,6 +42,7 @@ namespace MarkUnit
         }
 
         public static bool ImmediateCheck { get; set; } = false;
+        public static bool ThrowException { get; set; } = true;
         public static IClassRuleFactory ClassRuleFactory = new ClassRuleFactory();
         public static ITypeRuleFactory TypeRuleFactory = new TypeRuleFactory();
     }

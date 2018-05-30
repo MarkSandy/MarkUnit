@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using MarkUnit.Classes;
 
 namespace MarkUnit
@@ -6,9 +7,10 @@ namespace MarkUnit
     internal class TestCollectionBase<T, TCondition, TAssertion, TPostCondition>
         : IRule<TCondition>
         where TPostCondition : IFilterConditionChain<TCondition, TAssertion>
+        where T : INamedComponent
     {
         protected IFilter<T> Filter;
-
+        
         public TestCollectionBase(IFilter<T> items)
         {
             Filter = items;
@@ -37,5 +39,19 @@ namespace MarkUnit
             Filter.AppendCondition(predicate);
             return FilterCondition;
         }
+
+        public TPostCondition HasName(Expression<Predicate<string>> nameFilterExpression)
+        {
+            var nameFilter = nameFilterExpression.Compile();
+            PredicateString.Add($"has name matching '{nameFilterExpression}'");
+            return AppendCondition(c => nameFilter(c.Name));
+        }
+        
+        public TPostCondition HasNameMatching(string pattern)
+        {
+            PredicateString.Add($"has name matching '{pattern}'");
+            return AppendCondition(c => c.Name.Matches(pattern));
+        }
+       
     }
 }

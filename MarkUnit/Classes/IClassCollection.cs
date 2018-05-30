@@ -4,38 +4,36 @@ using System.Reflection;
 
 namespace MarkUnit.Classes
 {
-    public interface IClassCollection : ICondition<IClassCollection>
+    public interface IDeclaredInAssemblyPredicate<out TPostCondition>
+    {
+        TPostCondition IsDeclaredInAssembly(Assembly assembly);
+        TPostCondition IsDeclaredInAssembly(string name);
+        TPostCondition IsDeclaredInAssembly(Expression<Predicate<Assembly>> predicate);
+        TPostCondition IsDeclaredInAssemblyMatching(string pattern);
+    }
+
+    public interface IClassCollection : ICondition<IClassCollection>, INamePredicate<IReducedClassCollection>, IDeclaredInAssemblyPredicate<IReducedClassCollection>
     {
         IReducedClassCollection HasAttribute<TAttribute>()
             where TAttribute : Attribute;
 
-        IReducedClassCollection HasName(Expression<Predicate<string>> nameFilter);
-        IReducedClassCollection HasNameMatching(string pattern);
         IReducedClassCollection ImplementsInterface<TInterface>();
         IReducedClassCollection ImplementsInterfaceMatching(string pattern);
         IReducedClassCollection Is(Expression<Predicate<Type>> typeExpression);
-        IReducedClassCollection IsDeclaredInAssembly(Assembly assembly);
-        IReducedClassCollection IsDeclaredInAssembly(string name);
-        IReducedClassCollection IsDeclaredInAssembly(Expression<Predicate<Assembly>> predicate);
-        IReducedClassCollection IsDeclaredInAssemblyMatching(string pattern);
 
         IReducedClassCollection IsDerivedFrom<TClass>()
             where TClass : class;
     }
 
-    public interface ITypeCollection : ICondition<ITypeCollection>
+    public interface ITypeCollection : ICondition<ITypeCollection>, INamePredicate<IReducedTypeCollection>, IDeclaredInAssemblyPredicate<IReducedTypeCollection>
     {
         IReducedTypeCollection HasAttribute<TAttribute>()
             where TAttribute : Attribute;
+
         IReducedTypeCollection IsEnum();
         IReducedTypeCollection IsInterface(); // should return 'IReducedInterfaceCollection' later
-        IReducedTypeCollection IsClass(); 
-        IReducedTypeCollection HasName(Expression<Predicate<string>> nameFilter);
-        IReducedTypeCollection HasNameMatching(string pattern);
+        IReducedTypeCollection IsClass();
+
         IReducedTypeCollection Is(Expression<Predicate<Type>> typeExpression);
-        IReducedTypeCollection IsDeclaredInAssembly(Assembly assembly);
-        IReducedTypeCollection IsDeclaredInAssembly(string name);
-        IReducedTypeCollection IsDeclaredInAssembly(Expression<Predicate<Assembly>> predicate);
-        IReducedTypeCollection IsDeclaredInAssemblyMatching(string pattern);
     }
 }

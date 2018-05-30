@@ -12,11 +12,18 @@ namespace Tests.MarkUnit.Classes
     [TestClass]
     public class ClassConditionFixture
     {
+        private static IClassRuleFactory _classRuleFactory;
+        [ClassInitialize]
+        public static void Setup(TestContext ctx)
+        {
+            _classRuleFactory=new ClassRuleFactory();
+        }
+
         [TestMethod]
         public void HasName_Should_FilterByPredicate()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory, classFilter, false);
             
             sut.HasName(s => s == "A");
 
@@ -28,7 +35,7 @@ namespace Tests.MarkUnit.Classes
         public void HasNameMatching_Should_FilterByPattern()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory,classFilter, false);
             
             sut.HasNameMatching("A");
             
@@ -40,7 +47,7 @@ namespace Tests.MarkUnit.Classes
         public void ImplementsInterface_Should_FilterByImplementedInterface()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory,classFilter, false);
             _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(SampleImplementation));
             _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
             _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
@@ -55,7 +62,7 @@ namespace Tests.MarkUnit.Classes
         public void ImplementsInterfaceMatching_Should_FilterByImplementedInterfaceName()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory,classFilter, false);
             _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(SampleImplementation));
             _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
             _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
@@ -70,7 +77,7 @@ namespace Tests.MarkUnit.Classes
         public void Is_Should_FilterByTypePredicate()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory,classFilter, false);
             _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(SampleImplementation));
             _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
             _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
@@ -85,7 +92,7 @@ namespace Tests.MarkUnit.Classes
         public void HasAttribute_Should_FilterByAttribute()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory,classFilter, false);
             _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(ClassConditionFixture));
             _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
             _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
@@ -100,7 +107,7 @@ namespace Tests.MarkUnit.Classes
         public void IsDerivedFrom_Should_FilterByTypePredicate()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory,classFilter, false);
             _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(SampleDerived));
             _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
             _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
@@ -114,7 +121,7 @@ namespace Tests.MarkUnit.Classes
         public void IsDerivedFrom_Should_FilterByTypePredicate_WhenTypeIsGeneric()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory,classFilter, false);
             _mockClass1.SetupGet(c => c.ClassType).Returns(typeof(ClassCondition));
             _mockClass2.SetupGet(c => c.ClassType).Returns(typeof(int));
             _mockClass3.SetupGet(c => c.ClassType).Returns(typeof(int));
@@ -128,7 +135,7 @@ namespace Tests.MarkUnit.Classes
         public void IsDeclaredInAssembly_Should_FilterByAssemblyName()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory,classFilter, false);
            
             var sampleAssembly = new MarkUnitAssembly(GetType().Assembly);
             var otherAssembly=new MarkUnitAssembly(typeof(List<>).Assembly);
@@ -146,7 +153,7 @@ namespace Tests.MarkUnit.Classes
         public void IsDeclaredInAssembly_Should_FilterByPredicate()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory,classFilter, false);
            
             var sampleAssembly = new MarkUnitAssembly(GetType().Assembly);
             var otherAssembly=new MarkUnitAssembly(typeof(List<>).Assembly);
@@ -164,7 +171,7 @@ namespace Tests.MarkUnit.Classes
         public void IsDeclaredInAssemblyMatching_Should_FilterByPAttern()
         {
             var classFilter=new FilteredClasses(CreateSampleClasses());
-            var sut = new ClassCondition(classFilter, false);
+            var sut = new ClassCondition(_classRuleFactory,classFilter, false);
            
             var sampleAssembly = new MarkUnitAssembly(GetType().Assembly);
             var otherAssembly=new MarkUnitAssembly(typeof(List<>).Assembly);

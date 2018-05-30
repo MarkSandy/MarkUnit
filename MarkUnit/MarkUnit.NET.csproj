@@ -60,6 +60,7 @@
     <Compile Include="Assemblies\IFilteredAssemblies.cs" />
     <Compile Include="Assemblies\IAssemblyRule.cs" />
     <Compile Include="Assemblies\IInternalAssemblyTestCondition.cs" />
+    <Compile Include="INamePredicate.cs" />
     <Compile Include="Assemblies\IReducedAssemblyCollection.cs" />
     <Compile Include="Classes\IClassCollectionFactory.cs" />
     <Compile Include="Classes\IClassRuleFactory.cs" />
