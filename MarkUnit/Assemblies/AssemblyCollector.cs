@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -8,13 +9,22 @@ namespace MarkUnit.Assemblies
     {
         private readonly IAssemblyReader _assemblyReader;
         private IEnumerable<IAssembly> _solutionAssemblies;
+        private Assembly _mainAssembly;
 
         public AssemblyCollector(IAssemblyReader assemblyReader)
         {
             _assemblyReader = assemblyReader;
         }
 
-        public Assembly MainAssembly { get; set; }
+        public Assembly MainAssembly
+        {
+            get => _mainAssembly;
+            set
+            {
+                _mainAssembly = value;
+                _assemblyReader.AssemblyPath = Path.GetDirectoryName(_mainAssembly.Location);
+            }
+        }
 
         public IEnumerable<IAssembly> Get()
         {
