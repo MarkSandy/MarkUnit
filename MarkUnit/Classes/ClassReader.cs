@@ -5,47 +5,41 @@ using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
 {
-    internal abstract class TypeReaderBase<T> : ITypeReader<T>
-        where T : IType
+    internal class TypeReader : ITypeReader<IType>
     {
-        private readonly Dictionary<IAssembly, T[]> _classes = new Dictionary<IAssembly, T[]>();
+        private readonly Dictionary<IAssembly, IType[]> _classes = new Dictionary<IAssembly, IType[]>();
 
-        protected abstract Predicate<Type> FilterFunc { get; }
 
-        public IEnumerable<T> LoadFromAssemblies(IFilteredAssemblies assemblies)
+        public IEnumerable<IType> LoadFromAssemblies(IFilteredAssemblies assemblies)
         {
             return assemblies.FilteredItems.SelectMany(LoadFromAssembly);
         }
 
-        private IEnumerable<T> LoadFromAssembly(IAssembly assembly)
+        private IEnumerable<IType> LoadFromAssembly(IAssembly assembly)
         {
-            if (!_classes.TryGetValue(assembly, out T[] classes))
+            if (!_classes.TryGetValue(assembly, out IType[] classes))
             {
-                classes = assembly.Assembly.GetTypes().Where(c=>FilterFunc(c)).Select(t => CreateItem(assembly,t)).ToArray();
+                classes = assembly.Assembly.GetTypes().Select(t => new MarkUnitType(assembly,t)).ToArray();
                 _classes.Add(assembly, classes);
             }
 
             return classes;
         }
-
-        protected abstract T CreateItem(IAssembly asembly, Type type);
     }
 
-    internal class ClassReader : TypeReaderBase<IClass>
+    internal class ClassReader : ITypeReader<IClass>
     {
-        protected override Predicate<Type> FilterFunc => t => t.IsClass;
-        protected override IClass CreateItem(IAssembly asembly, Type type)
+        private readonly ITypeReader<IType> _typeReader;
+
+        public ClassReader(ITypeReader<IType> typeReader)
         {
-            return new MarkUnitClass(asembly,type);
+            _typeReader = typeReader;
         }
-    }
-
-    internal class TypeReader : TypeReaderBase<IType>
-    {
-        protected override Predicate<Type> FilterFunc => t => true;
-        protected override IType CreateItem(IAssembly asembly, Type type)
+        public IEnumerable<IClass> LoadFromAssemblies(IFilteredAssemblies assemblies)
         {
-            return new MarkUnitType(asembly,type);
+            return _typeReader.LoadFromAssemblies(assemblies)
+                .Where(t=>t.ClassType.IsClass)
+                .Select(t => new MarkUnitClass(t.Assembly, t.ClassType));
         }
     }
 }
