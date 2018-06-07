@@ -7,6 +7,7 @@
 
     internal class ClassCollectionFactory : IClassCollectionFactory
     {
+        
         public IClassCollection Create(IClassRuleFactory classRuleFactory,IClassCollector classCollector, bool negate, bool not)
         {
             var classes = classCollector.Get();
@@ -27,7 +28,7 @@
         {
             var types = typeCollector.Get();
             var typeFilter = new FilteredTypes(types);
-            var result = new TypeCondition(typeFilter, negate);
+            var result = new TypeCondition(new ClassCollectionFactory(), typeFilter, negate);
             return not ? result.Not() : result;
         }
     }

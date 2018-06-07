@@ -2,5 +2,7 @@
 {
     public interface IReducedClassCollection : IFilterConditionChain<IClassCollection, IClassTestCondition> { }
 
-    public interface IReducedTypeCollection : IFilterConditionChain<ITypeCollection, ITypeTestCondition>{}
+    public interface IReducedTypeCollection : IFilterConditionChain<ITypeCollection, ITypeTestCondition>{
+        
+    }
 }

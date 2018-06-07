@@ -32,7 +32,7 @@ namespace MarkUnit.Classes
 
         IReducedTypeCollection IsEnum();
         IReducedTypeCollection IsInterface(); // should return 'IReducedInterfaceCollection' later
-        IReducedTypeCollection IsClass();
+        IReducedClassCollection IsClass();
 
         IReducedTypeCollection Is(Expression<Predicate<Type>> typeExpression);
     }

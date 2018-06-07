@@ -1,37 +1,52 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes {
     internal class TypeCondition
         : TestCollectionBase<IType, ITypeCollection, ITypeTestCondition, IReducedTypeCollection>,
           ITypeCollection
     {
-        public TypeCondition(IFilteredTypes typeFilter, bool negate)
+        private readonly IClassCollectionFactory _classCollectionFactory;
+
+        public TypeCondition(IClassCollectionFactory classCollectionFactory, IFilteredTypes typeFilter, bool negate)
             : base(typeFilter)
         {
+            _classCollectionFactory = classCollectionFactory;
             FilterCondition = new TypeFilterCondition(this, typeFilter, negate);
         }
 
-        public IReducedTypeCollection IsClass()
+        public IReducedClassCollection IsClass()
         {
             PredicateString.Add("is class");
-            return AppendCondition(c => c.ClassType.IsClass);
+            AppendCondition(c => c.ClassType.IsClass);
+
+            return CreateReducedClassCollection(Filter);
         }
 
-        public IReducedTypeCollection HasName(Expression<Predicate<string>> nameFilterExpression)
+        private IReducedClassCollection CreateReducedClassCollection(IFilter<IType> filter)
         {
-            var nameFilter = nameFilterExpression.Compile();
-            PredicateString.Add($"has name matching '{nameFilterExpression}'");
-            return AppendCondition(c => nameFilter(c.Name));
+            var classCollector = new ClassFromTypeCollector(filter);
+            var classCollection = _classCollectionFactory.Create(Instances.ClassRuleFactory, classCollector, FilterCondition.Negate, false);
+            var classFilter = new FilteredClasses(classCollector.Get());
+            return new ClassFilterCondition(Instances.ClassRuleFactory, classCollection, classFilter, FilterCondition.Negate);
         }
 
-        public IReducedTypeCollection HasNameMatching(string pattern)
-        {
-            PredicateString.Add($"has name matching '{pattern}'");
-            return AppendCondition(c => c.Name.Matches(pattern));
-        }
+        //public IReducedTypeCollection HasName(Expression<Predicate<string>> nameFilterExpression)
+        //{
+        //    var nameFilter = nameFilterExpression.Compile();
+        //    PredicateString.Add($"has name matching '{nameFilterExpression}'");
+        //    return AppendCondition(c => nameFilter(c.Name));
+        //}
+
+        //public IReducedTypeCollection HasNameMatching(string pattern)
+        //{
+        //    PredicateString.Add($"has name matching '{pattern}'");
+        //    return AppendCondition(c => c.Name.Matches(pattern));
+        //}
 
         public IReducedTypeCollection IsInterface()
         {
@@ -96,5 +111,22 @@ namespace MarkUnit.Classes {
             return result;
         }
 
+    }
+    
+    internal class ClassFromTypeCollector : IClassCollector
+    {
+        private readonly IEnumerable<IClass> _classes;
+
+        public ClassFromTypeCollector(IFilter<IType> filter)
+        {
+            _classes = filter.FilteredItems.Select(t => new MarkUnitClass(t.Assembly, t.ClassType));
+        }
+
+        public IEnumerable<IClass> Get()
+        {
+            return _classes;
+        }
+
+        public IFilteredAssemblies Assemblies { get; set; }
     }
 }

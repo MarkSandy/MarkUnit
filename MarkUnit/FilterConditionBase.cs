@@ -9,14 +9,15 @@ namespace MarkUnit
     {
         protected Func<IFilter<T>, bool, TAssertion> CeateAssertionFunc;
         private readonly IFilter<T> _filter;
-        private readonly bool _negate;
 
-        public FilterConditionBase(TCondition condition, IFilter<T> filter, bool negate)
+        protected FilterConditionBase(TCondition condition, IFilter<T> filter, bool negate)
             : base(condition)
         {
             _filter = filter;
-            _negate = negate;
+            Negate = negate;
         }
+
+        public bool Negate { get; }
 
         public TAssertion Should()
         {
@@ -24,7 +25,7 @@ namespace MarkUnit
             _filter.Materialize();
             if (!_filter.FilteredItems.Any())
                 PredicateString.Add("WARNING! No matches ******");
-            return CeateAssertionFunc(_filter, _negate);
+            return CeateAssertionFunc(_filter, Negate);
         }
     }
 }

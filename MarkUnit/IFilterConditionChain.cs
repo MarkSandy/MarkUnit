@@ -3,6 +3,7 @@
     public interface IFilterConditionChain<out TCondition, out TAssertion> 
         : IRule<TCondition>
     {
+        bool Negate { get; }
         TAssertion Should();
     }
 }

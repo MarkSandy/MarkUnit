@@ -14,7 +14,6 @@ namespace MarkUnit.Classes
         {
             FilterCondition = new ClassFilterCondition(classRuleFactory,this, classFilter, negate);
         }
- 
 
         public IReducedClassCollection ImplementsInterface<TInterface>()
         {
