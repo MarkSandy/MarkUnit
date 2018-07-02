@@ -1,4 +1,7 @@
 ﻿namespace MarkUnit
 {
-    internal interface IInternalFilterConditionChain<out TCondition, out TAssertion> : IFilterConditionChain<TCondition, TAssertion> { }
+    internal interface IInternalFilterConditionChain<out TCondition, out TAssertion> : IFilterConditionChain<TCondition, TAssertion>
+    {
+        TCondition FollowUp { get; }
+    }
 }

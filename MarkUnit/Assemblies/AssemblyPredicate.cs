@@ -13,6 +13,12 @@
             _not = not;
         }
 
+        public IPredicate<IAssemblyCollection> Except(params string[] exceptionPatterns)
+        {
+            // TODO: Add to xception list
+            return this;
+        }
+
         public IAssemblyCollection That()
         {
             return ThatOrWhich("that");
@@ -26,10 +32,10 @@
         private IAssemblyCollection ThatOrWhich(string word)
         {
             PredicateString.Add(word);
-            var assemblies = _assemblyCollector.Get();
+            var assemblies = _assemblyCollector.SolutionAssemblies; // was 'Get()', i.e. all the assemblies
             var assemblyFilter = new FilteredAssemblies(assemblies);
             var result= new AssemblyCollection(assemblyFilter, _negate);
-            return _not ? result.Not() : result;
+            return _not ? result.SilentNot() : result;
         }
     }
 }

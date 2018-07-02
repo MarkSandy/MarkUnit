@@ -45,12 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assemblies\ArchUnitAssembly.cs" />
+    <Compile Include="Assemblies\MarkUnitAssembly.cs" />
     <Compile Include="Assemblies\AssemblyCollection.cs" />
     <Compile Include="Assemblies\AssemblyLogicalLink.cs" />
     <Compile Include="Assemblies\AssemblyRule.cs" />
     <Compile Include="Assemblies\AssemblyFilterCondition.cs" />
     <Compile Include="Assemblies\AssemblyCollector.cs" />
+    <Compile Include="Assemblies\AssemblyUtils.cs" />
     <Compile Include="Assemblies\FilteredAssemblies.cs" />
     <Compile Include="Assemblies\AssemblyReader.cs" />
     <Compile Include="Assemblies\AssemblyPredicate.cs" />
@@ -60,6 +61,62 @@
     <Compile Include="Assemblies\IFilteredAssemblies.cs" />
     <Compile Include="Assemblies\IAssemblyRule.cs" />
     <Compile Include="Assemblies\IInternalAssemblyTestCondition.cs" />
+    <Compile Include="AssertionVerifierBase.cs" />
+    <Compile Include="Classes\ClassCollectionFactory.cs" />
+    <Compile Include="Classes\ClassFromTypeCollector.cs" />
+    <Compile Include="Classes\ClassMatchingInterfaceLogicalLink.cs" />
+    <Compile Include="Classes\ClassPredicateEx.cs" />
+    <Compile Include="Classes\ClassRuleFactory.cs" />
+    <Compile Include="Classes\ClassUsingClassCondition.cs" />
+    <Compile Include="Classes\ClassUsingClassLogicalLink.cs" />
+    <Compile Include="Classes\FilteredInterfaces.cs" />
+    <Compile Include="Classes\FilteredTypes.cs" />
+    <Compile Include="Classes\FunctionalComponentRule.cs" />
+    <Compile Include="Classes\IClassMatchingInterfaceRule.cs" />
+    <Compile Include="Classes\IClassPredicateEx.cs" />
+    <Compile Include="Classes\IClassUsesClassCondition.cs" />
+    <Compile Include="Classes\IClassUsingClassRule.cs" />
+    <Compile Include="Classes\IDeclaredInAssemblyPredicate.cs" />
+    <Compile Include="Classes\IFilteredInterfaces.cs" />
+    <Compile Include="Classes\IFilteredTypes.cs" />
+    <Compile Include="Classes\IInterfaceBinaryOperator.cs" />
+    <Compile Include="Classes\IInterfaceCollection.cs" />
+    <Compile Include="Classes\IInterfaceCollectionFactory.cs" />
+    <Compile Include="Classes\IInterfaceCollector.cs" />
+    <Compile Include="Classes\IInterfaceRuleFactory.cs" />
+    <Compile Include="Classes\IInternalClassMatchingInterfaceCondition.cs" />
+    <Compile Include="Classes\IInternalClassUsesClassCondition.cs" />
+    <Compile Include="Classes\IInternalTypeTestCondition.cs" />
+    <Compile Include="Classes\InterfaceCollectionFactory.cs" />
+    <Compile Include="Classes\InterfaceFilterCondition.cs" />
+    <Compile Include="Classes\InterfaceFilterMapper.cs" />
+    <Compile Include="Classes\InterfaceFromTypeCollector.cs" />
+    <Compile Include="Classes\InterfaceRuleFactory.cs" />
+    <Compile Include="Classes\IReducedInterfaceCollection.cs" />
+    <Compile Include="Classes\IReducedTypeCollection.cs" />
+    <Compile Include="Classes\IType.cs" />
+    <Compile Include="Classes\ITypeBinaryOperator.cs" />
+    <Compile Include="Classes\ITypeCollection.cs" />
+    <Compile Include="Classes\ITypeCollectionFactory.cs" />
+    <Compile Include="Classes\ITypeCollector.cs" />
+    <Compile Include="Classes\ITypePredicate.cs" />
+    <Compile Include="Classes\ITypeRule.cs" />
+    <Compile Include="Classes\ITypeRuleFactory.cs" />
+    <Compile Include="Classes\ITypeTestCondition.cs" />
+    <Compile Include="Classes\MarkUnitInterface.cs" />
+    <Compile Include="Classes\MarkUnitType.cs" />
+    <Compile Include="Classes\TypeCollectionFactory.cs" />
+    <Compile Include="Classes\TypeCollector.cs" />
+    <Compile Include="Classes\TypeComponentRule.cs" />
+    <Compile Include="Classes\TypeConditionBase.cs" />
+    <Compile Include="Classes\TypeFilterCondition.cs" />
+    <Compile Include="Classes\TypeLogicalLink.cs" />
+    <Compile Include="Classes\TypePredicate.cs" />
+    <Compile Include="Classes\TypeReader.cs" />
+    <Compile Include="Classes\TypeRule.cs" />
+    <Compile Include="Classes\TypeRuleFactory.cs" />
+    <Compile Include="IAssemblyComponent.cs" />
+    <Compile Include="ImmediateCheckAssertionVerifier.cs" />
     <Compile Include="INamePredicate.cs" />
     <Compile Include="Assemblies\IReducedAssemblyCollection.cs" />
     <Compile Include="Classes\IClassCollectionFactory.cs" />
@@ -77,7 +134,7 @@
     <Compile Include="Classes\IClassBinaryOperator.cs" />
     <Compile Include="Classes\IClassInfoCollector.cs" />
     <Compile Include="Classes\IClassMatchingInterfaceCondition.cs" />
-    <Compile Include="Classes\IClassLogicalLink.cs" />
+    <Compile Include="Classes\IClassRule.cs" />
     <Compile Include="Classes\ICondition.cs" />
     <Compile Include="Classes\IInterface.cs" />
     <Compile Include="Classes\IInterfacePredicate.cs" />
@@ -93,7 +150,7 @@
     <Compile Include="ICheckable.cs" />
     <Compile Include="IInternalCheckable.cs" />
     <Compile Include="IInternalFilterConditionChain.cs" />
-    <Compile Include="ILogicalLink.cs" />
+    <Compile Include="IRule.cs" />
     <Compile Include="LogicalLink.cs" />
     <Compile Include="TestCollectionBase.cs" />
     <Compile Include="FilterConditionBase.cs" />
@@ -135,6 +192,7 @@
     <Compile Include="Solution.cs" />
     <Compile Include="StringHelper.cs" />
     <Compile Include="TestNotPassedException.cs" />
+    <Compile Include="TestResultExceptionLogger.cs" />
     <Compile Include="TestResultLogger.cs" />
     <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
@@ -142,4 +200,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y/E/S "$(TargetPath)" "C:\Projects\Repos\KtDb\Source\ReferencedComponents\"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -4,10 +4,6 @@ using System.Reflection;
 
 namespace MarkUnit.Classes
 {
-    internal interface IInternalClassMatchingInterfaceCondition
-        : IClassMatchingInterfaceCondition,
-            IInternalCheckable { }
-
     public interface IClassMatchingInterfaceCondition 
     {
         IClassMatchingInterfaceRule HasName(Expression<Predicate<string>> nameFilterExpression);

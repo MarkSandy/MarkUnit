@@ -6,11 +6,11 @@ namespace MarkUnit
 {
     internal class TestCollectionBase<T, TCondition, TAssertion, TPostCondition>
         : IRule<TCondition>
-        where TPostCondition : IFilterConditionChain<TCondition, TAssertion>
+        where TPostCondition :  IFilterConditionChain<TCondition, TAssertion>
         where T : INamedComponent
     {
         protected IFilter<T> Filter;
-        
+        protected TCondition FollowUp; 
         public TestCollectionBase(IFilter<T> items)
         {
             Filter = items;
@@ -20,13 +20,19 @@ namespace MarkUnit
 
         public TCondition And()
         {
-            return FilterCondition.And();
+             return FilterCondition.And();
         }
 
         public TCondition Not()
         {
+            PredicateString.Add("not");
+            return SilentNot();
+        }
+
+        internal TCondition SilentNot()
+        {
             Filter.Negate();
-            return FilterCondition.And();
+            return FollowUp;
         }
 
         public TAssertion Should()

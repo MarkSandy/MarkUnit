@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using MarkUnit.Assemblies;
+﻿using System.Collections.Generic;
 
 namespace MarkUnit.Classes
 {
-    public interface IType : INamedComponent
-    {
-        Type ClassType { get; }
-        IAssembly Assembly { get; }
-        string Namespace { get; }
-
-    }
     public interface IClass : IType
     {
         IEnumerable<string> ReferencedNameSpaces { get; }

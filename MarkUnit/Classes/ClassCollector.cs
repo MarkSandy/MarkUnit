@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using MarkUnit.Assemblies;
 
@@ -26,23 +27,6 @@ namespace MarkUnit.Classes
         {
             _classInfoCollector.Examine(classInfo);
             return classInfo;
-        }
-    }
-
-    internal class TypeCollector : ITypeCollector
-    {
-        private readonly ITypeReader<IType> _typeReader;
-
-        public TypeCollector(ITypeReader<IType> typeReader)
-        {
-            _typeReader = typeReader;
-        }
-
-        public IFilteredAssemblies Assemblies { get; set; }
-
-        public IEnumerable<IType> Get()
-        {
-            return _typeReader.LoadFromAssemblies(Assemblies);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Tests.MarkUnit.Classes
             var verifierMock=new Mock<IAssertionVerifier<IClass>>();
             var filterMock = new Mock<IFilter<IClass>>();
             verifierMock.SetupGet(v => v.Items).Returns(filterMock.Object);
-            var sut=new InterfacePredicate(verifierMock.Object);
+            var sut=new InterfacePredicate<IClass>(verifierMock.Object);
             
             var v1 = sut.That();
             var v2 = sut.Which();

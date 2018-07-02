@@ -22,6 +22,11 @@ namespace MarkUnit
             return new Solution(null);
         }
 
+        public Solution WithoutException()
+        {
+            Instances.ThrowException = false;
+            return this;
+        }
         public Solution WithImmediateCheck()
         {
             Instances.ImmediateCheck = true;

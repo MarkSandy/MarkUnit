@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-
-namespace MarkUnit.Assemblies
+﻿namespace MarkUnit.Assemblies
 {
     internal class AssemblyCollection
         : TestCollectionBase<IAssembly, IAssemblyCollection, IAssemblyTestCondition, IReducedAssemblyCollection>,
@@ -10,6 +7,7 @@ namespace MarkUnit.Assemblies
         public AssemblyCollection(FilteredAssemblies assemblies, bool negate)
             : base(assemblies)
         {
+            FollowUp = this;
             FilterCondition = new AssemblyFilterCondition(this, assemblies, negate);
         }
     }

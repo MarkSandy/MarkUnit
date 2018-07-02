@@ -21,21 +21,6 @@ namespace MarkUnit.Classes
         IClassRule BeInAssembly(Expression<Predicate<Assembly>> assemblyFilterExpression);
         IClassRule BeDeclaredInNamespaceMatching(string pattern);
         IClassRule Be(Expression<Predicate<Type>> typeFilterExpression);
+        IClassPredicateEx UseAClass();
     }
-
-
-    public interface ITypeTestCondition
-    {
-        ITypeRule HaveName(Expression<Predicate<string>> nameFunc);
-        ITypeRule HaveNameMatching(string pattern);
-        
-        ITypeTestCondition Not();
-
-        ITypeRule BeInAssemblyMatching(string pattern);
-        ITypeRule BeInAssembly(Assembly assembly);
-        ITypeRule BeDeclaredInNamespaceMatching(string pattern);
-        ITypeRule Be(Expression<Predicate<Type>> typeFilterExpression);
-    }
-
-    
 }

@@ -13,16 +13,19 @@ namespace MarkUnit
         private static ITypeReader<IType> _typeReader;
         private static IClassCollector _classCollector;
         private static ITypeCollector _typeCollector;
+        private static IInterfaceRuleFactory _interfaceRuleFactory;
         private static IClassRuleFactory _classRuleFactory;
         private static ITypeRuleFactory _typeRuleFactory;
 
-        private static bool ThrowException = true;
+        public static bool ThrowException = true;
         public static bool ImmediateCheck = false;
 
         public static IClassCollector ClassCollector => _classCollector?? (_classCollector= new ClassCollector(ClassReader, ClassInfoCollector));
 
         public static ITypeCollector TypeCollector => _typeCollector?? (_typeCollector= new TypeCollector(TypeReader));
         
+        public static IInterfaceRuleFactory InterfaceRuleFactory => _interfaceRuleFactory?? (_interfaceRuleFactory= new InterfaceRuleFactory());
+
         public static IClassRuleFactory ClassRuleFactory => _classRuleFactory?? (_classRuleFactory= new ClassRuleFactory());
         
         public static ITypeRuleFactory TypeRuleFactory => _typeRuleFactory?? (_typeRuleFactory= new TypeRuleFactory());

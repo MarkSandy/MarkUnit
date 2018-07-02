@@ -24,7 +24,7 @@ namespace MarkUnit.Classes
         public IClassMatchingInterfaceRule HasMatchingClassName()
         {
             PredicateString.Add($"has matching name");
-            return InnerHasMatchingClassName("(.*)^$", "I$1");
+            return InnerHasMatchingClassName("^(.*)$", "I$1");
         }
 
         public IClassMatchingInterfaceRule HasMatchingClassName(string regExClass, string matchingInterfaceNameRegEx)
@@ -35,8 +35,24 @@ namespace MarkUnit.Classes
 
         private IClassMatchingInterfaceRule InnerHasMatchingClassName(string regExClass, string matchingInterfaceNameRegEx)
         {
-            return InnerAppendCondition((c, i) => i.Name == Regex.Replace(c.Name, regExClass, matchingInterfaceNameRegEx));
+            return InnerAppendCondition((c, i) => Tester(regExClass, matchingInterfaceNameRegEx, i, c));
         }
+
+        private static bool Tester(string regExClass, string matchingInterfaceNameRegEx, Type i, IClass c)
+        {
+            string replace;
+            if (c.Name.Contains("FertigungSearch"))
+            replace = Regex.Replace(c.Name, regExClass,  matchingInterfaceNameRegEx);
+            else
+            {
+                replace = Regex.Replace(c.Name, regExClass,  matchingInterfaceNameRegEx);
+
+
+            }
+
+            return i.Name == replace;
+        }
+
         public IClassMatchingInterfaceRule HasMatchingName(Expression<Func<Type, string>> typeFilterExpression)
         {
             PredicateString.Add($"has matching name {typeFilterExpression}");
@@ -86,26 +102,6 @@ namespace MarkUnit.Classes
         {
             PredicateString.Add($"is declared in an assembly '{pattern}'");
             return InnerAppendCondition((c,i)=> i.Assembly.FullName.Matches(pattern));
-        }
-    }
-
-    public interface IClassMatchingInterfaceRule :  IRule<IClassMatchingInterfaceCondition>, ICheckable{}
-
-    internal class ClassMatchingInterfaceLogicalLink
-        : LogicalLink<IClassMatchingInterfaceCondition>,
-            IClassMatchingInterfaceRule
-    {
-        private readonly IInternalClassMatchingInterfaceCondition _followUp;
-
-        public ClassMatchingInterfaceLogicalLink(IInternalClassMatchingInterfaceCondition followUp) : base(followUp)
-        {
-            _followUp = followUp;
-        }
-
-
-        public void Check()
-        {
-            _followUp.Check();
         }
     }
 }

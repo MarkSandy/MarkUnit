@@ -6,9 +6,4 @@ namespace MarkUnit.Classes
     {
         IFilteredAssemblies Assemblies { get; set; }
     }
-
-    internal interface ITypeCollector : ICollector<IType>
-    {
-        IFilteredAssemblies Assemblies { get; set; }
-    }
 }

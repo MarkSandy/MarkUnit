@@ -1,12 +1,29 @@
-﻿namespace MarkUnit.Classes
+﻿using System;
+using System.Runtime.Remoting.Messaging;
+using System.Text.RegularExpressions;
+
+namespace MarkUnit.Classes
 {
-    internal class InterfacePredicate : IInterfacePredicate
+    internal class InterfacePredicate<T> : IInterfacePredicate where T : IClass
     {
         private readonly ClassMatchingInterfaceCondition _classMatchingInterfaceCondition;
 
-        public InterfacePredicate(IAssertionVerifier<IClass> verifier)
+        IFilter<IInterface> CreateMapper(IFilter<T> filter)
         {
-            _classMatchingInterfaceCondition = new ClassMatchingInterfaceCondition(new ClassToInterfaceFilterMapper(verifier.Items), false);
+            if (typeof(T)==typeof(IInterface)) return new InterfaceFilterMapper((IFilter<IInterface>)filter);
+            if(typeof(T)==typeof(IClass)) return new ClassToInterfaceFilterMapper((IFilter<IClass>)filter);
+            throw new InvalidOperationException($"invalid filter of type {typeof(T)}");
+        }
+        public InterfacePredicate(IAssertionVerifier<T> verifier)
+        {
+            _classMatchingInterfaceCondition = new ClassMatchingInterfaceCondition(CreateMapper(verifier.Items), false);
+        }
+
+        public IPredicate<IClassMatchingInterfaceCondition> Except(params string[] exceptionPatterns)
+        {
+            // TODO: Add to xception list
+            return this;
+
         }
 
         public IClassMatchingInterfaceCondition That()

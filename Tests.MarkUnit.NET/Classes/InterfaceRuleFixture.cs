@@ -58,7 +58,7 @@ namespace Tests.MarkUnit.Classes
         public void HasNameMatching_Should_MatchNameAgainstPattern()
         {
             var sut = CreateSystemUnderTest();
-            sut.HasNameMatching("*" + nameof(IInterfaceOfClass1).Substring(2));
+            sut.HaveNameMatching("*" + nameof(IInterfaceOfClass1).Substring(2));
             AssertThatSavedPredicateMatchesClass1AndNotClass2();
         }
          
@@ -66,14 +66,14 @@ namespace Tests.MarkUnit.Classes
         public void HasName_Should_MatchNameAgainstExpression()
         {
             var sut = CreateSystemUnderTest();
-            sut.HasName(s=>s==nameof(IInterfaceOfClass1));
+            sut.HaveName(s=>s==nameof(IInterfaceOfClass1));
             AssertThatSavedPredicateMatchesClass1AndNotClass2();
         }
         [TestMethod]
         public void ImplementsInterface_Should_CheckInterfaceImplementation()
         {
             var sut = CreateSystemUnderTest();
-            sut.ImplementsInterface<IBaseInterface>();
+            sut.ImplementInterface<IBaseInterface>();
             AssertThatSavedPredicateMatchesClass1AndNotClass2(); 
         }
 
@@ -88,7 +88,7 @@ namespace Tests.MarkUnit.Classes
             var sut = CreateSystemUnderTest(mockClass1.Object, mockClass2.Object);
 
             // Act
-            sut.IsDeclaredInAssembly(a => a ==typeof(IInterfaceOfClass1).Assembly );
+            sut.BeInAssembly(a => a ==typeof(IInterfaceOfClass1).Assembly );
 
             // Assert
             Assert.IsTrue(_savedPredicate(mockClass1.Object));
@@ -106,7 +106,7 @@ namespace Tests.MarkUnit.Classes
             var sut = CreateSystemUnderTest(mockClass1.Object, mockClass2.Object);
 
             // Act
-            sut.IsDeclaredInAssemblyMatching("*ssembly1");
+            sut.BeInAssemblyMatching("*ssembly1");
 
             // Assert
             Assert.IsTrue(_savedPredicate(mockClass1.Object));
@@ -117,7 +117,7 @@ namespace Tests.MarkUnit.Classes
         public void Is_Should_()
         {
             var sut = CreateSystemUnderTest();
-            sut.Is(t => t == typeof(IInterfaceOfClass1));
+            sut.Be(t => t == typeof(IInterfaceOfClass1));
             AssertThatSavedPredicateMatchesClass1AndNotClass2(); 
  
         }

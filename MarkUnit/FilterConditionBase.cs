@@ -27,5 +27,6 @@ namespace MarkUnit
                 PredicateString.Add("WARNING! No matches ******");
             return CeateAssertionFunc(_filter, Negate);
         }
+ 
     }
 }

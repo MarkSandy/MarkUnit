@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 
 namespace MarkUnit
 {
@@ -42,7 +45,22 @@ namespace MarkUnit
 
         public TAssertion And()
         {
+            PredicateString.Add("and");
             return LogicalLink.And();
         }
+
+        public TLogicalLink HaveName(Expression<Predicate<string>> nameFilterExpression)
+        {
+            PredicateString.Add($"has name ({nameFilterExpression})");
+            var nameFilter = nameFilterExpression.Compile();
+            return AppendCondition(c => nameFilter(c.Name));
+        }
+        
+        public TLogicalLink HaveNameMatching(string pattern)
+        {
+            PredicateString.Add($"has name matching '{pattern}'");
+            return AppendCondition(c => c.Name.Matches(pattern));
+        }
+        
     }
 }

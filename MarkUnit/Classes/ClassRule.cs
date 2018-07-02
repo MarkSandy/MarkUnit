@@ -1,12 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace MarkUnit.Classes
 {
-  internal class ClassRule : RuleBase<IClass, IClassTestCondition,IClassRule>, IInternalClassTestCondition
+  internal class ClassRule : FunctionalComponentRule<IClass, IClassTestCondition,IClassRule>, IInternalClassTestCondition
     {
         public ClassRule(IAssertionVerifier<IClass> verifier) : base(verifier)
         {
@@ -17,43 +14,6 @@ namespace MarkUnit.Classes
         {
             LogicalLink = new ClassLogicalLink(this);
         }
-         
-        public IClassRule HaveNameMatching(string pattern)
-        {
-            PredicateString.Add($"have a name matching '{pattern}'");
-            return AppendCondition(s => s.Name.Matches(pattern));
-        }
-
-        public IClassRule HaveName(Expression<Predicate<string>> nameFilterExpression)
-        {
-            PredicateString.Add($"have a name matching '{nameFilterExpression}'");
-            var nameFilter = nameFilterExpression.Compile();
-            return AppendCondition(c => nameFilter(c.Name));
-        }
-
-        public IClassRule ReferenceNamespacesMatching(string pattern)
-        {
-            PredicateString.Add($"reference a namespace matching '{pattern}'");
-            return AppendCondition(c => c.ReferencedNameSpaces.Any(n => n.Matches(pattern)));
-        }
-
-        public IClassRule ImplementInterfaceMatching(string pattern)
-        {
-            PredicateString.Add($"implement an interface matching '{pattern}'");
-            return AppendCondition(c => c.ClassType.GetInterfaces().Any(i => i.Name.Matches(pattern)));
-        }
-
-        public IClassRule ImplementInterface<T>()
-        {
-            PredicateString.Add($"implement interface {typeof(T).Name}");
-            return AppendCondition(c => c.ClassType.ImplementsInterface(typeof(T)));
-        }
-
-        public IInterfacePredicate ImplementInterface()
-        {
-            PredicateString.Add($"implement interface");
-            return new InterfacePredicate(Verifier);
-        }
 
         public IClassRule UsesClassMatching(string regExOnClassName, string regExOnMatchingClass)
         {
@@ -61,92 +21,10 @@ namespace MarkUnit.Classes
             return AppendCondition(c => c.ReferencedClasses.Any(x => MatchesName(x.Name, regExOnClassName, regExOnMatchingClass)));
         }
 
-        public IClassRule BeInAssemblyMatching(string pattern)
+        public IClassPredicateEx UseAClass()
         {
-            PredicateString.Add($"be in an assembly matching '{pattern}'");
-            return AppendCondition(c => c.Assembly.Name.Matches(pattern));
-        }
-
-        public IClassRule BeInAssembly(Assembly assembly)
-        {
-            PredicateString.Add($"be in assembly '{assembly.FullName}'");
-            return AppendCondition(c => c.Assembly.Assembly.FullName == assembly.FullName);
-        }
-
-        public IClassRule BeInAssembly(Expression<Predicate<Assembly>> assemblyPredicate)
-        {
-            PredicateString.Add($"be declared in assembly matching {assemblyPredicate}");
-            var assemblyFilter = assemblyPredicate.Compile();
-            return AppendCondition(c => assemblyFilter(c.Assembly.Assembly));
-        }
-
-        public IClassRule BeDeclaredInNamespaceMatching(string pattern)
-        {
-            PredicateString.Add($"be declared in namespace matching '{pattern}'");
-            return AppendCondition(c => c.Namespace.Matches(pattern));
-        }
-
-        public IClassRule Be(Expression<Predicate<Type>> typeFilterExpression)
-        {
-            PredicateString.Add($"be {typeFilterExpression}");
-            var typePredicate = typeFilterExpression.Compile();
-            return AppendCondition(c => typePredicate(c.ClassType));
-        }
-
-        bool MatchesName(string name, string regExOnClassName, string regExOnMatchingClass)
-        {
-            string repl = Regex.Replace(name, regExOnClassName, regExOnMatchingClass);
-            return name.Matches(repl);
-        }
-    }
-    internal class TypeRule : RuleBase<IType, ITypeTestCondition,ITypeRule>, IInternalTypeTestCondition
-    {
-        public TypeRule(IAssertionVerifier<IType> verifier) : base(verifier)
-        {
-            LogicalLink = new TypeLogicalLink(this);
-        }
-
-        public TypeRule(IFilter<IType> items, bool negateAssertion) : base(items, negateAssertion)
-        {
-            LogicalLink = new TypeLogicalLink(this);
-        }
-         
-        public ITypeRule HaveNameMatching(string pattern)
-        {
-            PredicateString.Add($"have a name matching '{pattern}'");
-            return AppendCondition(s => s.Name.Matches(pattern));
-        }
-
-        public ITypeRule HaveName(Expression<Predicate<string>> nameFilterExpression)
-        {
-            PredicateString.Add($"have a name matching '{nameFilterExpression}'");
-            var nameFilter = nameFilterExpression.Compile();
-            return AppendCondition(c => nameFilter(c.Name));
-        }
-
-        public ITypeRule BeInAssemblyMatching(string pattern)
-        {
-            PredicateString.Add($"be in an assembly matching '{pattern}'");
-            return AppendCondition(c => c.Assembly.Name.Matches(pattern));
-        }
-
-        public ITypeRule BeInAssembly(Assembly assembly)
-        {
-            PredicateString.Add($"be in assembly '{assembly.FullName}'");
-            return AppendCondition(c => c.Assembly.Assembly.FullName == assembly.FullName);
-        }
-
-        public ITypeRule BeDeclaredInNamespaceMatching(string pattern)
-        {
-            PredicateString.Add($"be declared in namespace matching '{pattern}'");
-            return AppendCondition(c => c.Namespace.Matches(pattern));
-        }
-
-        public ITypeRule Be(Expression<Predicate<Type>> typeFilterExpression)
-        {
-            PredicateString.Add($"be {typeFilterExpression}");
-            var typePredicate = typeFilterExpression.Compile();
-            return AppendCondition(c => typePredicate(c.ClassType));
+            PredicateString.Add($"use a class");
+            return new ClassPredicateEx(Verifier);
         }
 
         bool MatchesName(string name, string regExOnClassName, string regExOnMatchingClass)

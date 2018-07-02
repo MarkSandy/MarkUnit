@@ -17,6 +17,8 @@ namespace MarkUnit
 
         public void Materialize()
         {
+            var x = FilteredItems;
+
             FilteredItems = FilteredItems.ToArray();
         }
 

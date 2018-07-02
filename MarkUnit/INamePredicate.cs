@@ -7,6 +7,5 @@ namespace MarkUnit
     {
         TPostCondition HasName(Expression<Predicate<string>> nameFilter);
         TPostCondition HasNameMatching(string pattern);
-
     }
 }

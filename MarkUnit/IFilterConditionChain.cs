@@ -1,9 +1,11 @@
-﻿namespace MarkUnit
+﻿using MarkUnit.Classes;
+
+namespace MarkUnit
 {
     public interface IFilterConditionChain<out TCondition, out TAssertion> 
-        : IRule<TCondition>
+        : IRule<TCondition> 
     {
         bool Negate { get; }
-        TAssertion Should();
+         TAssertion Should();
     }
 }
