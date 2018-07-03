@@ -6,6 +6,7 @@
         private readonly ITypeCollector _typeCollector;
         private readonly bool _negate;
         private readonly bool _not;
+        private string[] _exceptions=new string[0];
 
         public TypePredicate(ITypeCollector typeCollector, bool negate, bool not)
             : this(typeCollector,negate,not,new TypeCollectionFactory())
@@ -22,7 +23,7 @@
 
         public IPredicate<ITypeCollection> Except(params string[] exceptionPatterns)
         {
-            // TODO: Add to xception list
+            _exceptions = exceptionPatterns;
             return this;
         }
 
@@ -34,7 +35,7 @@
         private ITypeCollection ThatOrWhich(string word)
         {
             PredicateString.Add(word);
-            return _typeCollectionFactory.Create(_typeCollector, _negate, _not);
+            return _typeCollectionFactory.Create(_typeCollector, _negate, _not,_exceptions);
         }
 
         public ITypeCollection Which()

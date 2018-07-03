@@ -20,7 +20,6 @@ namespace MarkUnit.Classes
             LogicalLink = new ClassUsingClassLogicalLink(this);
         }
         
-
         private IClassUsingClassRule InnerAppendCondition(Func<IClass,Type,bool> interfaceFilter)
         {
             return AppendCondition(c => c.ClassType.GetInterfaces().Any(i => interfaceFilter(c,i)));
@@ -63,6 +62,11 @@ namespace MarkUnit.Classes
         {
             PredicateString.Add($"is declared in an assembly '{pattern}'");
             return InnerAppendCondition((c,i)=> i.Assembly.FullName.Matches(pattern));
+        }
+
+        public void AddIgnoreList(string[] exceptions)
+        {
+            throw new NotImplementedException();
         }
     }
 }

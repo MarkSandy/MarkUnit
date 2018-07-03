@@ -51,14 +51,14 @@ namespace MarkUnit
 
         public TLogicalLink HaveName(Expression<Predicate<string>> nameFilterExpression)
         {
-            PredicateString.Add($"has name ({nameFilterExpression})");
+            PredicateString.Add($"have name ({nameFilterExpression})");
             var nameFilter = nameFilterExpression.Compile();
             return AppendCondition(c => nameFilter(c.Name));
         }
         
         public TLogicalLink HaveNameMatching(string pattern)
         {
-            PredicateString.Add($"has name matching '{pattern}'");
+            PredicateString.Add($"have name matching '{pattern}'");
             return AppendCondition(c => c.Name.Matches(pattern));
         }
         

@@ -6,7 +6,8 @@ namespace MarkUnit.Classes
 {
     internal class InterfacePredicate<T> : IInterfacePredicate where T : IClass
     {
-        private readonly ClassMatchingInterfaceCondition _classMatchingInterfaceCondition;
+        private readonly IAssertionVerifier<T> _verifier;
+        private string[] _exceptions;
 
         IFilter<IInterface> CreateMapper(IFilter<T> filter)
         {
@@ -16,12 +17,12 @@ namespace MarkUnit.Classes
         }
         public InterfacePredicate(IAssertionVerifier<T> verifier)
         {
-            _classMatchingInterfaceCondition = new ClassMatchingInterfaceCondition(CreateMapper(verifier.Items), false);
+            _verifier = verifier;
         }
 
         public IPredicate<IClassMatchingInterfaceCondition> Except(params string[] exceptionPatterns)
         {
-            // TODO: Add to xception list
+            _exceptions = exceptionPatterns;
             return this;
 
         }
@@ -34,7 +35,9 @@ namespace MarkUnit.Classes
         private IClassMatchingInterfaceCondition WhichOrThat(string word)
         {
             PredicateString.Add(word);
-            return _classMatchingInterfaceCondition;
+            var classMatchingInterfaceCondition = new ClassMatchingInterfaceCondition(CreateMapper(_verifier.Items), false);
+
+            return classMatchingInterfaceCondition;
         }
 
         public IClassMatchingInterfaceCondition Which()

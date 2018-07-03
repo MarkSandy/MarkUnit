@@ -21,10 +21,10 @@ namespace MarkUnit
 
         public TAssertion Should()
         {
-            PredicateString.Add("should");
             _filter.Materialize();
             if (!_filter.FilteredItems.Any())
-                PredicateString.Add("WARNING! No matches ******");
+                PredicateString.AddWarning($"No matches for {PredicateString.Text}");
+            PredicateString.Add("should");
             return CeateAssertionFunc(_filter, Negate);
         }
  

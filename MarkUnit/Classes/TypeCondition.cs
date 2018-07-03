@@ -32,7 +32,7 @@ namespace MarkUnit.Classes
         private IReducedClassCollection CreateReducedClassCollection(IFilter<IType> filter)
         {
             var classCollector = new ClassFromTypeCollector(filter);
-            var classCollection = _classCollectionFactory.Create(Instances.ClassRuleFactory, classCollector, FilterCondition.Negate, false);
+            var classCollection = _classCollectionFactory.Create(Instances.ClassRuleFactory, classCollector, FilterCondition.Negate, false, new string[0]);
             var classFilter = new FilteredClasses(classCollector.Get());
             return new ClassFilterCondition(Instances.ClassRuleFactory, classCollection, classFilter, FilterCondition.Negate);
         }
