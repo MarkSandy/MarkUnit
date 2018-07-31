@@ -22,5 +22,9 @@ namespace MarkUnit.Classes
         IClassRule BeDeclaredInNamespaceMatching(string pattern);
         IClassRule Be(Expression<Predicate<Type>> typeFilterExpression);
         IClassPredicateEx UseAClass();
+        IClassRule HaveMethods(Expression<Predicate<IMethod>> methodPredicate);
+        IClassRule HaveCyclicDependencies();
     }
+
+    
 }

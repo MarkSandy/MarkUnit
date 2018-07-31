@@ -2,6 +2,6 @@
 {
     internal interface IClassInfoCollector
     {
-        void Examine(IClass classInfo);
+        IInternalClass Examine(IInternalClass classInfo);
     }
 }

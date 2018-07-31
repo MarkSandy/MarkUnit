@@ -9,7 +9,7 @@ namespace MarkUnit
     internal static class Instances
     {
         private static IAssemblyReader _assemblyReader;
-        private static ITypeReader<IClass> _classReader;
+        private static ITypeReader<IInternalClass> _classReader;
         private static ITypeReader<IType> _typeReader;
         private static IClassCollector _classCollector;
         private static ITypeCollector _typeCollector;
@@ -34,7 +34,7 @@ namespace MarkUnit
 
         private static IAssemblyReader AssemblyReader => _assemblyReader ?? (_assemblyReader = new AssemblyReader(new AssemblyUtils()));
 
-        private static ITypeReader<IClass> ClassReader => _classReader ?? (_classReader = new ClassReader(TypeReader));
+        private static ITypeReader<IInternalClass> ClassReader => _classReader ?? (_classReader = new ClassReader(TypeReader));
         
         public static AssemblyCollector AssemblyCollector => new AssemblyCollector(AssemblyReader);
 

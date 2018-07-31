@@ -4,9 +4,11 @@ using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
 {
-    internal class MarkUnitInterface : IInterface
+    internal class MarkUnitInterface : IInterface, IInternalClass
     {
         private readonly IClass _classWrapper;
+        private readonly List<IMethod> _methods = new List<IMethod>();
+        private readonly List<IMethod> _constructors = new List<IMethod>();
         public string Name => _classWrapper.Name;
 
         public Type ClassType => _classWrapper.ClassType;
@@ -22,6 +24,20 @@ namespace MarkUnit.Classes
         public void AddReferencedClass(IClass referencedClass)
         {
             _classWrapper.AddReferencedClass(referencedClass);
+        }
+
+        public IEnumerable<IMethod> Methods => _methods;
+
+        public IEnumerable<IMethod> Constructors => _constructors;
+
+        public void AddMethod(IMethod method)
+        {
+            _methods.Add(method);
+        }
+
+        public void AddConstructor(IMethod constructor)
+        {
+            _constructors.Add(constructor);
         }
 
         public MarkUnitInterface(IClass classWrapper)

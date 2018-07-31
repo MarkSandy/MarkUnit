@@ -1,11 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using MarkUnit;
+using MarkUnit.Classes;
 
 namespace KaroTesterDemo
 {
     internal class Program
     {
+        private static List<string> _longMethods = new List<string>();
+
+        static bool CheckAndCollect(IMethod method)
+        {
+            if (!method.IsPublic || method.MethodName.Matches("*Row")) return true;
+            if (method.Parameters.Length > 9) _longMethods.Add(method.MethodName);
+            return method.Parameters.Length < 10;
+        }
+
         private static void Main(string[] args)
         {
             string path = @"C:\Projects\Repos\KtDb\Build\Debug\";
@@ -15,6 +26,8 @@ namespace KaroTesterDemo
             Measure(() =>
                 kaRo.EachClass().Except("Archi*")
                     .That()
+                    .Is(c=>c.IsPublic)
+                    .And()
                     .IsDeclaredInAssemblyMatching("DCX.KT.UnitTests")
                     .And()
                     .HasNameMatching("*Tests")
@@ -23,6 +36,15 @@ namespace KaroTesterDemo
                     .Check()
             );
 
+         
+            Measure(() =>
+            kaRo.EachClass().That()
+                .Not().IsDeclaredInAssemblyMatching("*BusinessComponents*")
+                .And().Not().IsDeclaredInAssemblyMatching("*UserInterface*")
+                .Should().HaveMethods(m => CheckAndCollect(m)).Check()
+            );
+
+            kaRo.NoClass().Should().HaveCyclicDependencies();
             Measure(() =>
 
                 kaRo.EachClass()

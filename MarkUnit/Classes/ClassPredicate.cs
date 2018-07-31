@@ -45,5 +45,11 @@ namespace MarkUnit.Classes
         {
             return ThatOrWhich("which");
         }
+
+        public IClassTestCondition Should()
+        {
+            var result = _classCollectionFactory.Create(Instances.ClassRuleFactory, _classCollector, _negate, _not, _exceptions);
+            return result.Should();
+        }
     }
 }
