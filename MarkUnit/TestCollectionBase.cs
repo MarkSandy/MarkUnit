@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using MarkUnit.Classes;
 
@@ -26,11 +28,6 @@ namespace MarkUnit
         public TCondition Not()
         {
             PredicateString.Add("not");
-            return SilentNot();
-        }
-
-        internal TCondition SilentNot()
-        {
             Filter.Negate();
             return FollowUp;
         }
@@ -58,6 +55,34 @@ namespace MarkUnit
             PredicateString.Add($"has name matching '{pattern}'");
             return AppendCondition(c => c.Name.Matches(pattern));
         }
-       
+
+        public TPostCondition HasNameMatchingAny(params string[] patterns)
+        {
+            PredicateString.Add($"has name matching any of {PatternDescription(patterns)}");
+            return SilentHasNameMatchingAny( patterns);
+        }
+
+        private static string PatternDescription(string[] patterns)
+        {
+            return string.Join(",", patterns.Select(s => $"'{s}'"));
+        }
+
+        private TPostCondition SilentHasNameMatchingAny( IEnumerable<string> patterns)
+        {
+            return AppendCondition(c =>  patterns.Any(p=>c.Name.Matches(p)));
+        }
+
+        internal TCondition AddIgnoreList(string[] patterns, bool not)
+        {
+            if (patterns.Any())
+            {
+                PredicateString.Add($"except {PatternDescription(patterns)}");
+                PredicateString.AddWarning("Exceptions: "+PatternDescription(patterns));
+                Filter.Negate();
+                SilentHasNameMatchingAny(patterns);
+            }
+            if (not) Filter.Negate();
+            return FollowUp;
+        }
     }
 }

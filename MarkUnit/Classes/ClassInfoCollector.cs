@@ -10,23 +10,27 @@ namespace MarkUnit.Classes
         : IClassInfoCollector
     {
         private readonly IAssemblyReader _assemblyReader;
-        private readonly Dictionary<Type, IClass> _classes = new Dictionary<Type, IClass>();
+        private readonly Dictionary<Type, IInternalClass> _classes = new Dictionary<Type, IInternalClass>();
 
         public ClassInfoCollector(IAssemblyReader assemblyReader)
         {
             _assemblyReader = assemblyReader;
         }
 
-        public void Examine(IClass classInfo)
+        public IInternalClass Examine(IInternalClass classInfo)
         {
-            if (_classes.ContainsKey(classInfo.ClassType)) return;
+            if (_classes.TryGetValue(classInfo.ClassType, out IInternalClass result))
+            {
+                return result;
+            }
             CollectInfoFromConstructors(classInfo);
             CollectInfoFromFields(classInfo);
             CollectInfoFromMethods(classInfo);
             Add(classInfo, classInfo.ClassType);
+            return classInfo;
         }
 
-        private void Add(IClass classInfo, Type type)
+        private void Add(IInternalClass classInfo, Type type)
         {
             if (!_classes.ContainsKey(type)) _classes.Add(type, classInfo);
         }
@@ -57,19 +61,35 @@ namespace MarkUnit.Classes
             }
         }
 
-        private void CollectInfoFromConstructors(IClass classInfo)
+        private void CollectInfoFromConstructors(IInternalClass classInfo)
         {
             CollectClassInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.Public);
             CollectClassInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
-        private void CollectClassInfoFromConstructors(IClass classInfo, BindingFlags bindingFlags)
+        private void CollectClassInfoFromConstructors(IInternalClass classInfo, BindingFlags bindingFlags)
         {
             foreach (ConstructorInfo constructorInfo in classInfo.ClassType.GetConstructors(bindingFlags))
             {
+                classInfo.AddConstructor(CreateMethodInfo(classInfo, constructorInfo));
                 CollectFromParameters(classInfo, constructorInfo.GetParameters());
                 CollectFromMethodBody(classInfo, constructorInfo.GetMethodBody());
             }
+        }
+
+        private IMethod CreateMethodInfo(IInternalClass classInfo, ConstructorInfo constructorInfo)
+        {
+            return new Method(classInfo,"ctor",CreateParameterList(constructorInfo.GetParameters()),constructorInfo.IsPublic);
+        }
+
+        private IParameterInfo[] CreateParameterList(ParameterInfo[] parameter)
+        {
+            return parameter.Select(CreateParameterInfo).ToArray();
+        }
+
+        private IParameterInfo CreateParameterInfo (ParameterInfo p)
+        {
+            return new MarkUnitParameterInfo(p.ParameterType, p.Name, p.IsOptional);
         }
 
         private void CollectInfoFromFields(IClass classInfo)
@@ -86,7 +106,7 @@ namespace MarkUnit.Classes
             }
         }
 
-        private void CollectInfoFromMethods(IClass classInfo)
+        private void CollectInfoFromMethods(IInternalClass classInfo)
         {
             CollectInfoFromMethods(classInfo, BindingFlags.Instance | BindingFlags.Public);
             CollectInfoFromMethods(classInfo, BindingFlags.Static | BindingFlags.Public);
@@ -94,19 +114,25 @@ namespace MarkUnit.Classes
             CollectInfoFromMethods(classInfo, BindingFlags.Static | BindingFlags.NonPublic);
         }
 
-        private void CollectInfoFromMethods(IClass classInfo, BindingFlags bindingFlags)
+        private void CollectInfoFromMethods(IInternalClass classInfo, BindingFlags bindingFlags)
         {
             foreach (MethodInfo methodInfo in classInfo.ClassType.GetMethods(bindingFlags))
             {
+                classInfo.AddMethod(CreateMethodInfo(classInfo, methodInfo));
                 Collect(classInfo, methodInfo.ReturnType);
                 CollectFromParameters(classInfo, methodInfo.GetParameters());
                 CollectFromMethodBody(classInfo, methodInfo.GetMethodBody());
             }
         }
 
+        private IMethod CreateMethodInfo(IInternalClass classInfo,MethodInfo methodInfo)
+        {
+             return new Method(classInfo,methodInfo.Name, CreateParameterList(methodInfo.GetParameters()),methodInfo.IsPublic);
+        }
+
         private IClass Get(Type type)
         {
-            if (!_classes.TryGetValue(type, out IClass result))
+            if (!_classes.TryGetValue(type, out IInternalClass result))
             {
                 result = new MarkUnitClass(_assemblyReader.LoadAssembly(type.Assembly), type);
             }

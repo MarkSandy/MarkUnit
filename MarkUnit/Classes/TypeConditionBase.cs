@@ -14,17 +14,16 @@ namespace MarkUnit.Classes
         public TypeConditionBase(IFilter<TType> items) : base(items)
         {
         }
-
         
         public TReduced IsDeclaredInAssemblyMatching(string pattern)
         {
-            PredicateString.Add($"is declared in an assembly matching '{pattern}");
+            PredicateString.Add($"is declared in an assembly matching '{pattern}'");
             return AppendCondition(c => c.Assembly.Name.Matches(pattern));
         }
 
         public TReduced IsDeclaredInAssembly(Assembly assembly)
         {
-            PredicateString.Add($"is declared in assembly '{assembly.FullName}");
+            PredicateString.Add($"is declared in assembly '{assembly.FullName}'");
             return AppendCondition(c => c.Assembly.Assembly.FullName==assembly.FullName);
         }
 
@@ -44,11 +43,11 @@ namespace MarkUnit.Classes
         public TReduced Is(Expression<Predicate<Type>> typeExpression)
         {
             PredicateString.Add($"Is {typeExpression}");
-            return AppendCondition(c => typeExpression.Compile()(c.ClassType));
+            var predicate = typeExpression.Compile();
+            return AppendCondition(c =>  predicate(c.ClassType));
         }
 
-        public TReduced HasAttribute<TAttribute>()
-            where TAttribute : Attribute
+        public TReduced HasAttribute<TAttribute>() where TAttribute : Attribute
         {
             PredicateString.Add($"has attribute '{typeof(TAttribute).Name}'");
             return AppendCondition(c => ClassHasAttribute(c.ClassType, typeof(TAttribute)));

@@ -2,13 +2,13 @@
 {
     internal class TypeCollectionFactory : ITypeCollectionFactory
     {
-        public ITypeCollection Create(ITypeCollector typeCollector, bool negate, bool not)
+        public ITypeCollection Create(ITypeCollector typeCollector, bool negate, bool not, string[] exceptions)
         {
             var types = typeCollector.Get();
             var typeFilter = new FilteredTypes(types);
             var result = new TypeCondition(new ClassCollectionFactory(),  
                 new InterfaceCollectionFactory(), typeFilter, negate);
-            return not ? result.SilentNot() : result;
+            return result.AddIgnoreList(exceptions, not);
         }
     }
 }

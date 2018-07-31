@@ -8,7 +8,7 @@
             var classes = classCollector.Get();
             var classFilter = new FilteredInterfaces(classes);
             var result = new InterfaceCondition(classRuleFactory, classFilter, negate);
-            return not ? result.SilentNot() : result;
+            return result.AddIgnoreList(new string[0], not);
         }
     }
 }

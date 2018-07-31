@@ -7,10 +7,10 @@ namespace MarkUnit.Classes
 {
     internal class ClassCollector : IClassCollector
     {
-        private readonly ITypeReader<IClass> _classReader;
+        private readonly ITypeReader<IInternalClass> _classReader;
         private readonly IClassInfoCollector _classInfoCollector;
 
-        public ClassCollector(ITypeReader<IClass> classReader, IClassInfoCollector classInfoCollector)
+        public ClassCollector(ITypeReader<IInternalClass> classReader, IClassInfoCollector classInfoCollector)
         {
             _classReader = classReader;
             _classInfoCollector = classInfoCollector;
@@ -23,10 +23,9 @@ namespace MarkUnit.Classes
             return _classReader.LoadFromAssemblies(Assemblies).Select(Examine);
         }
 
-        private IClass Examine(IClass classInfo)
+        private IClass Examine(IInternalClass classInfo)
         {
-            _classInfoCollector.Examine(classInfo);
-            return classInfo;
-        }
+            return _classInfoCollector.Examine(classInfo);
+         }
     }
 }

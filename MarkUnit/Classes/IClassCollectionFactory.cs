@@ -2,6 +2,6 @@
 {
     internal interface IClassCollectionFactory
     {
-        IClassCollection Create(IClassRuleFactory classRuleFactory,IClassCollector classCollector, bool negate, bool not);
+        ClassCondition Create(IClassRuleFactory classRuleFactory, IClassCollector classCollector, bool negate, bool not, string[] exceptions);
     }
 }

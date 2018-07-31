@@ -5,7 +5,7 @@ using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
 {
-    internal class ClassReader : ITypeReader<IClass>
+    internal class ClassReader : ITypeReader<IInternalClass>
     {
         private readonly ITypeReader<IType> _typeReader;
 
@@ -14,11 +14,11 @@ namespace MarkUnit.Classes
             _typeReader = typeReader;
         }
 
-        public IEnumerable<IClass> LoadFromAssemblies(IFilteredAssemblies assemblies)
+        public IEnumerable<IInternalClass> LoadFromAssemblies(IFilteredAssemblies assemblies)
         {
             return _typeReader.LoadFromAssemblies(assemblies)
                 .Where(t=>t.ClassType.IsClass)
-                .Select(t => new MarkUnitClass(t.Assembly, t.ClassType));
+                .Select(t => new MarkUnitClass(t.Assembly, t.ClassType));  
         }
     }
 }

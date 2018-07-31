@@ -15,14 +15,19 @@ namespace Tests.MarkUnit.Classes
         public void Get_Should_ExamineAllClassesFromAssemblies()
         {
             var assemblyFilter=new Mock<IFilteredAssemblies>().Object; 
-            var classReaderMock = new Mock<ITypeReader<IClass>>();
-            var c1 = new Mock<IClass>().Object;
-            var c2 = new Mock<IClass>().Object;
-            var classes=new IClass[]{c1,c2};
+            var classReaderMock = new Mock<ITypeReader<IInternalClass>>();
+            var c1 = new Mock<IInternalClass>().Object;
+            var c2 = new Mock<IInternalClass>().Object;
+            var classes=new IInternalClass[]{c1,c2};
             classReaderMock.Setup(c => c.LoadFromAssemblies(assemblyFilter)).Returns(classes);
             var classInfoCollectorMock = new Mock<IClassInfoCollector>();
             var examinedClasses = new List<IClass>();
-            classInfoCollectorMock.Setup(c => c.Examine(It.IsAny<IClass>())).Callback<IClass>(c => examinedClasses.Add(c));
+            classInfoCollectorMock.Setup(c => c.Examine(It.IsAny<IInternalClass>())).Returns<IInternalClass>(c =>
+            {
+                
+                examinedClasses.Add(c);
+                return c;
+            });
             
 
             var sut=new ClassCollector(classReaderMock.Object,classInfoCollectorMock.Object);

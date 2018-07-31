@@ -8,6 +8,7 @@ namespace MarkUnit.Classes
         private readonly IClassCollector _classCollector;
         private readonly bool _negate;
         private readonly bool _not;
+        private string[] _exceptions=new string[0];
 
         public ClassPredicate(IClassCollector classCollector, bool negate, bool not)
         : this(classCollector,negate,not,new ClassCollectionFactory())
@@ -24,9 +25,8 @@ namespace MarkUnit.Classes
 
         public IPredicate<IClassCollection> Except(params string[] exceptionPatterns)
         {
-            // TODO: Add to xception list
+            _exceptions = exceptionPatterns;
             return this;
-
         }
 
         public IClassCollection That()
@@ -36,13 +36,20 @@ namespace MarkUnit.Classes
 
         private IClassCollection ThatOrWhich(string word)
         {
+            var result= _classCollectionFactory.Create(Instances.ClassRuleFactory, _classCollector, _negate, _not, _exceptions);
             PredicateString.Add(word);
-            return _classCollectionFactory.Create(Instances.ClassRuleFactory, _classCollector, _negate, _not);
+            return result;
         }
 
         public IClassCollection Which()
         {
             return ThatOrWhich("which");
+        }
+
+        public IClassTestCondition Should()
+        {
+            var result = _classCollectionFactory.Create(Instances.ClassRuleFactory, _classCollector, _negate, _not, _exceptions);
+            return result.Should();
         }
     }
 }

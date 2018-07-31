@@ -1,4 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 
 namespace MarkUnit.Classes
@@ -27,10 +32,76 @@ namespace MarkUnit.Classes
             return new ClassPredicateEx(Verifier);
         }
 
+        public IClassRule HaveMethods(Expression<Predicate<IMethod>> methodPredicate)
+        {
+            PredicateString.Add($"have methods with '{methodPredicate}'");
+            var methodFilter = methodPredicate.Compile();
+            // Achtung! Hier könnte sich ein Logikproblem verbergen (not)
+            return AppendCondition(c => Tester(c, methodFilter));
+        }
+
+        public IClassRule HaveCyclicDependencies()
+        {
+            PredicateString.Add("have cyclic dependencies");
+            var cyclicDependencyChecker = new CyclicDependencyChecker();
+            return AppendCondition(c => cyclicDependencyChecker.HasCyclicDependencies(c));
+        }
+
+        private static bool Tester(IClass c, Predicate<IMethod> methodFilter)
+        {
+            return c.Methods.All(m => methodFilter(m));
+        }
+
         bool MatchesName(string name, string regExOnClassName, string regExOnMatchingClass)
         {
             string repl = Regex.Replace(name, regExOnClassName, regExOnMatchingClass);
             return name.Matches(repl);
         }
+    }
+
+    internal class CyclicDependencyChecker
+    {
+        private readonly Dictionary<string,bool> _knownDependencies=new Dictionary<string, bool>();
+
+        public bool HasCyclicDependencies(IClass classInfo)
+        {
+            return ReferencesIndirect(classInfo, classInfo.Namespace);
+        }
+
+        private bool ReferencesIndirect(IClass classInfo, string nameSpace)
+        {
+            if (IsKnownDependency(classInfo, nameSpace, out bool result)) return result;
+
+            result = classInfo.ReferencedClasses.Any(c => ReferencesNamespace(c, nameSpace));
+            
+            AddKnownDependency(classInfo, nameSpace, result);
+
+            return result;
+        }
+
+        private void AddKnownDependency(IClass classInfo, string nameSpace, bool isDependent)
+        {
+            var key = $"{classInfo.ClassType.FullName}->{nameSpace}";
+            if (!_knownDependencies.ContainsKey(key))
+            {
+                _knownDependencies.Add(key, isDependent);
+            }
+        }
+
+        private bool IsKnownDependency(IClass classInfo, string nameSpace, out bool result)
+        {
+            var key = $"{classInfo.ClassType.FullName}->{nameSpace}";
+            if (_knownDependencies.TryGetValue(key, out result)) return true;
+            result = false;
+            return false;
+        }
+
+        private bool ReferencesNamespace(IClass classInfo, string nameSpace)
+        {
+            return classInfo.Namespace!=nameSpace 
+                   && classInfo.ReferencedNameSpaces.Contains(nameSpace)
+                   || ReferencesIndirect(classInfo, nameSpace);
+        }
+        
     }
 }

@@ -1,14 +1,16 @@
-﻿namespace MarkUnit.Classes
+﻿using System.Linq;
+
+namespace MarkUnit.Classes
 {
     internal class ClassCollectionFactory : IClassCollectionFactory
     {
         
-        public IClassCollection Create(IClassRuleFactory classRuleFactory,IClassCollector classCollector, bool negate, bool not)
+        public ClassCondition Create(IClassRuleFactory classRuleFactory, IClassCollector classCollector, bool negate, bool not, string[] exceptions)
         {
-            var classes = classCollector.Get();
+            var classes = classCollector.Get().ToArray();
             var classFilter = new FilteredClasses(classes);
             var result = new ClassCondition(classRuleFactory, classFilter, negate);
-            return not ? result.SilentNot() : result;
+            return result.AddIgnoreList(exceptions, not);
         }
     }
 }
