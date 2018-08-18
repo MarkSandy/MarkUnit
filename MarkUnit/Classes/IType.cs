@@ -5,9 +5,8 @@ namespace MarkUnit.Classes
 {
     public interface IType : INamedComponent
     {
-        Type ClassType { get; }
         IAssembly Assembly { get; }
+        Type ClassType { get; }
         string Namespace { get; }
-
     }
 }

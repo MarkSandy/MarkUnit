@@ -9,14 +9,48 @@ namespace MarkUnit.Assemblies
     internal class AssemblyReader : IAssemblyReader
     {
         private readonly Dictionary<string, IAssembly> _assemblies = new Dictionary<string, IAssembly>();
-        private readonly Dictionary<string, Assembly> _loadedAssemblies = new Dictionary<string, Assembly>();
 
         private readonly IAssemblyUtils _assemblyUtils;
+        private readonly Dictionary<string, Assembly> _loadedAssemblies = new Dictionary<string, Assembly>();
 
         public AssemblyReader(IAssemblyUtils assemblyUtils)
         {
             _assemblyUtils = assemblyUtils;
             _assemblyUtils.EnableReflectionOnlyLoad(CurrentDomain_AssemblyResolve);
+        }
+
+        public string AssemblyPath { get; set; }
+
+        public IAssembly LoadAssembly(string location)
+        {
+            try
+            {
+                return LoadAssembly(LoadAssemblyByLocation(location));
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public void Loadall(Assembly assembly)
+        {
+            LoadAssembly(assembly.Location);
+        }
+
+        public IEnumerable<IAssembly> AllAssemblies => _assemblies.Values;
+
+        public IAssembly LoadAssembly(Assembly assembly)
+        {
+            if (assembly == null) return null;
+            if (!_assemblies.TryGetValue(assembly.FullName, out var result))
+            {
+                result = new MarkUnitAssembly(assembly);
+                _assemblies.Add(assembly.FullName, result);
+                result.ReferencedAssemblies = assembly.GetReferencedAssemblies().Select(LoadAssembly).Where(a => a != null).ToArray();
+            }
+
+            return result;
         }
 
         ~AssemblyReader()
@@ -82,7 +116,7 @@ namespace MarkUnit.Assemblies
             var filename = GetFullPathToAssembly(assemblyName);
             if (!string.IsNullOrEmpty(filename) && File.Exists(filename))
             {
-                assembly =  _assemblyUtils.LoadFrom(filename);
+                assembly = _assemblyUtils.LoadFrom(filename);
                 AddAssemblyToCache(assembly, assemblyName);
                 return true;
             }
@@ -138,40 +172,6 @@ namespace MarkUnit.Assemblies
 
             var assembly = LoadAssemblyByFullName(assemblyName.FullName);
             return LoadAssembly(assembly);
-        }
-
-        public string AssemblyPath { get; set; }
-
-        public IAssembly LoadAssembly(string location)
-        {
-            try
-            {
-                return LoadAssembly(LoadAssemblyByLocation(location));
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-        }
-
-        public void Loadall(Assembly assembly)
-        {
-            LoadAssembly(assembly.Location);
-        }
-
-        public IEnumerable<IAssembly> AllAssemblies => _assemblies.Values;
-
-        public IAssembly LoadAssembly(Assembly assembly)
-        {
-            if (assembly == null) return null;
-            if (!_assemblies.TryGetValue(assembly.FullName, out var result))
-            {
-                result = new MarkUnitAssembly(assembly);
-                _assemblies.Add(assembly.FullName, result);
-                result.ReferencedAssemblies = assembly.GetReferencedAssemblies().Select(LoadAssembly).Where(a => a != null).ToArray();
-            }
-
-            return result;
         }
     }
 }

@@ -5,31 +5,13 @@ namespace MarkUnit.Classes
 {
     internal class ClassCondition
         : TypeConditionBase<IClass, IClassCollection, IClassTestCondition, IReducedClassCollection>,
-            IClassCollection
+          IClassCollection
     {
         public ClassCondition(IClassRuleFactory classRuleFactory, FilteredClasses classFilter, bool negate)
             : base(classFilter)
         {
             FollowUp = this;
             FilterCondition = new ClassFilterCondition(classRuleFactory, this, classFilter, negate);
-        }
-
-        public IReducedClassCollection IsDerivedFrom(Type baseType)
-        {
-            PredicateString.Add($"is derived from {baseType}");
-            var predicate = IsDerivedFromPredicate(baseType);
-            return AppendCondition(c => predicate(c.ClassType));
-        }
-
-        private static Predicate<Type> IsDerivedFromPredicate(Type classType)
-        {
-            Predicate<Type> predicate;
-            if (classType.IsGenericType)
-                predicate = classType.IsSubclassOfRawGeneric;
-            else
-                predicate = classType.IsSubClass;
-
-            return predicate;
         }
 
         public IReducedClassCollection ImplementsInterface<TInterface>()
@@ -49,11 +31,29 @@ namespace MarkUnit.Classes
             PredicateString.Add($"implements an interface matching '{pattern}'");
             return AppendCondition(c => c.ClassType.GetInterfaces().Any(i => i.Name.Matches(pattern)));
         }
+
+        public IReducedClassCollection IsDerivedFrom(Type baseType)
+        {
+            PredicateString.Add($"is derived from {baseType}");
+            var predicate = IsDerivedFromPredicate(baseType);
+            return AppendCondition(c => predicate(c.ClassType));
+        }
+
+        private static Predicate<Type> IsDerivedFromPredicate(Type classType)
+        {
+            Predicate<Type> predicate;
+            if (classType.IsGenericType)
+                predicate = classType.IsSubclassOfRawGeneric;
+            else
+                predicate = classType.IsSubClass;
+
+            return predicate;
+        }
     }
 
     internal class InterfaceCondition
         : TypeConditionBase<IInterface, IInterfaceCollection, IInterfaceTestCondition, IReducedInterfaceCollection>,
-            IInterfaceCollection
+          IInterfaceCollection
     {
         public InterfaceCondition(IInterfaceRuleFactory interfaceRuleFactory, FilteredInterfaces interfaces, bool negate)
             : base(interfaces)

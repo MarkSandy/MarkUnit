@@ -27,6 +27,5 @@ namespace MarkUnit
             PredicateString.Add("should");
             return CeateAssertionFunc(_filter, Negate);
         }
- 
     }
 }

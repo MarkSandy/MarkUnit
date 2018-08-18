@@ -9,9 +9,9 @@ namespace MarkUnit.Classes
         : MarkUnitType,
           IInternalClass
     {
+        private readonly List<IMethod> _constructors = new List<IMethod>();
+        private readonly List<IMethod> _methods = new List<IMethod>();
         private readonly HashSet<IClass> _referencedClasses = new HashSet<IClass>();
-        private readonly List<IMethod> _methods=new List<IMethod>();
-        private readonly List<IMethod> _constructors=new List<IMethod>();
 
         public MarkUnitClass(IAssembly assembly, Type type)
             : base(assembly, type) { }

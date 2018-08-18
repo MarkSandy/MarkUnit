@@ -6,6 +6,13 @@ namespace MarkUnit.Classes
 {
     public interface IClassTestCondition
     {
+        IClassRule Be(Expression<Predicate<Type>> typeFilterExpression);
+        IClassRule BeDeclaredInNamespaceMatching(string pattern);
+        IClassRule BeInAssembly(Assembly assembly);
+        IClassRule BeInAssembly(Expression<Predicate<Assembly>> assemblyFilterExpression);
+        IClassRule BeInAssemblyMatching(string pattern);
+        IClassRule HaveCyclicDependencies();
+        IClassRule HaveMethods(Expression<Predicate<IMethod>> methodPredicate);
         IClassRule HaveName(Expression<Predicate<string>> nameFunc);
         IClassRule HaveNameMatching(string pattern);
         IClassRule ImplementInterface<T>();
@@ -15,16 +22,7 @@ namespace MarkUnit.Classes
         IClassTestCondition Not();
 
         IClassRule ReferenceNamespacesMatching(string pattern);
-        IClassRule UsesClassMatching(string regExOnClassName, string regExreplace);
-        IClassRule BeInAssemblyMatching(string pattern);
-        IClassRule BeInAssembly(Assembly assembly);
-        IClassRule BeInAssembly(Expression<Predicate<Assembly>> assemblyFilterExpression);
-        IClassRule BeDeclaredInNamespaceMatching(string pattern);
-        IClassRule Be(Expression<Predicate<Type>> typeFilterExpression);
         IClassPredicateEx UseAClass();
-        IClassRule HaveMethods(Expression<Predicate<IMethod>> methodPredicate);
-        IClassRule HaveCyclicDependencies();
+        IClassRule UsesClassMatching(string regExOnClassName, string regExreplace);
     }
-
-    
 }

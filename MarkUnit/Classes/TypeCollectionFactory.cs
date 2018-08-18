@@ -6,8 +6,8 @@
         {
             var types = typeCollector.Get();
             var typeFilter = new FilteredTypes(types);
-            var result = new TypeCondition(new ClassCollectionFactory(),  
-                new InterfaceCollectionFactory(), typeFilter, negate);
+            var result = new TypeCondition(new ClassCollectionFactory(),
+                                           new InterfaceCollectionFactory(), typeFilter, negate);
             return result.AddIgnoreList(exceptions, not);
         }
     }

@@ -5,29 +5,30 @@ namespace MarkUnit.Classes
 {
     public interface IClass : IType
     {
-        IEnumerable<string> ReferencedNameSpaces { get; }
-        IEnumerable<IClass> ReferencedClasses { get; }
-        void AddReferencedClass(IClass referencedClass);
-        IEnumerable<IMethod> Methods { get; }
         IEnumerable<IMethod> Constructors { get; }
+        IEnumerable<IMethod> Methods { get; }
+        IEnumerable<IClass> ReferencedClasses { get; }
+        IEnumerable<string> ReferencedNameSpaces { get; }
+        void AddReferencedClass(IClass referencedClass);
     }
 
     public interface IInternalClass : IClass
     {
-        void AddMethod(IMethod method);
         void AddConstructor(IMethod constructor);
+        void AddMethod(IMethod method);
     }
+
     public interface IMethod
     {
-        string MethodName { get; }
-        bool IsPublic { get; }
         IClass Class { get; }
+        bool IsPublic { get; }
+        string MethodName { get; }
         IParameterInfo[] Parameters { get; }
     }
 
     internal class Method : IMethod
     {
-        public Method(IClass @class,string methodName, IParameterInfo[] parameters, bool isPublic)
+        public Method(IClass @class, string methodName, IParameterInfo[] parameters, bool isPublic)
         {
             MethodName = methodName;
             Parameters = parameters;
@@ -43,22 +44,22 @@ namespace MarkUnit.Classes
 
     public interface IParameterInfo
     {
-        Type ParameterType { get; }
-        string ParameterName { get; }
         bool HasDefault { get; }
+        string ParameterName { get; }
+        Type ParameterType { get; }
     }
 
     class MarkUnitParameterInfo : IParameterInfo
     {
-        public Type ParameterType { get; }
-        public string ParameterName { get; }
-        public bool HasDefault { get; }
-
         public MarkUnitParameterInfo(Type parameterType, string parameterName, bool hasDefault)
         {
             ParameterType = parameterType;
             ParameterName = parameterName;
             HasDefault = hasDefault;
         }
+
+        public Type ParameterType { get; }
+        public string ParameterName { get; }
+        public bool HasDefault { get; }
     }
 }

@@ -2,8 +2,8 @@
 {
     internal class ClassPredicateEx : IClassPredicateEx
     {
-        private readonly IAssertionVerifier<IClass> _verifier;
         private string[] _exceptions;
+        private readonly IAssertionVerifier<IClass> _verifier;
 
         public ClassPredicateEx(IAssertionVerifier<IClass> verifier)
         {
@@ -15,18 +15,18 @@
             return WhichOrThat("that");
         }
 
+        public IClassUsesClassCondition Which()
+        {
+            return WhichOrThat("which");
+        }
+
         private IClassUsesClassCondition WhichOrThat(string word)
         {
             var classUsingClassCondition = new ClassUsingClassCondition(_verifier.Items, false);
             classUsingClassCondition.AddIgnoreList(_exceptions);
-            var result=classUsingClassCondition;
+            var result = classUsingClassCondition;
             PredicateString.Add(word);
             return result;
-        }
-
-        public IClassUsesClassCondition Which()
-        {
-            return WhichOrThat("which");
         }
     }
 }

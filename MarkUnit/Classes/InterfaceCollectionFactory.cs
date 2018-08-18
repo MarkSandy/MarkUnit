@@ -2,8 +2,7 @@
 {
     internal class InterfaceCollectionFactory : IInterfaceCollectionFactory
     {
-        
-        public IInterfaceCollection Create(IInterfaceRuleFactory classRuleFactory,IInterfaceCollector classCollector, bool negate, bool not)
+        public IInterfaceCollection Create(IInterfaceRuleFactory classRuleFactory, IInterfaceCollector classCollector, bool negate, bool not)
         {
             var classes = classCollector.Get();
             var classFilter = new FilteredInterfaces(classes);

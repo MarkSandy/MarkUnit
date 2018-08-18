@@ -2,6 +2,6 @@
 {
     public interface IRule<out T>
     {
-        T And(); 
+        T And();
     }
 }

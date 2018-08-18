@@ -2,6 +2,6 @@
 {
     internal interface IInterfaceCollectionFactory
     {
-        IInterfaceCollection Create(IInterfaceRuleFactory classRuleFactory,IInterfaceCollector classCollector, bool negate, bool not);
+        IInterfaceCollection Create(IInterfaceRuleFactory classRuleFactory, IInterfaceCollector classCollector, bool negate, bool not);
     }
 }

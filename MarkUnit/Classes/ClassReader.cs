@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using MarkUnit.Assemblies;
 
@@ -17,8 +16,8 @@ namespace MarkUnit.Classes
         public IEnumerable<IInternalClass> LoadFromAssemblies(IFilteredAssemblies assemblies)
         {
             return _typeReader.LoadFromAssemblies(assemblies)
-                .Where(t=>t.ClassType.IsClass)
-                .Select(t => new MarkUnitClass(t.Assembly, t.ClassType));  
+                .Where(t => t.ClassType.IsClass)
+                .Select(t => new MarkUnitClass(t.Assembly, t.ClassType));
         }
     }
 }

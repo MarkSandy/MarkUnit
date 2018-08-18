@@ -53,7 +53,6 @@
   <ItemGroup>
     <Compile Include="Assemblies\MarkUnitAssembly.cs" />
     <Compile Include="Assemblies\AssemblyCollection.cs" />
-    <Compile Include="Assemblies\AssemblyLogicalLink.cs" />
     <Compile Include="Assemblies\AssemblyRule.cs" />
     <Compile Include="Assemblies\AssemblyFilterCondition.cs" />
     <Compile Include="Assemblies\AssemblyCollector.cs" />
@@ -70,11 +69,9 @@
     <Compile Include="AssertionVerifierBase.cs" />
     <Compile Include="Classes\ClassCollectionFactory.cs" />
     <Compile Include="Classes\ClassFromTypeCollector.cs" />
-    <Compile Include="Classes\ClassMatchingInterfaceLogicalLink.cs" />
     <Compile Include="Classes\ClassPredicateEx.cs" />
     <Compile Include="Classes\ClassRuleFactory.cs" />
     <Compile Include="Classes\ClassUsingClassCondition.cs" />
-    <Compile Include="Classes\ClassUsingClassLogicalLink.cs" />
     <Compile Include="Classes\FilteredInterfaces.cs" />
     <Compile Include="Classes\FilteredTypes.cs" />
     <Compile Include="Classes\FunctionalComponentRule.cs" />
@@ -116,7 +113,6 @@
     <Compile Include="Classes\TypeComponentRule.cs" />
     <Compile Include="Classes\TypeConditionBase.cs" />
     <Compile Include="Classes\TypeFilterCondition.cs" />
-    <Compile Include="Classes\TypeLogicalLink.cs" />
     <Compile Include="Classes\TypePredicate.cs" />
     <Compile Include="Classes\TypeReader.cs" />
     <Compile Include="Classes\TypeRule.cs" />
@@ -129,11 +125,9 @@
     <Compile Include="Classes\IClassRuleFactory.cs" />
     <Compile Include="Classes\TypeCondition.cs" />
     <Compile Include="RuleBase.cs" />
-    <Compile Include="BinaryAssertionOperator.cs" />
     <Compile Include="Classes\ClassFilterCondition.cs" />
     <Compile Include="Classes\ClassCondition.cs" />
     <Compile Include="Classes\ClassInfoCollector.cs" />
-    <Compile Include="Classes\ClassLogicalLink.cs" />
     <Compile Include="Classes\ClassMatchingInterfaceCondition.cs" />
     <Compile Include="Classes\ClassToInterfaceFilterMapper.cs" />
     <Compile Include="Classes\ICheckableInterfaceCondition.cs" />
@@ -148,7 +142,6 @@
     <Compile Include="Classes\IInternalClassTestCondition.cs" />
     <Compile Include="Classes\IInternalInterfaceTestCondition.cs" />
     <Compile Include="Classes\InterfaceCondition.cs" />
-    <Compile Include="Classes\InterfaceLogicalLink.cs" />
     <Compile Include="Classes\InterfaceRule.cs" />
     <Compile Include="Classes\IReducedClassCollection.cs" />
     <Compile Include="Filter.cs" />

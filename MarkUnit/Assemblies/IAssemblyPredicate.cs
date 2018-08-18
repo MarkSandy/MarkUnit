@@ -2,5 +2,7 @@
 
 namespace MarkUnit.Assemblies
 {
-    public interface IAssemblyPredicate : IPredicate<IAssemblyCollection>, IExceptions<IAssemblyCollection> { }
+    public interface IAssemblyPredicate
+        : IPredicate<IAssemblyCollection>,
+          IExceptions<IAssemblyCollection> { }
 }

@@ -8,8 +8,8 @@ namespace MarkUnit.Assemblies
     public class AssemblyCollector : IAssemblyCollector
     {
         private readonly IAssemblyReader _assemblyReader;
-        private IEnumerable<IAssembly> _solutionAssemblies;
         private Assembly _mainAssembly;
+        private IEnumerable<IAssembly> _solutionAssemblies;
 
         public AssemblyCollector(IAssemblyReader assemblyReader)
         {

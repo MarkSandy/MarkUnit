@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Runtime.Remoting.Messaging;
 using System.Text.RegularExpressions;
 
 namespace MarkUnit.Classes
 {
-  internal class ClassRule : FunctionalComponentRule<IClass, IClassTestCondition,IClassRule>, IInternalClassTestCondition
+    internal class ClassRule
+        : FunctionalComponentRule<IClass, IClassTestCondition, IClassRule>,
+          IInternalClassTestCondition,
+          IClassRule
     {
-        public ClassRule(IAssertionVerifier<IClass> verifier) : base(verifier)
-        {
-            LogicalLink = new ClassLogicalLink(this);
-        }
+        public ClassRule(IAssertionVerifier<IClass> verifier)
+            : base(verifier) { }
 
-        public ClassRule(IFilter<IClass> items, bool negateAssertion) : base(items, negateAssertion)
-        {
-            LogicalLink = new ClassLogicalLink(this);
-        }
+        public ClassRule(IFilter<IClass> items, bool negateAssertion)
+            : base(items, negateAssertion) { }
+
+        protected override IClassRule LogicalLink => this;
 
         public IClassRule UsesClassMatching(string regExOnClassName, string regExOnMatchingClass)
         {
@@ -37,7 +36,7 @@ namespace MarkUnit.Classes
             PredicateString.Add($"have methods with '{methodPredicate}'");
             var methodFilter = methodPredicate.Compile();
             // Achtung! Hier könnte sich ein Logikproblem verbergen (not)
-            return AppendCondition(c => Tester(c, methodFilter));
+            return AppendCondition(c => c.Methods.All(m => methodFilter(m)));
         }
 
         public IClassRule HaveCyclicDependencies()
@@ -45,11 +44,6 @@ namespace MarkUnit.Classes
             PredicateString.Add("have cyclic dependencies");
             var cyclicDependencyChecker = new CyclicDependencyChecker();
             return AppendCondition(c => cyclicDependencyChecker.HasCyclicDependencies(c));
-        }
-
-        private static bool Tester(IClass c, Predicate<IMethod> methodFilter)
-        {
-            return c.Methods.All(m => methodFilter(m));
         }
 
         bool MatchesName(string name, string regExOnClassName, string regExOnMatchingClass)
@@ -61,22 +55,11 @@ namespace MarkUnit.Classes
 
     internal class CyclicDependencyChecker
     {
-        private readonly Dictionary<string,bool> _knownDependencies=new Dictionary<string, bool>();
+        private readonly Dictionary<string, bool> _knownDependencies = new Dictionary<string, bool>();
 
         public bool HasCyclicDependencies(IClass classInfo)
         {
             return ReferencesIndirect(classInfo, classInfo.Namespace);
-        }
-
-        private bool ReferencesIndirect(IClass classInfo, string nameSpace)
-        {
-            if (IsKnownDependency(classInfo, nameSpace, out bool result)) return result;
-
-            result = classInfo.ReferencedClasses.Any(c => ReferencesNamespace(c, nameSpace));
-            
-            AddKnownDependency(classInfo, nameSpace, result);
-
-            return result;
         }
 
         private void AddKnownDependency(IClass classInfo, string nameSpace, bool isDependent)
@@ -96,12 +79,22 @@ namespace MarkUnit.Classes
             return false;
         }
 
+        private bool ReferencesIndirect(IClass classInfo, string nameSpace)
+        {
+            if (IsKnownDependency(classInfo, nameSpace, out bool result)) return result;
+
+            result = classInfo.ReferencedClasses.Any(c => ReferencesNamespace(c, nameSpace));
+
+            AddKnownDependency(classInfo, nameSpace, result);
+
+            return result;
+        }
+
         private bool ReferencesNamespace(IClass classInfo, string nameSpace)
         {
-            return classInfo.Namespace!=nameSpace 
+            return classInfo.Namespace != nameSpace
                    && classInfo.ReferencedNameSpaces.Contains(nameSpace)
                    || ReferencesIndirect(classInfo, nameSpace);
         }
-        
     }
 }

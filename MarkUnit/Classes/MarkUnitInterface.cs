@@ -4,11 +4,19 @@ using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
 {
-    internal class MarkUnitInterface : IInterface, IInternalClass
+    internal class MarkUnitInterface
+        : IInterface,
+          IInternalClass
     {
         private readonly IClass _classWrapper;
-        private readonly List<IMethod> _methods = new List<IMethod>();
         private readonly List<IMethod> _constructors = new List<IMethod>();
+        private readonly List<IMethod> _methods = new List<IMethod>();
+
+        public MarkUnitInterface(IClass classWrapper)
+        {
+            _classWrapper = classWrapper;
+        }
+
         public string Name => _classWrapper.Name;
 
         public Type ClassType => _classWrapper.ClassType;
@@ -38,11 +46,6 @@ namespace MarkUnit.Classes
         public void AddConstructor(IMethod constructor)
         {
             _constructors.Add(constructor);
-        }
-
-        public MarkUnitInterface(IClass classWrapper)
-        {
-            _classWrapper = classWrapper;
         }
     }
 }

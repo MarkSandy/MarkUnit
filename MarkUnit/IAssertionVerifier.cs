@@ -2,11 +2,11 @@
 
 namespace MarkUnit
 {
-    internal interface IAssertionVerifier<T> 
+    internal interface IAssertionVerifier<T>
     {
-        void Negate();
-        void AppendCondition(Predicate<T> func);
-        void Verify();
         IFilter<T> Items { get; }
+        void AppendCondition(Predicate<T> func);
+        void Negate();
+        void Verify();
     }
 }

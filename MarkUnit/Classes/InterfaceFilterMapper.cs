@@ -4,16 +4,16 @@ using System.Collections.Generic;
 namespace MarkUnit.Classes
 {
     internal class InterfaceFilterMapper : IFilter<IInterface>
-    {        
+    {
         private readonly IFilter<IInterface> _filter;
 
-        public IEnumerable<IInterface> FilteredItems => _filter.FilteredItems;
-            
         public InterfaceFilterMapper(IFilter<IInterface> filter)
         {
             _filter = filter;
         }
-        
+
+        public IEnumerable<IInterface> FilteredItems => _filter.FilteredItems;
+
         public void AppendCondition(Predicate<IInterface> func)
         {
             _filter.AppendCondition(func);

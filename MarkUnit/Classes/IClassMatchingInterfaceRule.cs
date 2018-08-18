@@ -1,4 +1,6 @@
 ﻿namespace MarkUnit.Classes
 {
-    public interface IClassMatchingInterfaceRule :  IRule<IClassMatchingInterfaceCondition>, ICheckable{}
+    public interface IClassMatchingInterfaceRule
+        : IRule<IClassMatchingInterfaceCondition>,
+          ICheckable { }
 }

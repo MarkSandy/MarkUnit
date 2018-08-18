@@ -3,7 +3,10 @@ using System.Linq.Expressions;
 
 namespace MarkUnit.Classes
 {
-    public interface IInterfaceCollection : ICondition<IInterfaceCollection>, INamePredicate<IReducedInterfaceCollection>, IDeclaredInAssemblyPredicate<IReducedInterfaceCollection>
+    public interface IInterfaceCollection
+        : ICondition<IInterfaceCollection>,
+          INamePredicate<IReducedInterfaceCollection>,
+          IDeclaredInAssemblyPredicate<IReducedInterfaceCollection>
     {
         IReducedInterfaceCollection HasAttribute<TAttribute>()
             where TAttribute : Attribute;

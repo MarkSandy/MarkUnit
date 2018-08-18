@@ -1,13 +1,11 @@
-﻿using System.Linq;
-
-namespace MarkUnit.Assemblies
+﻿namespace MarkUnit.Assemblies
 {
     public class AssemblyPredicate : IAssemblyPredicate
     {
         private readonly IAssemblyCollector _assemblyCollector;
+        private string[] _exceptionPatterns = new string[0];
         private readonly bool _negate;
         private readonly bool _not;
-        private string[] _exceptionPatterns = new string[0];
 
         public AssemblyPredicate(IAssemblyCollector assemblyCollector, bool negate, bool not)
         {
@@ -36,8 +34,8 @@ namespace MarkUnit.Assemblies
         {
             var assemblies = _assemblyCollector.SolutionAssemblies; // was 'Get()', i.e. all the assemblies
             var assemblyFilter = new FilteredAssemblies(assemblies);
-            var result= new AssemblyCollection(assemblyFilter, _negate);
-            var returnvalue= result.AddIgnoreList(_exceptionPatterns,_not);
+            var result = new AssemblyCollection(assemblyFilter, _negate);
+            var returnvalue = result.AddIgnoreList(_exceptionPatterns, _not);
             PredicateString.Add(word);
             return returnvalue;
         }

@@ -5,26 +5,33 @@ using System.Reflection;
 
 namespace MarkUnit.Classes
 {
-    internal class TypeConditionBase<TType,TCollection,TTest,TReduced> 
-        :TestCollectionBase<TType, TCollection, TTest, TReduced> 
-        where TType : IType,INamedComponent 
-        where TReduced : IFilterConditionChain<TCollection, TTest> 
+    internal class TypeConditionBase<TType, TCollection, TTest, TReduced>
+        : TestCollectionBase<TType, TCollection, TTest, TReduced>
+        where TType : IType, INamedComponent
+        where TReduced : IFilterConditionChain<TCollection, TTest>
 
     {
-        public TypeConditionBase(IFilter<TType> items) : base(items)
+        public TypeConditionBase(IFilter<TType> items)
+            : base(items) { }
+
+        public TReduced HasAttribute<TAttribute>()
+            where TAttribute : Attribute
         {
+            PredicateString.Add($"has attribute '{typeof(TAttribute).Name}'");
+            return AppendCondition(c => ClassHasAttribute(c.ClassType, typeof(TAttribute)));
         }
-        
-        public TReduced IsDeclaredInAssemblyMatching(string pattern)
+
+        public TReduced Is(Expression<Predicate<Type>> typeExpression)
         {
-            PredicateString.Add($"is declared in an assembly matching '{pattern}'");
-            return AppendCondition(c => c.Assembly.Name.Matches(pattern));
+            PredicateString.Add($"Is {typeExpression}");
+            var predicate = typeExpression.Compile();
+            return AppendCondition(c => predicate(c.ClassType));
         }
 
         public TReduced IsDeclaredInAssembly(Assembly assembly)
         {
             PredicateString.Add($"is declared in assembly '{assembly.FullName}'");
-            return AppendCondition(c => c.Assembly.Assembly.FullName==assembly.FullName);
+            return AppendCondition(c => c.Assembly.Assembly.FullName == assembly.FullName);
         }
 
         public TReduced IsDeclaredInAssembly(string name)
@@ -40,17 +47,10 @@ namespace MarkUnit.Classes
             return AppendCondition(c => predicate(c.Assembly.Assembly));
         }
 
-        public TReduced Is(Expression<Predicate<Type>> typeExpression)
+        public TReduced IsDeclaredInAssemblyMatching(string pattern)
         {
-            PredicateString.Add($"Is {typeExpression}");
-            var predicate = typeExpression.Compile();
-            return AppendCondition(c =>  predicate(c.ClassType));
-        }
-
-        public TReduced HasAttribute<TAttribute>() where TAttribute : Attribute
-        {
-            PredicateString.Add($"has attribute '{typeof(TAttribute).Name}'");
-            return AppendCondition(c => ClassHasAttribute(c.ClassType, typeof(TAttribute)));
+            PredicateString.Add($"is declared in an assembly matching '{pattern}'");
+            return AppendCondition(c => c.Assembly.Name.Matches(pattern));
         }
 
         private bool ClassHasAttribute(Type classType, Type attributeType)

@@ -2,5 +2,5 @@
 {
     internal interface IInternalClassUsesClassCondition
         : IClassUsesClassCondition,
-            IInternalCheckable { }
+          IInternalCheckable { }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
@@ -7,7 +8,6 @@ namespace MarkUnit.Classes
     internal class TypeReader : ITypeReader<IType>
     {
         private readonly Dictionary<IAssembly, IType[]> _classes = new Dictionary<IAssembly, IType[]>();
-
 
         public IEnumerable<IType> LoadFromAssemblies(IFilteredAssemblies assemblies)
         {
@@ -22,14 +22,15 @@ namespace MarkUnit.Classes
                 {
                     classes = assembly.Assembly.GetTypes().Select(t => new MarkUnitType(assembly, t)).ToArray();
                 }
-                catch (System.Reflection.ReflectionTypeLoadException ex)
+                catch (ReflectionTypeLoadException ex)
                 {
                     {
-                        classes=ex.Types.Where(t=>t!=null).Select(t => new MarkUnitType(assembly, t)).ToArray();
-                        var loaderExceptions  = ex.LoaderExceptions;
+                        classes = ex.Types.Where(t => t != null).Select(t => new MarkUnitType(assembly, t)).ToArray();
+                        var loaderExceptions = ex.LoaderExceptions;
                         // TODO
                     }
                 }
+
                 _classes.Add(assembly, classes);
             }
 

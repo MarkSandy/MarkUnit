@@ -4,7 +4,7 @@ namespace MarkUnit.Classes
 {
     internal class FilteredTypes
         : Filter<IType>,
-            IFilteredTypes
+          IFilteredTypes
     {
         public FilteredTypes(IEnumerable<IType> classes)
             : base(classes) { }

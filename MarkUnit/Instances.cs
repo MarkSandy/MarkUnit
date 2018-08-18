@@ -20,28 +20,28 @@ namespace MarkUnit
         public static bool ThrowException = true;
         public static bool ImmediateCheck = false;
 
-        public static IClassCollector ClassCollector => _classCollector?? (_classCollector= new ClassCollector(ClassReader, ClassInfoCollector));
+        public static IClassCollector ClassCollector => _classCollector ?? (_classCollector = new ClassCollector(ClassReader, ClassInfoCollector));
 
-        public static ITypeCollector TypeCollector => _typeCollector?? (_typeCollector= new TypeCollector(TypeReader));
-        
-        public static IInterfaceRuleFactory InterfaceRuleFactory => _interfaceRuleFactory?? (_interfaceRuleFactory= new InterfaceRuleFactory());
+        public static ITypeCollector TypeCollector => _typeCollector ?? (_typeCollector = new TypeCollector(TypeReader));
 
-        public static IClassRuleFactory ClassRuleFactory => _classRuleFactory?? (_classRuleFactory= new ClassRuleFactory());
-        
-        public static ITypeRuleFactory TypeRuleFactory => _typeRuleFactory?? (_typeRuleFactory= new TypeRuleFactory());
-        
+        public static IInterfaceRuleFactory InterfaceRuleFactory => _interfaceRuleFactory ?? (_interfaceRuleFactory = new InterfaceRuleFactory());
+
+        public static IClassRuleFactory ClassRuleFactory => _classRuleFactory ?? (_classRuleFactory = new ClassRuleFactory());
+
+        public static ITypeRuleFactory TypeRuleFactory => _typeRuleFactory ?? (_typeRuleFactory = new TypeRuleFactory());
+
         private static ITypeReader<IType> TypeReader => _typeReader ?? (_typeReader = new TypeReader());
 
         private static IAssemblyReader AssemblyReader => _assemblyReader ?? (_assemblyReader = new AssemblyReader(new AssemblyUtils()));
 
         private static ITypeReader<IInternalClass> ClassReader => _classReader ?? (_classReader = new ClassReader(TypeReader));
-        
+
         public static AssemblyCollector AssemblyCollector => new AssemblyCollector(AssemblyReader);
 
         public static DirectoryAssemblyCollector DirectoryAssemblyCollector => new DirectoryAssemblyCollector(AssemblyReader);
-        
+
         private static IClassInfoCollector ClassInfoCollector => new ClassInfoCollector(AssemblyReader);
-        
+
         public static IAssertionVerifier<T> CreateAssertionVerifier<T>(IFilter<T> items, IFilter<T> assertions, bool negateAssertion)
             where T : INamedComponent
         {

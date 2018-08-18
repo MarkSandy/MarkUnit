@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace MarkUnit.Classes 
+namespace MarkUnit.Classes
 {
     internal class TypeCondition
         : TypeConditionBase<IType, ITypeCollection, ITypeTestCondition, IReducedTypeCollection>,
@@ -9,8 +9,7 @@ namespace MarkUnit.Classes
         private readonly IClassCollectionFactory _classCollectionFactory;
         private readonly IInterfaceCollectionFactory _interfaceCollectionFactory;
 
-        public TypeCondition(IClassCollectionFactory classCollectionFactory, 
-            
+        public TypeCondition(IClassCollectionFactory classCollectionFactory,
             IInterfaceCollectionFactory interfaceCollectionFactory,
             IFilteredTypes typeFilter, bool negate)
             : base(typeFilter)
@@ -29,26 +28,10 @@ namespace MarkUnit.Classes
             return CreateReducedClassCollection(Filter);
         }
 
-        private IReducedClassCollection CreateReducedClassCollection(IFilter<IType> filter)
-        {
-            var classCollector = new ClassFromTypeCollector(filter);
-            var classCollection = _classCollectionFactory.Create(Instances.ClassRuleFactory, classCollector, FilterCondition.Negate, false, new string[0]);
-            var classFilter = new FilteredClasses(classCollector.Get());
-            return new ClassFilterCondition(Instances.ClassRuleFactory, classCollection, classFilter, FilterCondition.Negate);
-        }
-
         public IReducedInterfaceCollection IsInterface()
         {
             PredicateString.Add("is interface");
             return CreateReducedInterfaceCollection(Filter);
-        }
-
-        private IReducedInterfaceCollection CreateReducedInterfaceCollection(IFilter<IType> filter)
-        {
-            var interfaceCollector = new InterfaceFromTypeCollector(filter);
-            var classCollection = _interfaceCollectionFactory.Create(Instances.InterfaceRuleFactory, interfaceCollector, FilterCondition.Negate, false);
-            var classFilter = new FilteredInterfaces(interfaceCollector.Get());
-            return new InterfaceFilterCondition(Instances.InterfaceRuleFactory, classCollection, classFilter, FilterCondition.Negate);
         }
 
         public IReducedTypeCollection IsEnum()
@@ -60,7 +43,23 @@ namespace MarkUnit.Classes
         public IReducedTypeCollection ImplementsInterfaceMatching(string pattern)
         {
             PredicateString.Add($"implements an interface matching '{pattern}'");
-            return AppendCondition(c => c.ClassType.GetInterfaces().Any(i => StringHelper.Matches(i.Name, pattern)));
+            return AppendCondition(c => c.ClassType.GetInterfaces().Any(i => i.Name.Matches(pattern)));
+        }
+
+        private IReducedClassCollection CreateReducedClassCollection(IFilter<IType> filter)
+        {
+            var classCollector = new ClassFromTypeCollector(filter);
+            var classCollection = _classCollectionFactory.Create(Instances.ClassRuleFactory, classCollector, FilterCondition.Negate, false, new string[0]);
+            var classFilter = new FilteredClasses(classCollector.Get());
+            return new ClassFilterCondition(Instances.ClassRuleFactory, classCollection, classFilter, FilterCondition.Negate);
+        }
+
+        private IReducedInterfaceCollection CreateReducedInterfaceCollection(IFilter<IType> filter)
+        {
+            var interfaceCollector = new InterfaceFromTypeCollector(filter);
+            var classCollection = _interfaceCollectionFactory.Create(Instances.InterfaceRuleFactory, interfaceCollector, FilterCondition.Negate, false);
+            var classFilter = new FilteredInterfaces(interfaceCollector.Get());
+            return new InterfaceFilterCondition(Instances.InterfaceRuleFactory, classCollection, classFilter, FilterCondition.Negate);
         }
     }
 }

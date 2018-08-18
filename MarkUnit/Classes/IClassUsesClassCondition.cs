@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace MarkUnit.Classes
 {
-    public interface IClassUsesClassCondition 
+    public interface IClassUsesClassCondition
     {
         IClassUsingClassRule HasName(Expression<Predicate<string>> nameFilterExpression);
         IClassUsingClassRule HasNameMatching(string pattern);

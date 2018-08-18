@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 
 namespace MarkUnit
 {
-    internal abstract class AssertionVerifierBase<T> : IAssertionVerifier<T> where T : INamedComponent
+    internal abstract class AssertionVerifierBase<T> : IAssertionVerifier<T>
+        where T : INamedComponent
     {
-        protected IFilter<T> Assertions { get; }
-        protected bool NegateAssertion { get; }
-        protected ITestResultLogger TestResultLogger { get; }
-
         protected AssertionVerifierBase(IFilter<T> items, IFilter<T> assertions, bool negateAssertion, ITestResultLogger testResultLogger)
         {
             Items = items;
@@ -18,7 +14,50 @@ namespace MarkUnit
             TestResultLogger = testResultLogger;
         }
 
+        protected IFilter<T> Assertions { get; }
+        protected bool NegateAssertion { get; }
+        protected ITestResultLogger TestResultLogger { get; }
+
         public IFilter<T> Items { get; }
+
+        void IAssertionVerifier<T>.Verify()
+        {
+            InnerVerify();
+        }
+
+        public void Negate()
+        {
+            Assertions.Negate();
+        }
+
+        public void AppendCondition(Predicate<T> func)
+        {
+            Assertions.AppendCondition(func);
+            HandleAppendedCondition();
+        }
+
+        public void InnerVerify()
+        {
+            Assertions.Materialize();
+            HandleResult();
+        }
+
+        protected abstract void HandleAppendedCondition();
+
+        protected void HandleResult()
+        {
+            if (TestsPassed())
+            {
+                TestResultLogger.LogTestsPassed();
+            }
+            else
+            {
+                var failedItems = NegateAssertion
+                    ? Assertions.FilteredItems
+                    : Items.FilteredItems.Where(x => Assertions.FilteredItems.All(a => a.Name != x.Name));
+                TestResultLogger.LogTestsFailed(failedItems.Cast<INamedComponent>());
+            }
+        }
 
         protected bool TestsPassed()
         {
@@ -36,42 +75,5 @@ namespace MarkUnit
 
             return true;
         }
-
-        void IAssertionVerifier<T>.Verify()
-        {
-            InnerVerify();
-        }
-
-        public void InnerVerify()
-        {
-            Assertions.Materialize();
-            HandleResult();
-        }
-
-        protected void HandleResult()
-        {
-            if (TestsPassed())
-            {
-                TestResultLogger.LogTestsPassed();
-            }
-            else
-            {
-                var failedItems = NegateAssertion ? Assertions.FilteredItems : Items.FilteredItems.Where(x=> Assertions.FilteredItems.All(a => a.Name != x.Name));
-                TestResultLogger.LogTestsFailed(failedItems.Cast<INamedComponent>());
-            }
-        }
-
-        public void Negate()
-        {
-            Assertions.Negate();
-        }
-
-        public void AppendCondition(Predicate<T> func)
-        {
-            Assertions.AppendCondition(func);
-            HandleAppendedCondition();
-        }
-
-        protected abstract void HandleAppendedCondition();
     }
 }

@@ -1,4 +1,6 @@
 ﻿namespace MarkUnit.Classes
 {
-    public interface ITypePredicate : IPredicate<ITypeCollection>, IExceptions<ITypeCollection> { }
+    public interface ITypePredicate
+        : IPredicate<ITypeCollection>,
+          IExceptions<ITypeCollection> { }
 }

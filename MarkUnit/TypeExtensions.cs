@@ -12,10 +12,9 @@ namespace MarkUnit
 
         public static bool IsSubClass(this Type baseClass, Type t)
         {
-            if (t.GUID == baseClass.GUID) 
+            if (t.GUID == baseClass.GUID)
                 return true;
-            else 
-                return t.BaseType != null && baseClass.IsSubClass(t.BaseType);
+            return t.BaseType != null && baseClass.IsSubClass(t.BaseType);
         }
 
         public static bool IsSubclassOfRawGeneric(this Type generic, Type toCheck)
@@ -33,6 +32,5 @@ namespace MarkUnit
 
             return false;
         }
-
     }
 }

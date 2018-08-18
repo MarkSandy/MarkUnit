@@ -1,4 +1,6 @@
 ﻿namespace MarkUnit.Classes
 {
-    public interface IInterfaceRule :  IRule<IInterfaceTestCondition>, ICheckable{}
+    public interface IInterfaceRule
+        : IRule<IInterfaceTestCondition>,
+          ICheckable { }
 }

@@ -1,13 +1,13 @@
 ﻿namespace MarkUnit
 {
-    internal class LogicalLink<T> : IRule<T> 
+    internal class LogicalLink<T> : IRule<T>
     {
         public LogicalLink(T followUp)
         {
             FollowUp = followUp;
         }
 
-        public T FollowUp { get; }
+        internal T FollowUp { get; }
 
         public T And()
         {
@@ -15,5 +15,4 @@
             return FollowUp;
         }
     }
- 
 }

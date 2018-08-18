@@ -2,5 +2,5 @@
 {
     internal interface IInternalClassMatchingInterfaceCondition
         : IClassMatchingInterfaceCondition,
-            IInternalCheckable { }
+          IInternalCheckable { }
 }

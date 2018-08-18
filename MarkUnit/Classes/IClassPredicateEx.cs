@@ -1,4 +1,4 @@
 ﻿namespace MarkUnit.Classes
 {
-    public interface IClassPredicateEx : IPredicate<IClassUsesClassCondition>{}
+    public interface IClassPredicateEx : IPredicate<IClassUsesClassCondition> { }
 }

@@ -2,7 +2,7 @@
 
 namespace MarkUnit.Assemblies
 {
-    public interface IAssemblyCollection : ICondition<IAssemblyCollection>, INamePredicate<IReducedAssemblyCollection>
-    {
-    }
+    public interface IAssemblyCollection
+        : ICondition<IAssemblyCollection>,
+          INamePredicate<IReducedAssemblyCollection> { }
 }

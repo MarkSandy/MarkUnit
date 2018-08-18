@@ -2,5 +2,5 @@
 {
     internal interface IInternalTypeTestCondition
         : ITypeTestCondition,
-            IInternalCheckable { }
+          IInternalCheckable { }
 }

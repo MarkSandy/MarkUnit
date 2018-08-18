@@ -4,7 +4,7 @@ namespace MarkUnit.Classes
 {
     internal class FilteredInterfaces
         : Filter<IInterface>,
-            IFilteredInterfaces
+          IFilteredInterfaces
     {
         public FilteredInterfaces(IEnumerable<IInterface> interfaces)
             : base(interfaces) { }

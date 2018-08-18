@@ -23,6 +23,7 @@ namespace MarkUnit.Classes
             {
                 return result;
             }
+
             CollectInfoFromConstructors(classInfo);
             CollectInfoFromFields(classInfo);
             CollectInfoFromMethods(classInfo);
@@ -40,6 +41,16 @@ namespace MarkUnit.Classes
             if (type.IsGenericParameter || type == typeof(void)) return;
             var referencedClass = Get(type);
             classType.AddReferencedClass(referencedClass);
+        }
+
+        private void CollectClassInfoFromConstructors(IInternalClass classInfo, BindingFlags bindingFlags)
+        {
+            foreach (ConstructorInfo constructorInfo in classInfo.ClassType.GetConstructors(bindingFlags))
+            {
+                classInfo.AddConstructor(CreateMethodInfo(classInfo, constructorInfo));
+                CollectFromParameters(classInfo, constructorInfo.GetParameters());
+                CollectFromMethodBody(classInfo, constructorInfo.GetMethodBody());
+            }
         }
 
         private void CollectFromMethodBody(IClass classInfo, MethodBody methodBody)
@@ -65,31 +76,6 @@ namespace MarkUnit.Classes
         {
             CollectClassInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.Public);
             CollectClassInfoFromConstructors(classInfo, BindingFlags.Instance | BindingFlags.NonPublic);
-        }
-
-        private void CollectClassInfoFromConstructors(IInternalClass classInfo, BindingFlags bindingFlags)
-        {
-            foreach (ConstructorInfo constructorInfo in classInfo.ClassType.GetConstructors(bindingFlags))
-            {
-                classInfo.AddConstructor(CreateMethodInfo(classInfo, constructorInfo));
-                CollectFromParameters(classInfo, constructorInfo.GetParameters());
-                CollectFromMethodBody(classInfo, constructorInfo.GetMethodBody());
-            }
-        }
-
-        private IMethod CreateMethodInfo(IInternalClass classInfo, ConstructorInfo constructorInfo)
-        {
-            return new Method(classInfo,"ctor",CreateParameterList(constructorInfo.GetParameters()),constructorInfo.IsPublic);
-        }
-
-        private IParameterInfo[] CreateParameterList(ParameterInfo[] parameter)
-        {
-            return parameter.Select(CreateParameterInfo).ToArray();
-        }
-
-        private IParameterInfo CreateParameterInfo (ParameterInfo p)
-        {
-            return new MarkUnitParameterInfo(p.ParameterType, p.Name, p.IsOptional);
         }
 
         private void CollectInfoFromFields(IClass classInfo)
@@ -125,9 +111,24 @@ namespace MarkUnit.Classes
             }
         }
 
-        private IMethod CreateMethodInfo(IInternalClass classInfo,MethodInfo methodInfo)
+        private IMethod CreateMethodInfo(IInternalClass classInfo, ConstructorInfo constructorInfo)
         {
-             return new Method(classInfo,methodInfo.Name, CreateParameterList(methodInfo.GetParameters()),methodInfo.IsPublic);
+            return new Method(classInfo, "ctor", CreateParameterList(constructorInfo.GetParameters()), constructorInfo.IsPublic);
+        }
+
+        private IMethod CreateMethodInfo(IInternalClass classInfo, MethodInfo methodInfo)
+        {
+            return new Method(classInfo, methodInfo.Name, CreateParameterList(methodInfo.GetParameters()), methodInfo.IsPublic);
+        }
+
+        private IParameterInfo CreateParameterInfo(ParameterInfo p)
+        {
+            return new MarkUnitParameterInfo(p.ParameterType, p.Name, p.IsOptional);
+        }
+
+        private IParameterInfo[] CreateParameterList(ParameterInfo[] parameter)
+        {
+            return parameter.Select(CreateParameterInfo).ToArray();
         }
 
         private IClass Get(Type type)
