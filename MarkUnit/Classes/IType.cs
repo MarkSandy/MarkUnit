@@ -8,5 +8,6 @@ namespace MarkUnit.Classes
         IAssembly Assembly { get; }
         Type ClassType { get; }
         string Namespace { get; }
+        string FullName { get; }
     }
 }

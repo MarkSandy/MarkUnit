@@ -23,6 +23,8 @@ namespace KaroTesterDemo
             
             var kaRo = Solution.Create().FromPath(path).Matching("DCX.KT.*").WithoutException();
 
+            kaRo.NoClass().Should().HaveCyclicDependencies();
+
             Measure(() =>
                 kaRo.EachClass().Except("Archi*")
                     .That()
@@ -44,7 +46,6 @@ namespace KaroTesterDemo
                 .Should().HaveMethods(m => CheckAndCollect(m)).Check()
             );
 
-            kaRo.NoClass().Should().HaveCyclicDependencies();
             Measure(() =>
 
                 kaRo.EachClass()

@@ -79,6 +79,7 @@
     <Compile Include="Classes\ClassPredicateFixture.cs" />
     <Compile Include="Classes\ClassRuleFixture.cs" />
     <Compile Include="Classes\ClassToInterfaceFilterMapperFixture.cs" />
+    <Compile Include="Classes\CyclicDependencyCheckerFixture.cs" />
     <Compile Include="Classes\InterfacePredicateFixture.cs" />
     <Compile Include="Classes\InterfaceRuleFixture.cs" />
     <Compile Include="Classes\MarkUnitInterfaceFixture.cs" />

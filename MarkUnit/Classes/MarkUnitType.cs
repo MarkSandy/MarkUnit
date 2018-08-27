@@ -15,5 +15,6 @@ namespace MarkUnit.Classes
         public Type ClassType { get; }
         public IAssembly Assembly { get; }
         public string Namespace => ClassType.Namespace;
+        public string FullName => ClassType.FullName;
     }
 }
