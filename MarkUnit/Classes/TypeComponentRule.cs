@@ -8,6 +8,7 @@ namespace MarkUnit.Classes
         : RuleBase<TType, TTest, TRule>
         where TType : IType, INamedComponent
         where TRule : IRule<TTest>
+        where TTest : class
     {
         protected TypeComponentRule(IFilter<TType> items, bool negateAssertion)
             : base(items, negateAssertion) { }
