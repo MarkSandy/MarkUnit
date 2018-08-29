@@ -1,5 +1,5 @@
-﻿using System;
-using MarkUnit.Assemblies;
+﻿using MarkUnit.Assemblies;
+using System;
 
 namespace MarkUnit.Classes
 {
@@ -7,6 +7,7 @@ namespace MarkUnit.Classes
     {
         IAssembly Assembly { get; }
         Type ClassType { get; }
+        bool IsNative { get; }
         string Namespace { get; }
         string FullName { get; }
     }
