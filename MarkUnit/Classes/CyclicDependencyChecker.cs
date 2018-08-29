@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace MarkUnit.Classes
 {
     internal class CyclicDependencyChecker
     {
-        private readonly Dictionary<string, bool> _knownDependencies = new Dictionary<string, bool>();
+        private Dictionary<string, bool> _knownDependencies = new Dictionary<string, bool>();
 
         public bool HasCyclicDependencies(IClass classInfo)
         {
@@ -34,16 +33,16 @@ namespace MarkUnit.Classes
         {
             if (!IsKnownDependency(classInfo, nameSpace, out bool result))
             {
-                result = classInfo.ReferencedClasses.Any(c => ReferencesNamespace(c, nameSpace));
+                result = classInfo.ReferencedClasses.Any(c => !c.IsNative && ReferencesNamespace(c, nameSpace));
                 AddKnownDependency(classInfo, nameSpace, result);
             }
+
             return result;
         }
 
         private bool ReferencesNamespace(IClass classInfo, string nameSpace)
         {
-            return (classInfo.Namespace != nameSpace && classInfo.ReferencedNameSpaces.Contains(nameSpace))
-                   || ReferencesIndirect(classInfo, nameSpace);
+            return classInfo.Namespace != nameSpace && classInfo.ReferencedNameSpaces.Contains(nameSpace) || ReferencesIndirect(classInfo, nameSpace);
         }
     }
 }

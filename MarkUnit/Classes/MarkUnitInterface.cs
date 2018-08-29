@@ -1,6 +1,6 @@
-﻿using System;
+﻿using MarkUnit.Assemblies;
+using System;
 using System.Collections.Generic;
-using MarkUnit.Assemblies;
 
 namespace MarkUnit.Classes
 {
@@ -20,6 +20,7 @@ namespace MarkUnit.Classes
         public string Name => _classWrapper.Name;
 
         public Type ClassType => _classWrapper.ClassType;
+        public bool IsNative => _classWrapper.IsNative;
 
         public IAssembly Assembly => _classWrapper.Assembly;
 
