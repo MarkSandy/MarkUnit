@@ -5,44 +5,56 @@ namespace MarkUnit.Classes
 {
     internal class CyclicDependencyChecker
     {
-        private Dictionary<string, bool> _knownDependencies = new Dictionary<string, bool>();
+        private readonly Dictionary<string, bool> _knownDependencies = new Dictionary<string, bool>();
 
+        private readonly List<IClass> _path = new List<IClass>();
         public bool HasCyclicDependencies(IClass classInfo)
         {
-            return ReferencesIndirect(classInfo, classInfo.Namespace);
+            _path.Clear();
+            var result = ReferencesIndirect(classInfo, classInfo.Namespace);
+            // Path now contains dependency path
+            return result;
         }
 
-        private void AddKnownDependency(IClass classInfo, string nameSpace, bool isDependent)
+        private static string CreateKey(IClass classInfo, string nameSpace)
         {
-            var key = $"{classInfo.FullName}->{nameSpace}";
-            if (!_knownDependencies.ContainsKey(key))
-            {
-                _knownDependencies.Add(key, isDependent);
-            }
-        }
-
-        private bool IsKnownDependency(IClass classInfo, string nameSpace, out bool result)
-        {
-            var key = $"{classInfo.FullName}->{nameSpace}";
-            if (_knownDependencies.TryGetValue(key, out result)) return true;
-            result = false;
-            return false;
+            return $"{classInfo.FullName}->{nameSpace}";
         }
 
         private bool ReferencesIndirect(IClass classInfo, string nameSpace)
         {
-            if (!IsKnownDependency(classInfo, nameSpace, out bool result))
+            var key = CreateKey(classInfo, nameSpace);
+            if (!_knownDependencies.TryGetValue(key, out bool isDependent)) return true;
             {
-                result = classInfo.ReferencedClasses.Any(c => !c.IsNative && ReferencesNamespace(c, nameSpace));
-                AddKnownDependency(classInfo, nameSpace, result);
-            }
+                isDependent = classInfo.ReferencedClasses.Any(c => !c.IsNative && ReferencesNamespace(c, nameSpace));
+                _knownDependencies.Add(key, isDependent);
 
-            return result;
+            }
+            if (isDependent) _path.Add(classInfo);
+            return isDependent;
         }
 
         private bool ReferencesNamespace(IClass classInfo, string nameSpace)
         {
-            return classInfo.Namespace != nameSpace && classInfo.ReferencedNameSpaces.Contains(nameSpace) || ReferencesIndirect(classInfo, nameSpace);
+            if (ReferencesDirect(classInfo, nameSpace))
+            {
+                AppendDependendClassesToPath(classInfo, nameSpace);
+                return true;
+            }
+            return ReferencesIndirect(classInfo, nameSpace);
+            // return ReferencesDirect(classInfo, nameSpace) || ReferencesIndirect(classInfo, nameSpace);
+        }
+
+        private void AppendDependendClassesToPath(IClass classInfo, string nameSpace)
+        {
+            var c = classInfo.ReferencedClasses.FirstOrDefault(x => x.Namespace == nameSpace);
+            _path.Add(c);
+            _path.Add(classInfo);
+        }
+
+        private static bool ReferencesDirect(IClass classInfo, string nameSpace)
+        {
+            return classInfo.Namespace != nameSpace && classInfo.ReferencedNameSpaces.Contains(nameSpace);
         }
     }
 }
