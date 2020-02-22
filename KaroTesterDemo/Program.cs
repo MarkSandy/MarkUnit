@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MarkUnit;
+using MarkUnit.Classes;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using MarkUnit;
-using MarkUnit.Classes;
 
 namespace KaroTesterDemo
 {
@@ -10,7 +10,7 @@ namespace KaroTesterDemo
     {
         private static List<string> _longMethods = new List<string>();
 
-        static bool CheckAndCollect(IMethod method)
+        private static bool CheckAndCollect(IMethod method)
         {
             if (!method.IsPublic || method.MethodName.Matches("*Row")) return true;
             if (method.Parameters.Length > 9) _longMethods.Add(method.MethodName);
@@ -20,13 +20,15 @@ namespace KaroTesterDemo
         private static void Main(string[] args)
         {
             string path = @"C:\Projects\Repos\KtDb\Build\Debug\";
-            
+
             var kaRo = Solution.Create().FromPath(path).Matching("DCX.KT.*").WithoutException();
+
+
 
             Measure(() =>
                 kaRo.EachClass().Except("Archi*")
                     .That()
-                    .Is(c=>c.IsPublic)
+                    .Is(c => c.IsPublic)
                     .And()
                     .IsDeclaredInAssemblyMatching("DCX.KT.UnitTests")
                     .And()
@@ -36,7 +38,13 @@ namespace KaroTesterDemo
                     .Check()
             );
 
-         
+            Measure(() =>
+                kaRo.NoClass()
+                    .Should()
+                    .HaveCyclicDependencies()
+                    .Check()
+            );
+
             Measure(() =>
             kaRo.EachClass().That()
                 .Not().IsDeclaredInAssemblyMatching("*BusinessComponents*")
@@ -44,7 +52,6 @@ namespace KaroTesterDemo
                 .Should().HaveMethods(m => CheckAndCollect(m)).Check()
             );
 
-            kaRo.NoClass().Should().HaveCyclicDependencies();
             Measure(() =>
 
                 kaRo.EachClass()
@@ -149,7 +156,7 @@ namespace KaroTesterDemo
             sb.Start();
             action();
             sb.Stop();
-            Console.WriteLine("T="+sb.Elapsed.ToString());
+            Console.WriteLine("T=" + sb.Elapsed.ToString());
 
         }
     }

@@ -135,7 +135,6 @@ namespace Tests.MarkUnit.Classes
             sut.Be(c => c==typeof(Class1));
             AssertThatSavedPredicateMatchesClass1AndNotClass2();
         }
-
     }
 
     internal class Class1 : IInterfaceOfClass1

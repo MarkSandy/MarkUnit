@@ -8,6 +8,7 @@ namespace MarkUnit
           ICheckable
         where T : INamedComponent
         where TLogicalLink : IRule<TAssertion>
+        where TAssertion : class
     {
         protected RuleBase(IFilter<T> items, bool negateAssertion)
         {
@@ -31,7 +32,7 @@ namespace MarkUnit
         public TAssertion And()
         {
             PredicateString.Add("and");
-            return LogicalLink.And();
+            return this as TAssertion;
         }
 
         public TLogicalLink HaveName(Expression<Predicate<string>> nameFilterExpression)

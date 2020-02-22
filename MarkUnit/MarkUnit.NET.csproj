@@ -72,6 +72,7 @@
     <Compile Include="Classes\ClassPredicateEx.cs" />
     <Compile Include="Classes\ClassRuleFactory.cs" />
     <Compile Include="Classes\ClassUsingClassCondition.cs" />
+    <Compile Include="Classes\CyclicDependencyChecker.cs" />
     <Compile Include="Classes\FilteredInterfaces.cs" />
     <Compile Include="Classes\FilteredTypes.cs" />
     <Compile Include="Classes\FunctionalComponentRule.cs" />
