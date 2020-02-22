@@ -1,4 +1,4 @@
 ﻿namespace MarkUnit.Assemblies
 {
-    public interface IAssemblyFilterCondition : IFilterConditionChain<IAssemblyCollection, IAssemblyTestCondition> { }
+    public interface IAssemblyFilterCondition : IFilterConditio<IAssemblyCollection, IAssemblyTestCondition> { }
 }

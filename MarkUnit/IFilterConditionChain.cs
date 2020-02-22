@@ -1,6 +1,6 @@
 ﻿namespace MarkUnit
 {
-    public interface IFilterConditionChain<out TCondition, out TAssertion>
+    public interface IFilterConditio<out TCondition, out TAssertion>
         : IRule<TCondition>,
           IShould<TAssertion>
     {

@@ -8,7 +8,7 @@ namespace MarkUnit.Classes
     internal class TypeConditionBase<TType, TCollection, TTest, TReduced>
         : TestCollectionBase<TType, TCollection, TTest, TReduced>
         where TType : IType, INamedComponent
-        where TReduced : IFilterConditionChain<TCollection, TTest>
+        where TReduced : IFilterConditio<TCollection, TTest>
 
     {
         public TypeConditionBase(IFilter<TType> items)

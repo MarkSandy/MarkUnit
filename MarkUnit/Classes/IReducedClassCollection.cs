@@ -1,4 +1,4 @@
 ﻿namespace MarkUnit.Classes
 {
-    public interface IReducedClassCollection : IFilterConditionChain<IClassCollection, IClassTestCondition> { }
+    public interface IReducedClassCollection : IFilterConditio<IClassCollection, IClassTestCondition> { }
 }

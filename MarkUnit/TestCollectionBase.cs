@@ -7,7 +7,7 @@ namespace MarkUnit
 {
     internal class TestCollectionBase<T, TCondition, TAssertion, TPostCondition>
         : IRule<TCondition>
-        where TPostCondition : IFilterConditionChain<TCondition, TAssertion>
+        where TPostCondition : IFilterConditio<TCondition, TAssertion>
         where T : INamedComponent
     {
         protected IFilter<T> Filter;

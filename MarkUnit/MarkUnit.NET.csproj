@@ -150,7 +150,6 @@
     <Compile Include="IInternalCheckable.cs" />
     <Compile Include="IInternalFilterConditionChain.cs" />
     <Compile Include="IRule.cs" />
-    <Compile Include="LogicalLink.cs" />
     <Compile Include="TestCollectionBase.cs" />
     <Compile Include="FilterConditionBase.cs" />
     <Compile Include="AssertionVerifier.cs" />
